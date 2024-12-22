@@ -32,6 +32,7 @@ class HomePage extends Component {
 
     public function render(): Application|Factory|\Illuminate\Contracts\View\View|View {
         $products = ($this->collection?->products() ?: Product::query())
+            ->status('published')
             ->paginate(12);
         return view('livewire.home.index', [
             'collections' => Collection::all(),
