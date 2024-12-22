@@ -40,7 +40,7 @@ if [ -z "$NO_FRONTEND" ]; then
     ./vendor/bin/sail bun install
 
     # Build frontend
-    ./vendor/bin/sail bun build
+    ./vendor/bin/sail bun run build
 fi
 
 if [ -z "$NO_LUNAR_SETUP" ]; then
