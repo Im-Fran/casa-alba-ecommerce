@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Install composer
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php84-composer:latest \
+    composer install --ignore-platform-reqs
+
+# Copy .env
+if [ ! -f .env ]; then
+    cp .env.example .env
+fi
+
+if [ -z "$NO_BUILD" ]; then
+    # Build Sail
+    ./vendor/bin/sail build --no-cache
+fi
+
+# Run Sail
+./vendor/bin/sail up -d
+
+# Generate key
+./vendor/bin/sail artisan key:generate
+
+# if env "NO_CACHE" is not set, run cache
+if [ -z "$NO_CACHE" ]; then
+    ./vendor/bin/sail artisan optimize
+fi
+
+# if env "NO_MIGRATION" is not set, run migration
+if [ -z "$NO_MIGRATION" ]; then
+    ./vendor/bin/sail artisan migrate:fresh
+fi
+
+# if env "NO_FRONTEND" is not set, run frontend
+if [ -z "$NO_FRONTEND" ]; then
+    # Set up bun
+    ./vendor/bin/sail bun install
+
+    # Build frontend
+    ./vendor/bin/sail bun build
+fi
+
+if [ -z "$NO_LUNAR_SETUP" ]; then
+    # Run Lunar setup
+    ./vendor/bin/sail artisan lunar:create-admin
+    ./vendor/bin/sail artisan lunar:install
+fi
