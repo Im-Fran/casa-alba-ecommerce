@@ -28,8 +28,7 @@ export default {
 
     daisyui: {
         themes: [{
-            light: {
-                ...require("daisyui/src/theming/themes")["light"],
+            casaalba: {
                 primary: '#2B9D66',
                 secondary: '#AFE9CD',
             }
