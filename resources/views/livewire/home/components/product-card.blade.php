@@ -14,7 +14,15 @@
                 </div>
                 <span class="text-neutral-600">{{ $this->product->attr('descripcion-corta') }}</span>
             </div>
-            <x-button wire:click.stop="addToCart" class="btn-primary text-neutral-50" label="Agregar al Carrito"/>
+            <div class="flex items-center justify-between w-full gap-2">
+                @if($this->inCart() > 0)
+                    <x-button wire:click.stop="removeFromCart" class="btn-primary text-neutral-50" icon="o-minus" />
+                    <span class="flex items-center justify-center text-lg text-primary border border-primary rounded-md w-full h-12 font-bold">{{ $this->inCart() }} en Carrito</span>
+                    <x-button wire:click.stop="addToCart" class="btn-primary text-neutral-50" icon="o-plus" />
+                @else
+                    <x-button wire:click.stop="addToCart" class="btn-primary text-neutral-50 w-full" label="Agregar al Carrito"/>
+                @endif
+            </div>
         </div>
     </div>
 
