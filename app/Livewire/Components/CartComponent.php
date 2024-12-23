@@ -2,18 +2,42 @@
 
 namespace App\Livewire\Components;
 
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View as IlluminateView;
-use Illuminate\Foundation\Application;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Lunar\Facades\CartSession;
 use Lunar\Models\Cart;
+use Lunar\Models\CartLine;
+use Lunar\Pricing\DefaultPriceFormatter;
 
 class CartComponent extends Component {
 
-    public bool $open = false;
+    public bool $openCart = false;
+
+    public function addToCart(CartLine $line): void {
+        $this->cart->updateLine(cartLineId: $line->id, quantity: min($line->quantity + 1, $line->purchasable->stock));
+    }
+
+    public function remFromCart(CartLine $line): void {
+        $qty = max($line->quantity - 1, 0);
+        if($qty == 0) {
+            $this->cart->remove(cartLineId: $line->id);
+            return;
+        }
+        $this->cart->updateLine(cartLineId: $line->id, quantity: $qty);
+    }
+
+    #[Computed]
+    public function subTotal(): string {
+        $cart = $this->cart;
+        if($cart == null) {
+            return '--';
+        }
+
+
+        $total = ($cart->subTotal?->value ?: 0) - ($cart->taxTotal?->value ?: 0);
+        return (new DefaultPriceFormatter(value: $total, currency: $cart->currency))->unitFormatted('es-cl');
+    }
 
     #[Computed]
     public function cart(): ?Cart {
@@ -21,7 +45,7 @@ class CartComponent extends Component {
     }
 
 
-    public function render(): Application|Factory|IlluminateView|View {
+    public function render(): View {
         return view('livewire.components.cart-component');
     }
 }

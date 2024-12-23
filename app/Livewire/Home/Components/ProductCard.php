@@ -17,16 +17,27 @@ class ProductCard extends Component {
     public Product $product;
 
     public function addToCart(int $qty = 1): void {
-        CartSession::add(purchasable: $this->product->variants()->first(), quantity: $qty);
+        $line = CartSession::lines()->where('purchasable_id', $this->defaultVariant->id)->first();
+        if($this->defaultVariant->stock < ($line?->quantity ?? 0) + $qty) {
+            return;
+        }
+        dd('*');
+        CartSession::add(purchasable: $this->defaultVariant, quantity: $qty);
     }
 
     public function removeFromCart(int $qty = 1): void {
-        $line = CartSession::lines()->where('purchasable_id', $this->product->variants()->first()->id)->first();
-        if($this->inCart() == 1) {
+        $line = CartSession::lines()->where('purchasable_id', $this->defaultVariant->id)->first();
+        if($line->quantity - $qty <= 0) {
             CartSession::remove(cartLineId: $line->id);
             return;
         }
+
         CartSession::updateLine(cartLineId: $line->id, quantity: $line->quantity - $qty);
+    }
+
+    #[Computed]
+    public function defaultVariant(): mixed {
+        return $this->product->variants()->first();
     }
 
     #[Computed]

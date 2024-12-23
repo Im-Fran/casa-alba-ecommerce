@@ -1,4 +1,4 @@
-<div>
+<div wire:poll.3s>
     <div wire:click.stop="$toggle('peek')" class="col-span-1 flex flex-col w-full hover:cursor-pointer hover:shadow-lg transition duration-300 ease-in-out rounded-lg p-2">
         <img
             src="{{ $this->product->images()->whereJsonContains('custom_properties->primary', true)->first()->original_url }}"
@@ -16,11 +16,20 @@
             </div>
             <div class="flex items-center justify-between w-full gap-2">
                 @if($this->inCart() > 0)
-                    <x-button wire:click.stop="removeFromCart" class="btn-primary text-neutral-50" icon="o-minus" />
+                    <x-button wire:click.stop="removeFromCart" class="btn-primary text-neutral-50">
+                        <x-icon name="o-minus" wire:target="removeFromCart" wire:loading.remove/>
+                        <x-loading class="loading-dots" wire:target="removeFromCart" wire:loading/>
+                    </x-button>
                     <span class="flex items-center justify-center text-lg text-primary border border-primary rounded-md w-full h-12 font-bold">{{ $this->inCart() }} en Carrito</span>
-                    <x-button wire:click.stop="addToCart" class="btn-primary text-neutral-50" icon="o-plus" />
+                    <x-button wire:click.stop="addToCart" class="btn-primary text-neutral-50">
+                        <x-icon name="o-plus" wire:target="addToCart" wire:loading.remove/>
+                        <x-loading class="loading-dots" wire:target="addToCart" wire:loading/>
+                    </x-button>
                 @else
-                    <x-button wire:click.stop="addToCart" class="btn-primary text-neutral-50 w-full" label="Agregar al Carrito"/>
+                    <x-button wire:click.stop="addToCart" class="btn-primary text-neutral-50 w-full">
+                        <span wire:target="addToCart" wire:loading.remove>Agregar al Carrito</span>
+                        <x-loading class="loading-dots" wire:target="addToCart" wire:loading/>
+                    </x-button>
                 @endif
             </div>
         </div>
@@ -38,9 +47,7 @@
                 <div class="flex items-center justify-between w-full">
                     <span class="text-lg text-primary font-bold">${{ \Clemdesign\PhpMask\Mask::apply($this->product->prices()->first()->price->value, 'dot_separator.0') }}</span>
 
-                    <span class="text-md text-neutral-400 font-semibold">
-                            5 en Stock
-                        </span>
+                    <span class="text-md text-neutral-400 font-semibold">5 en Stock</span>
                 </div>
                 <span class="text-sm md:text-md text-neutral-600">{{ $this->product->attr('descripcion-corta') }}</span>
                 <div class="text-sm md:text-md text-neutral-900">{!! $this->product->attr('description') !!}</div>
