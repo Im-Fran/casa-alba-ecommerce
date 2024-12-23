@@ -22,11 +22,29 @@ class HomePage extends Component {
     #[Url(as: 'precio', history: true)]
     public Sort $price = Sort::ASC;
 
+    public bool $showProduct = false;
+    public ?int $productId = 1;
+
     #[Computed]
     public function collection() {
         return $this->categoryName != null ? Collection::query()
             ->whereJsonContains('attribute_data->name->value->es', $this->categoryName)
             ->first() : null;
+    }
+
+    #[Computed]
+    public function shownProduct(): Product|null {
+        return Product::find($this->productId);
+    }
+
+    public function openProduct(int $productId): void {
+        $this->productId = $productId;
+        $this->showProduct = true;
+    }
+
+    public function closeProductModal(): void {
+        $this->showProduct = false;
+        $this->productId = null;
     }
 
     public function selectCollection(?string $categoryName): void {
@@ -40,9 +58,7 @@ class HomePage extends Component {
     public function render(): Application|Factory|\Illuminate\Contracts\View\View|View {
         $products = ($this->collection?->products() ?: Product::query())
             ->status('published')
-            ->joinRelation('variants')
-            ->joinRelation('variants.prices')
-            ->orderBy('lunar_prices.price', strtolower($this->price->name))
+            /* Sort by price ASC or DESC */
             ->paginate(12);
 
         return view('livewire.home.index', [

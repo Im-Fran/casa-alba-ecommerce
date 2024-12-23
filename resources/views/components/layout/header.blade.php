@@ -13,7 +13,7 @@
                 <a href="{{ route('home') }}" class="hover:text-primary">Inicio</a>
             </li>
             <li>
-                <a href="#" class="hover:text-primary">Contacto</a>
+                <a href="{{ route('contact') }}" class="hover:text-primary">Contacto</a>
             </li>
             <li>
                 <a href="#" class="hover:text-primary">Nosotros</a>

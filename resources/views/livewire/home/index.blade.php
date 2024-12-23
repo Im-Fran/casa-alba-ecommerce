@@ -20,20 +20,22 @@
             </div>
 
             <!-- Products -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
                 @foreach($products as $product)
-                    <div class="col-span-1 flex flex-col w-full hover:cursor-pointer hover:shadow-lg transition duration-300 ease-in-out rounded-lg p-2">
+                    <div wire:click="openProduct({{ $product->id }})" class="col-span-1 flex flex-col w-full hover:cursor-pointer hover:shadow-lg transition duration-300 ease-in-out rounded-lg p-2">
                         <img
                             src="{{ $product->images()->whereJsonContains('custom_properties->primary', true)->first()->original_url }}"
                             alt="{{ $product->attr('name') }}"
-                            class="w-full rounded-xl border h-96"
+                            class="w-full rounded-xl border h-96 object-cover"
                         />
 
                         <div class="flex flex-col gap-2 mt-2">
                             <div class="flex flex-col">
-                                <h3 class="text-xl text-primary font-medium">{{ $product->attr('name') }}</h3>
-                                <span class="text-md text-neutral-600">{{ $product->attr('descripcion-corta') }}</span>
-                                <p class="text-lg text-neutral-900 font-bold">${{ \Clemdesign\PhpMask\Mask::apply($product->prices()->first()->price->value, 'dot_separator.0') }}</p>
+                                <div class="flex justify-between items-center w-full gap-2">
+                                    <h3 class="text-xl text-primary font-medium">{{ $product->attr('name') }}</h3>
+                                    <h3 class="text-xl text-primary font-bold">${{ \Clemdesign\PhpMask\Mask::apply($product->prices()->first()->price->value, 'dot_separator.0') }}</h3>
+                                </div>
+                                <span class="text-lf text-neutral-600">{{ $product->attr('descripcion-corta') }}</span>
                             </div>
                         </div>
                     </div>
@@ -42,12 +44,34 @@
         </section>
     </div>
 
+    <x-modal title="{{ $this->shownProduct() != null ? $this->shownProduct()->attr('name') : '' }}" wire:model="showProduct" class="backdrop-blur">
+        @if($this->shownProduct())
+            <div class="grid md:grid-cols-2 gap-5">
+                <img
+                    src="{{ $this->shownProduct()->images()->whereJsonContains('custom_properties->primary', true)->first()->original_url }}"
+                    alt="{{ $this->shownProduct()->attr('name') }}"
+                    class="col-span-1 w-full rounded-xl border h-96 object-cover"
+                />
 
-    @script
-    <script>
-        window.addEventListener('livewire:init', function () {
+                <div class="col-span-1 flex flex-col h-full gap-2.5">
+                    <div class="flex items-center justify-between w-full">
+                        <span class="text-lg text-primary font-bold">${{ \Clemdesign\PhpMask\Mask::apply($this->shownProduct()->prices()->first()->price->value, 'dot_separator.0') }}</span>
 
-        });
-    </script>
-    @endscript
+                        <span class="text-md text-neutral-400 font-semibold">
+                            5 en Stock
+                        </span>
+                    </div>
+                    <span class="text-sm md:text-md text-neutral-600">{{ $this->shownProduct()->attr('descripcion-corta') }}</span>
+                    <div class="text-sm md:text-md text-neutral-900">{!! $this->shownProduct()->attr('description') !!}</div>
+                </div>
+            </div>
+
+            <x-slot:actions>
+                <x-button wire:click="closeProductModal" class="btn-tertiary" label="Cerrar"/>
+                <x-button class="btn-primary text-neutral-50" label="Ver Más"/>
+            </x-slot:actions>
+        @else
+            <h1 class="text-2xl font-bold mb-5">Producto no encontrado</h1>
+        @endif
+    </x-modal>
 </div>

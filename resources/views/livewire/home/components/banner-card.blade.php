@@ -4,6 +4,6 @@
     <img
         src="{{ asset('/images/productos_limpieza.png') }}"
         alt="Productos de Limpieza"
-        class="object-cover object-top w-3/5 -mt-4 rounded-2xl"
+        class="object-cover object-top w-full lg:w-3/5 -mt-4 rounded-2xl"
     />
 </div>
