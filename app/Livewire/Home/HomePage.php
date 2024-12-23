@@ -3,6 +3,7 @@
 namespace App\Livewire\Home;
 
 use App\Lib\Sort;
+use DB;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\View\View;
@@ -23,26 +24,26 @@ class HomePage extends Component {
     public Sort $price = Sort::ASC;
 
     public bool $showProduct = false;
-    public ?int $productId = 1;
+    public ?int $productId = null;
 
     #[Computed]
-    public function collection() {
+    public function collection(): Collection|null {
         return $this->categoryName != null ? Collection::query()
             ->whereJsonContains('attribute_data->name->value->es', $this->categoryName)
             ->first() : null;
     }
 
     #[Computed]
-    public function shownProduct(): Product|null {
+    public function peekProduct(): Product|null {
         return Product::find($this->productId);
     }
 
-    public function openProduct(int $productId): void {
-        $this->productId = $productId;
+    public function openPeekProduct(int $id): void {
+        $this->productId = $id;
         $this->showProduct = true;
     }
 
-    public function closeProductModal(): void {
+    public function closePeekProduct(): void {
         $this->showProduct = false;
         $this->productId = null;
     }
@@ -57,8 +58,12 @@ class HomePage extends Component {
 
     public function render(): Application|Factory|\Illuminate\Contracts\View\View|View {
         $products = ($this->collection?->products() ?: Product::query())
+            ->select('lunar_products.*', DB::raw('MIN(lunar_prices.price) as min_price'))
             ->status('published')
-            /* Sort by price ASC or DESC */
+            ->joinRelation('variants.prices')
+            ->where('lunar_prices.priceable_type', 'product_variant')
+            ->groupBy('lunar_products.id')
+            ->orderBy('min_price', $this->price->value)
             ->paginate(12);
 
         return view('livewire.home.index', [
