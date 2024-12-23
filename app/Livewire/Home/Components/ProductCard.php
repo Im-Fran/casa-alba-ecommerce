@@ -9,6 +9,7 @@ use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Lunar\Facades\CartSession;
+use Lunar\Models\Cart;
 use Lunar\Models\Product;
 
 class ProductCard extends Component {
@@ -18,6 +19,10 @@ class ProductCard extends Component {
 
     public function addToCart(): void {
         $cart = CartSession::current();
+        if($cart == null) {
+            $cart = Cart::create();
+            CartSession::use($cart);
+        }
         $cart->add($this->product->variants()->first());
     }
 

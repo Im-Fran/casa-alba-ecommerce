@@ -3,7 +3,7 @@
         <div class="flex flex-col items-stretch justify-between w-full h-[90vh]">
             <div class="flex flex-col max-h-[70vh]">
                 {{-- Dummy Product Card --}}
-                @foreach($this->cart()->lines as $line)
+                @foreach($this->cart->lines as $line)
                     <livewire:components.cart.product-card-component :line="$line" wire:key="{{ $line->id }}"/>
                 @endforeach
             </div>
