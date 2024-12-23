@@ -8,15 +8,15 @@
                 @endforeach
             </div>
             <div class="flex flex-col mt-4">
-                <div class="flex items-center justify-between">
-                    <p class="text-sm">Sub Total</p>
-                    <span class="text-sm">{{ $this->cart->subTotal->unitFormatted('es-cl') }}</span>
-                </div>
+{{--                <div class="flex items-center justify-between">--}}
+{{--                    <p class="text-sm">Sub Total</p>--}}
+{{--                    <span class="text-sm">{{ $this->cart->subTotal->unitFormatted('es-cl') }}</span>--}}
+{{--                </div>--}}
 
-                <div class="flex items-center justify-between mt-0.5">
-                    <p class="text-sm">IVA</p>
-                    <span class="text-sm">{{ $this->cart->taxTotal->unitFormatted('es-cl') }}</span>
-                </div>
+{{--                <div class="flex items-center justify-between mt-0.5">--}}
+{{--                    <p class="text-sm">IVA</p>--}}
+{{--                    <span class="text-sm">{{ $this->cart->taxTotal->unitFormatted('es-cl') }}</span>--}}
+{{--                </div>--}}
 
                 <div class="flex items-center justify-between mt-2">
                     <p class="text-sm">Total</p>
