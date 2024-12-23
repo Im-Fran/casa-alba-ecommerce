@@ -21,7 +21,6 @@ class ProductCard extends Component {
         if($this->defaultVariant->stock < ($line?->quantity ?? 0) + $qty) {
             return;
         }
-        dd('*');
         CartSession::add(purchasable: $this->defaultVariant, quantity: $qty);
     }
 
