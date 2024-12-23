@@ -15,15 +15,14 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased bg-neutral-100 text-neutral-800 min-h-screen w-full">
-    @include('components.layout.header')
-    <main class="min-h-screen w-full container mx-auto">
-        @if(isset($slot))
-            {{ $slot }}
-        @endif
-    </main>
+@include('components.layout.header')
+<main class="min-h-screen w-full container mx-auto">
+    @if(isset($slot))
+        {{ $slot }}
+    @endif
+</main>
 
-    @include('components.layout.footer')
-
-    @livewireScriptConfig
+@include('components.layout.footer')
+ @livewireScriptConfig
 </body>
 </html>

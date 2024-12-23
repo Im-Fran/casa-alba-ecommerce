@@ -23,29 +23,11 @@ class HomePage extends Component {
     #[Url(as: 'precio', history: true)]
     public Sort $price = Sort::ASC;
 
-    public bool $showProduct = false;
-    public ?int $productId = null;
-
     #[Computed]
     public function collection(): Collection|null {
         return $this->categoryName != null ? Collection::query()
             ->whereJsonContains('attribute_data->name->value->es', $this->categoryName)
             ->first() : null;
-    }
-
-    #[Computed]
-    public function peekProduct(): Product|null {
-        return Product::find($this->productId);
-    }
-
-    public function openPeekProduct(int $id): void {
-        $this->productId = $id;
-        $this->showProduct = true;
-    }
-
-    public function closePeekProduct(): void {
-        $this->showProduct = false;
-        $this->productId = null;
     }
 
     public function selectCollection(?string $categoryName): void {
