@@ -14,10 +14,9 @@
                     @endforeach
                 </x-dropdown>
 
-                <x-dropdown label="Precio" class="border border-gray-800">
-                    <x-menu-item title="Menor a mayor"/>
-                    <x-menu-item title="Mayor a menor"/>
-                </x-dropdown>
+                <x-button icon-right="{{ $this->price === \App\Lib\Sort::DESC ? 'o-chevron-down' : 'o-chevron-up'  }}" class="border border-gray-800 hover:border-gray-800" wire:click="togglePrice()">
+                    Precio {{ $this->price === \App\Lib\Sort::DESC ? 'Mayor a Menor' : 'Menor a Mayor' }}
+                </x-button>
             </div>
 
             <!-- Products -->

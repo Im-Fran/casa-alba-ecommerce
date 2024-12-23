@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Home;
 
+use App\Lib\Sort;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\View\View;
@@ -18,6 +19,9 @@ class HomePage extends Component {
     #[Url(as: 'categoria', history: true)]
     public ?string $categoryName = null;
 
+    #[Url(as: 'precio', history: true)]
+    public Sort $price = Sort::ASC;
+
     #[Computed]
     public function collection() {
         return $this->categoryName != null ? Collection::query()
@@ -29,11 +33,18 @@ class HomePage extends Component {
         $this->categoryName = $categoryName;
     }
 
+    public function togglePrice(): void {
+        $this->price = $this->price === Sort::ASC ? Sort::DESC : Sort::ASC;
+    }
 
     public function render(): Application|Factory|\Illuminate\Contracts\View\View|View {
         $products = ($this->collection?->products() ?: Product::query())
             ->status('published')
+            ->joinRelation('variants')
+            ->joinRelation('variants.prices')
+            ->orderBy('lunar_prices.price', strtolower($this->price->name))
             ->paginate(12);
+
         return view('livewire.home.index', [
             'collections' => Collection::all(),
             'products' => $products,
