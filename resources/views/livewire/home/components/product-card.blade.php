@@ -12,7 +12,10 @@
                     <h3 class="text-xl text-primary font-medium">{{ $this->product->attr('name') }}</h3>
                     <h3 class="text-xl text-primary font-bold">${{ \Clemdesign\PhpMask\Mask::apply($this->product->prices()->first()->price->value, 'dot_separator.0') }}</h3>
                 </div>
-                <span class="text-neutral-600">{{ $this->product->attr('descripcion-corta') }}</span>
+                <div class="flex justify-between items-center w-full gap-2">
+                    <span class="text-neutral-600 max-w-lg">{{ $this->product->attr('descripcion-corta') }}</span>
+                    <span class="text-neutral-400 font-semibold">{{ $this->stock > 0 ? ("{$this->stock} en") : 'Sin' }} Stock</span>
+                </div>
             </div>
             <div class="flex items-center justify-between w-full gap-2">
                 @if($this->inCart() > 0)
@@ -26,8 +29,10 @@
                         <x-loading class="loading-dots" wire:target="addToCart" wire:loading/>
                     </x-button>
                 @else
-                    <x-button wire:click.stop="addToCart" class="btn-primary text-neutral-50 w-full">
-                        <span wire:target="addToCart" wire:loading.remove>Agregar al Carrito</span>
+                    <x-button wire:click.stop="addToCart" class="{{ $this->stock > 0 ? 'btn-primary' : 'btn-disabled' }} text-neutral-50 w-full">
+                        <span wire:target="addToCart" wire:loading.remove>
+                            {{ $this->stock > 0 ? 'Agregar al Carrito' : 'Sin Stock' }}
+                        </span>
                         <x-loading class="loading-dots" wire:target="addToCart" wire:loading/>
                     </x-button>
                 @endif
@@ -47,7 +52,9 @@
                 <div class="flex items-center justify-between w-full">
                     <span class="text-lg text-primary font-bold">${{ \Clemdesign\PhpMask\Mask::apply($this->product->prices()->first()->price->value, 'dot_separator.0') }}</span>
 
-                    <span class="text-md text-neutral-400 font-semibold">5 en Stock</span>
+                    <span class="text-md text-neutral-400 font-semibold">
+                        {{ $this->stock > 0 ? ("{$this->stock} en") : 'Sin' }} Stock
+                    </span>
                 </div>
                 <span class="text-sm md:text-md text-neutral-600">{{ $this->product->attr('descripcion-corta') }}</span>
                 <div class="text-sm md:text-md text-neutral-900">{!! $this->product->attr('description') !!}</div>

@@ -10,6 +10,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Lunar\Facades\CartSession;
 use Lunar\Models\Product;
+use Masmerise\Toaster\Toaster;
 
 class ProductCard extends Component {
 
@@ -18,7 +19,8 @@ class ProductCard extends Component {
 
     public function addToCart(int $qty = 1): void {
         $line = CartSession::lines()->where('purchasable_id', $this->defaultVariant->id)->first();
-        if($this->defaultVariant->stock < ($line?->quantity ?? 0) + $qty) {
+        if($this->stock < ($line?->quantity ?? 0) + $qty) {
+            Toaster::error('No hay suficiente stock para agregar más unidades de este producto.');
             return;
         }
         CartSession::add(purchasable: $this->defaultVariant, quantity: $qty);
@@ -32,6 +34,11 @@ class ProductCard extends Component {
         }
 
         CartSession::updateLine(cartLineId: $line->id, quantity: $line->quantity - $qty);
+    }
+
+    #[Computed]
+    public function stock(): int {
+        return $this->defaultVariant->stock;
     }
 
     #[Computed]

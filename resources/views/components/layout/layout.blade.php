@@ -21,8 +21,8 @@
         {{ $slot }}
     @endif
 </main>
-
+<x-toaster-hub/>
 @include('components.layout.footer')
- @livewireScriptConfig
+@livewireScriptConfig
 </body>
 </html>

@@ -17,6 +17,7 @@
         "livewire/livewire": "^3.5",
         "livewire/volt": "^1.6",
         "lunarphp/lunar": "^1.0.0-beta",
+        "masmerise/livewire-toaster": "^2.6",
         "meilisearch/meilisearch-php": "^1.11",
         "robsontenorio/mary": "^1.41"
     },
