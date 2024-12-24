@@ -1,4 +1,4 @@
-<div>
+<div wire:poll.45s>
     <div wire:click.stop="$toggle('peek')" class="col-span-1 flex flex-col w-full hover:cursor-pointer hover:shadow-lg transition duration-300 ease-in-out rounded-lg p-2">
         <img
             src="{{ $this->product->images()->whereJsonContains('custom_properties->primary', true)->first()->original_url }}"
