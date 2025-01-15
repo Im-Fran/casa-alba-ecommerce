@@ -13,8 +13,8 @@
                     <h3 class="text-xl text-primary font-bold">${{ \Clemdesign\PhpMask\Mask::apply($this->product->prices()->first()->price->value, 'dot_separator.0') }}</h3>
                 </div>
                 <div class="flex justify-between items-center w-full gap-2">
-                    <span class="text-neutral-600 max-w-lg">{{ $this->product->attr('descripcion-corta') }}</span>
-                    <span class="text-neutral-400 font-semibold">{{ $this->stock > 0 ? ("{$this->stock} en") : 'Sin' }} Stock</span>
+                    <span class="flex flex-col justify-end text-neutral-600 max-w-lg h-12">{{ $this->product->attr('descripcion-corta') }}</span>
+                    <span class="flex flex-col justify-end text-neutral-400 font-semibold text-right md:w-12">{{ $this->stock > 0 ? ("{$this->stock} en") : 'Sin' }} Stock</span>
                 </div>
             </div>
             <div class="flex items-center justify-between w-full gap-2">
