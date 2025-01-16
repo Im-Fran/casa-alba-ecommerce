@@ -30,6 +30,7 @@ export default {
     daisyui: {
         themes: [{
             casaalba: {
+                ...require("daisyui/src/theming/themes")["pastel"],
                 primary: '#2B9D66',
                 secondary: '#AFE9CD',
             }

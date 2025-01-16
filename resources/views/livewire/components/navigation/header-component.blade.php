@@ -43,7 +43,7 @@
 
         <div class="flex items-center space-x-4">
             <a href="#">
-                <x-lucide-search class="hover:text-primary w-6 h-6"/>
+                <x-lucide-search class="hover:text-primary w-8 h-8 md:w-6 md:h-6"/>
             </a>
             <livewire:components.cart-component/>
         </div>

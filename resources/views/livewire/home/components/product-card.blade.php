@@ -1,5 +1,5 @@
 <div wire:poll.45s>
-    <div wire:click.stop="$toggle('peek')" class="col-span-1 flex flex-col w-full hover:cursor-pointer hover:shadow-lg transition duration-300 ease-in-out rounded-lg p-2">
+    <div wire:click.stop="$toggle('peek')" class="col-span-1 flex flex-col w-full hover:cursor-pointer hover:shadow-2xl transition duration-300 ease-in-out rounded-xl p-2">
         <img
             src="{{ $this->product->images()->whereJsonContains('custom_properties->primary', true)->first()->original_url }}"
             alt="{{ $this->product->attr('name') }}"
@@ -40,7 +40,10 @@
         </div>
     </div>
 
-    <x-modal title="{{ $this->product->attr('name') }}" wire:model="peek" class="backdrop-blur">
+    <x-modal wire:model="peek" class="backdrop-blur" separator>
+        <x-slot:title>{{ $this->product->attr('name') }}</x-slot:title>
+        <x-slot:subtitle>{{ $this->product->attr('descripcion-corta') }}</x-slot:subtitle>
+
         <div class="grid md:grid-cols-2 gap-5">
             <img
                 src="{{ $this->product->images()->whereJsonContains('custom_properties->primary', true)->first()->original_url }}"
@@ -56,14 +59,15 @@
                         {{ $this->stock > 0 ? ("{$this->stock} en") : 'Sin' }} Stock
                     </span>
                 </div>
-                <span class="text-sm md:text-md text-neutral-600">{{ $this->product->attr('descripcion-corta') }}</span>
                 <div class="text-sm md:text-md text-neutral-900">{!! $this->product->attr('description') !!}</div>
             </div>
         </div>
 
         <x-slot:actions>
-            <x-button wire:click.stop="$toggle('peek')" class="btn-tertiary" label="Cerrar"/>
-            <x-button class="btn-primary text-neutral-50" label="Ver Más"/>
+            <div class="w-full flex items-center justify-between">
+                <x-button wire:click.stop="$toggle('peek')" class="btn-tertiary" label="Cerrar"/>
+                <x-button class="btn-primary text-neutral-50" label="Ver Más"/>
+            </div>
         </x-slot:actions>
     </x-modal>
 
