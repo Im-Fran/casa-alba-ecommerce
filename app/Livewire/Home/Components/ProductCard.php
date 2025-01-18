@@ -7,6 +7,7 @@ use Illuminate\Contracts\View\View as IlluminateView;
 use Illuminate\Foundation\Application;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Lunar\Facades\CartSession;
 use Lunar\Models\Product;
@@ -28,6 +29,8 @@ class ProductCard extends Component {
 
     public function removeFromCart(int $qty = 1): void {
         $line = CartSession::lines()->where('purchasable_id', $this->defaultVariant->id)->first();
+        if($line == null) return;
+
         if($line->quantity - $qty <= 0) {
             CartSession::remove(cartLineId: $line->id);
             return;

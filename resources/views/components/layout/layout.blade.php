@@ -22,7 +22,7 @@
     @endif
 </main>
 <x-toaster-hub/>
-@include('components.layout.footer')
+<x-layout.footer/>
 @livewireScriptConfig
 </body>
 </html>

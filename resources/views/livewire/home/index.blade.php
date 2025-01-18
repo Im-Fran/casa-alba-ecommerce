@@ -28,7 +28,7 @@
             </div>
 
             <!-- Products -->
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-5" wire:poll.3s>
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-5">
                 @foreach($products as $product)
                     <livewire:home.components.product-card :product="$product" wire:key="index_product_card_{{ $product->id }}"/>
                 @endforeach

@@ -1,21 +1,22 @@
-<div wire:poll.45s>
+<div wire:poll.1m>
     <div wire:click.stop="$toggle('peek')" class="col-span-1 flex flex-col w-full hover:cursor-pointer hover:shadow-2xl transition duration-300 ease-in-out rounded-xl p-2">
-        <img
-            src="{{ $this->product->images()->whereJsonContains('custom_properties->primary', true)->first()->original_url }}"
-            alt="{{ $this->product->attr('name') }}"
-            class="w-full rounded-xl border h-96 object-cover"
-        />
+        <div class="relative">
+            <img
+                src="{{ $this->product->images()->whereJsonContains('custom_properties->primary', true)->first()->original_url }}"
+                alt="{{ $this->product->attr('name') }}"
+                class="w-full rounded-xl border h-96 object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent p-2 rounded-xl border">
+                <div class="absolute bottom-0 right-0">
+                    <h3 class="text-2xl text-white font-bold p-2">${{ \Clemdesign\PhpMask\Mask::apply($this->product->prices()->first()->price->value, 'dot_separator.0') }}</h3>
+                </div>
+            </div>
+        </div>
 
         <div class="flex flex-col gap-2 mt-2">
             <div class="flex flex-col">
-                <div class="flex justify-between items-center w-full gap-2">
-                    <h3 class="text-xl text-primary font-medium">{{ $this->product->attr('name') }}</h3>
-                    <h3 class="text-xl text-primary font-bold">${{ \Clemdesign\PhpMask\Mask::apply($this->product->prices()->first()->price->value, 'dot_separator.0') }}</h3>
-                </div>
-                <div class="flex justify-between items-center w-full gap-2">
-                    <span class="flex flex-col justify-end text-neutral-600 max-w-lg h-12">{{ $this->product->attr('descripcion-corta') }}</span>
-                    <span class="flex flex-col justify-end text-neutral-400 font-semibold text-right md:w-12">{{ $this->stock > 0 ? ("{$this->stock} en") : 'Sin' }} Stock</span>
-                </div>
+                <h3 class="text-xl text-primary font-bold">{{ $this->product->attr('name') }}</h3>
+                <span class="text-gray-500 max-w-lg text-md h-12">{{ $this->product->attr('descripcion-corta') }}</span>
             </div>
             <div class="flex items-center justify-between w-full gap-2">
                 @if($this->inCart() > 0)
@@ -40,35 +41,5 @@
         </div>
     </div>
 
-    <x-modal wire:model="peek" class="backdrop-blur" separator>
-        <x-slot:title>{{ $this->product->attr('name') }}</x-slot:title>
-        <x-slot:subtitle>{{ $this->product->attr('descripcion-corta') }}</x-slot:subtitle>
-
-        <div class="grid md:grid-cols-2 gap-5">
-            <img
-                src="{{ $this->product->images()->whereJsonContains('custom_properties->primary', true)->first()->original_url }}"
-                alt="{{ $this->product->attr('name') }}"
-                class="w-full rounded-xl border h-96 object-cover"
-            />
-
-            <div class="col-span-1 flex flex-col h-full gap-2.5">
-                <div class="flex items-center justify-between w-full">
-                    <span class="text-lg text-primary font-bold">${{ \Clemdesign\PhpMask\Mask::apply($this->product->prices()->first()->price->value, 'dot_separator.0') }}</span>
-
-                    <span class="text-md text-neutral-400 font-semibold">
-                        {{ $this->stock > 0 ? ("{$this->stock} en") : 'Sin' }} Stock
-                    </span>
-                </div>
-                <div class="text-sm md:text-md text-neutral-900">{!! $this->product->attr('description') !!}</div>
-            </div>
-        </div>
-
-        <x-slot:actions>
-            <div class="w-full flex items-center justify-between">
-                <x-button wire:click.stop="$toggle('peek')" class="btn-tertiary" label="Cerrar"/>
-                <x-button class="btn-primary text-neutral-50" label="Ver Más"/>
-            </div>
-        </x-slot:actions>
-    </x-modal>
-
+    <livewire:home.components.product-card-modal wire:model="peek" :stock="$this->stock" :product="$this->product" />
 </div>

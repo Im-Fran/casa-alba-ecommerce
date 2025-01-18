@@ -4,6 +4,7 @@ namespace App\Livewire\Components;
 
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Lunar\Facades\CartSession;
 use Lunar\Models\Cart;
@@ -50,6 +51,15 @@ class CartComponent extends Component {
         return CartSession::current();
     }
 
+    #[On('closeCart')]
+    public function closeCart(): void {
+        $this->openCart = false;
+    }
+
+    #[On('openCart')]
+    public function openCart(): void {
+        $this->openCart = true;
+    }
 
     public function render(): View {
         return view('livewire.components.cart-component');

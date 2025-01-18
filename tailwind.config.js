@@ -23,6 +23,12 @@ export default {
             },
         },
     },
+
+    safelist: [
+        'max-w-[54rem]',
+        'w-[54rem]',
+    ],
+
     plugins: [
 		require("daisyui")
 	],
