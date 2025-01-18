@@ -1,4 +1,4 @@
-<x-modal wire:model="peek" class="backdrop-blur z-[999999]" box-class="w-[54rem] max-w-[54rem]" separator>
+<x-modal wire:model="peek" class="backdrop-blur z-[999999]" box-class="md:w-[54rem] md:max-w-[54rem]" separator>
     <x-slot:title>{{ $this->product->attr('name') }}</x-slot:title>
     <x-slot:subtitle>{{ $this->product->attr('descripcion-corta') }}</x-slot:subtitle>
 

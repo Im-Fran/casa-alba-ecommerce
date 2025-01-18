@@ -16,7 +16,7 @@
 </head>
 <body class="font-sans antialiased bg-neutral-100 text-neutral-800 min-h-screen w-full">
 <livewire:components.navigation.header-component/>
-<main class="min-h-screen w-full container mx-auto">
+<main class="min-h-screen w-full container mx-auto bg-neutral-100 p-2 md:p-0">
     @if(isset($slot))
         {{ $slot }}
     @endif

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Home\Components;
+namespace App\Livewire\Home\Components\Product;
 
 use Illuminate\View\View;
 use Livewire\Attributes\Modelable;
@@ -20,6 +20,6 @@ class ProductCardModal extends Component {
     public Product $product;
 
     public function render(): View {
-        return view('livewire.home.components.product-card-modal');
+        return view('livewire.home.components.product.product-card-modal');
     }
 }

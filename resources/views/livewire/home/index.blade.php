@@ -6,7 +6,7 @@
         <!-- Products & Filters -->
         <section class="col-span-8 flex flex-col gap-5">
             <!-- Filters -->
-            <div class="flex items-center justify-start gap-5 p-2 md:p-0">
+            <div class="flex items-center justify-start gap-5">
                 <x-dropdown class="border border-gray-800">
                     <x-slot:label>{{ $this->collection?->attr('name') ?? 'Categoría' }}</x-slot:label>
 
@@ -28,9 +28,9 @@
             </div>
 
             <!-- Products -->
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-5">
+            <div class="grid grid-cols-2 lg:grid-cols-5 gap-5">
                 @foreach($products as $product)
-                    <livewire:home.components.product-card :product="$product" wire:key="index_product_card_{{ $product->id }}"/>
+                    <livewire:home.components.product.product-card :product="$product" wire:key="index_product_card_{{ $product->id }}"/>
                 @endforeach
             </div>
         </section>

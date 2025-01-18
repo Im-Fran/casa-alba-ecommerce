@@ -1,8 +1,8 @@
-<header class="sticky top-0 bg-gradient-to-b from-primary to-transparent backdrop-blur z-[9999] pb-5">
+<header class="sticky top-0 bg-gradient-to-b from-primary to-transparent backdrop-blur-md border-b z-[9999] pb-5">
     <nav class="container mx-auto px-5 md:px-0 pt-5 flex items-center justify-between">
         <a href="{{ route('home') }}" class="hidden md:flex items-center justify-center">
             <img
-                src="{{ asset('images/casaalba.png') }}"
+                src="{{ asset('images/casaalba.webp') }}"
                 alt="Casa Alba"
                 class="h-20 rounded-full"
             />
@@ -23,27 +23,27 @@
         </x-drawer>
         <img
             wire:click="$toggle('openMobileNav')"
-            src="{{ asset('images/casaalba.png') }}"
+            src="{{ asset('images/casaalba.webp') }}"
             alt="Casa Alba"
             class="md:hidden h-20 rounded-full"
         />
 
         <ul class="hidden md:flex items-center space-x-4">
             <li>
-                <a href="{{ route('home') }}" class="hover:text-primary">Inicio</a>
+                <a href="{{ route('home') }}" class="hover:text-secondary text-2xl font-medium">Inicio</a>
             </li>
             <li>
-                <a href="{{ route('contact') }}" class="hover:text-primary">Contacto</a>
+                <a href="{{ route('contact') }}" class="hover:text-secondary text-2xl font-medium">Contacto</a>
             </li>
             <li>
-                <a href="#" class="hover:text-primary">Nosotros</a>
+                <a href="#" class="hover:text-secondary text-2xl font-medium">Nosotros</a>
             </li>
         </ul>
 
 
         <div class="flex items-center space-x-4">
             <a href="#">
-                <x-lucide-search class="hover:text-primary w-8 h-8 md:w-6 md:h-6"/>
+                <x-lucide-search class="hover:text-primary w-8 h-8"/>
             </a>
             <livewire:components.cart-component/>
         </div>
