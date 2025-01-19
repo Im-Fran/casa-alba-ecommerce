@@ -11,18 +11,17 @@ use Lunar\Models\Cart;
 use Lunar\Pricing\DefaultPriceFormatter;
 
 class CartComponent extends Component {
-
     public bool $openCart = false;
 
     #[Computed]
     public function subTotal(): string {
         $cart = $this->cart;
-        if($cart == null) {
+        if ($cart == null) {
             return '--';
         }
 
-
         $total = ($cart->subTotal?->value ?: 0) - ($cart->taxTotal?->value ?: 0);
+
         return (new DefaultPriceFormatter(value: $total, currency: $cart->currency))->unitFormatted('es-cl');
     }
 

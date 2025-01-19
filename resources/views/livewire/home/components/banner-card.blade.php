@@ -6,7 +6,7 @@
             class="btn btn-primary btn-lg"
             label="Comprar Ahora"
             icon-right="o-arrow-down"
-            x-on:click="navigateToProductos()"
+            wire:click="navigateToProductos"
         />
     </div>
 
@@ -15,12 +15,4 @@
         alt="Productos de Limpieza"
         class="col-span-1 object-cover object-top w-full rounded-2xl"
     />
-
-    @script
-    <script>
-        const navigateToProductos = () => {
-            document.querySelector('#productos').scrollIntoView({ behavior: 'smooth' });
-        }
-    </script>
-    @endscript
 </div>

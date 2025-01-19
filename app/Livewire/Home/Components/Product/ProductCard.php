@@ -10,11 +10,10 @@ use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Lunar\Facades\CartSession;
 use Lunar\Models\Product;
-use Masmerise\Toaster\Toaster;
 
 class ProductCard extends Component {
-
     public bool $peek = false;
+
     public Product $product;
 
     #[Computed]
@@ -30,7 +29,7 @@ class ProductCard extends Component {
     #[Computed]
     public function inCart(): int {
         $cart = CartSession::current();
-        if($cart == null) {
+        if ($cart == null) {
             return 0;
         }
 

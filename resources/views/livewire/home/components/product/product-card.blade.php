@@ -4,11 +4,11 @@
             <img
                 src="{{ $this->product->images()->whereJsonContains('custom_properties->primary', true)->first()->original_url }}"
                 alt="{{ $this->product->attr('name') }}"
-                class="w-full rounded-xl border h-56 md:h-80 object-cover"
+                class="w-full rounded-xl border h-56 md:h-72 object-cover"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent p-2 rounded-xl border">
                 <div class="absolute bottom-0 right-0">
-                    <h3 class="text-2xl md:text-3xl text-secondary font-black p-4">${{ \Clemdesign\PhpMask\Mask::apply($this->product->prices()->first()->price->value, 'dot_separator.0') }}</h3>
+                    <h3 class="text-2xl text-secondary font-black p-4">${{ \Clemdesign\PhpMask\Mask::apply($this->product->prices()->first()->price->value, 'dot_separator.0') }}</h3>
                 </div>
             </div>
         </div>

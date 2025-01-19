@@ -6,19 +6,18 @@ use Closure;
 use Illuminate\Http\Request;
 
 class LivewirePatchMiddleware {
-
     public function handle(Request $request, Closure $next) {
-        if($request->method() !== 'GET' && $request->header('Accept') !== 'text/html') {
+        if ($request->method() !== 'GET' && $request->header('Accept') !== 'text/html') {
             return $next($request);
         }
 
         $response = $next($request);
-        if($response->isRedirection() || $response->isNotFound()) {
+        if ($response->isRedirection() || $response->isNotFound()) {
             return $response;
         }
 
         // If it's a binary file, we don't want to inject the patch
-        if(!str_contains($response->headers->get('Content-Type'), 'text/html')) {
+        if (!str_contains($response->headers->get('Content-Type'), 'text/html')) {
             return $response;
         }
 

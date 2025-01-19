@@ -9,7 +9,6 @@ use Livewire\Component;
 use Lunar\Models\Product;
 
 class ProductCardModal extends Component {
-
     #[Modelable]
     public bool $peek = false;
 

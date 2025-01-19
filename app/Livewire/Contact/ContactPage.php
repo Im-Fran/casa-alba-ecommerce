@@ -10,7 +10,9 @@ use Livewire\Component;
 
 class ContactPage extends Component {
     public $name;
+
     public $email;
+
     public $message;
 
     protected $rules = [

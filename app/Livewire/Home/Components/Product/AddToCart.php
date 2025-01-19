@@ -10,13 +10,13 @@ use Lunar\Models\Product;
 use Masmerise\Toaster\Toaster;
 
 class AddToCart extends Component {
-
     public Product $product;
 
     public function addToCart(int $qty = 1): void {
         $line = CartSession::lines()->where('purchasable_id', $this->defaultVariant->id)->first();
-        if($this->stock < ($line?->quantity ?? 0) + $qty) {
+        if ($this->stock < ($line?->quantity ?? 0) + $qty) {
             Toaster::error('No hay suficiente stock para agregar más unidades de este producto.');
+
             return;
         }
         CartSession::add(purchasable: $this->defaultVariant, quantity: $qty);
@@ -25,10 +25,13 @@ class AddToCart extends Component {
 
     public function removeFromCart(int $qty = 1): void {
         $line = CartSession::lines()->where('purchasable_id', $this->defaultVariant->id)->first();
-        if($line == null) return;
+        if ($line == null) {
+            return;
+        }
 
-        if($line->quantity - $qty <= 0) {
+        if ($line->quantity - $qty <= 0) {
             CartSession::remove(cartLineId: $line->id);
+
             return;
         }
 
@@ -44,7 +47,7 @@ class AddToCart extends Component {
     #[Computed]
     public function inCart(): int {
         $cart = CartSession::current();
-        if($cart == null) {
+        if ($cart == null) {
             return 0;
         }
 
