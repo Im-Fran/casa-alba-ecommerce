@@ -1,4 +1,4 @@
-<div class="grid grid-cols-2 items-center justify-center py-20 w-full">
+<div id="banner" class="grid grid-cols-2 items-center justify-center py-20 w-full">
     <div class="col-span-1 flex flex-col items-center justify-center gap-5">
         <h1 class="text-6xl md:text-8xl max-w-2xl font-bold text-center">Productos de Aseo para tu Hogar</h1>
 
