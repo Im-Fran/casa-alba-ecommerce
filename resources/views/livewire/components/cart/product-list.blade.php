@@ -1,5 +1,5 @@
-<div class="flex flex-col max-h-[70vh]">
-    @forelse(collect($this->cart?->lines ?: [])->sortByDesc('created_at') as $line)
+<div class="flex flex-col max-h-[70vh]" x-on:cart-updated.window="$wire.$refresh()">
+    @forelse(collect($this->cart?->lines ?: [])->sortBy('id') as $line)
         <div wire:key="cart_line_{{$line->id}}" class="flex items-center justify-between p-4 border-b border-neutral-200">
             <div class="flex items-center space-x-4">
                 <img src="{{ $line->purchasable->getThumbnail()->getUrl() }}" alt="Product Image" class="h-20 object-cover rounded-lg"/>

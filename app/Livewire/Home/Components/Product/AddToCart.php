@@ -20,6 +20,7 @@ class AddToCart extends Component {
             return;
         }
         CartSession::add(purchasable: $this->defaultVariant, quantity: $qty);
+        $this->dispatch('cart-updated');
     }
 
     public function removeFromCart(int $qty = 1): void {
@@ -32,6 +33,7 @@ class AddToCart extends Component {
         }
 
         CartSession::updateLine(cartLineId: $line->id, quantity: $line->quantity - $qty);
+        $this->dispatch('cart-updated');
     }
 
     #[Computed]

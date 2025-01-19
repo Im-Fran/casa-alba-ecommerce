@@ -1,4 +1,4 @@
-<div class="flex items-center justify-center w-full gap-2" wire:cart-updated.window="$refresh">
+<div class="flex items-center justify-center w-full gap-2" x-on:cart-updated.window="$wire.$refresh()">
     @if($this->inCart() > 0)
         <div class="flex items-center justify-between w-[90%] gap-2">
             <x-button wire:click.stop="removeFromCart" class="btn btn-primary btn-xs md:btn-md btn-circle text-neutral-50" icon="o-minus" spinner/>
@@ -11,8 +11,4 @@
             <x-loading class="loading-dots" wire:target="addToCart" wire:loading/>
         </x-button>
     @endif
-
-    @script
-        <script>$wire.on('cart-updated', () => $wire.$refresh());</script>
-    @endscript
 </div>

@@ -4,8 +4,9 @@ namespace App\Livewire\Components\Cart;
 
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
-use Livewire\Attributes\Modelable;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Lunar\Facades\CartSession;
 use Lunar\Models\Cart;
 use Lunar\Models\CartLine;
 use Masmerise\Toaster\Toaster;
@@ -15,8 +16,10 @@ use Masmerise\Toaster\Toaster;
  */
 class ProductList extends Component {
 
-    #[Modelable]
-    public ?Cart $cart;
+    #[Computed]
+    public function cart(): ?Cart {
+        return CartSession::current();
+    }
 
     public function addToCart(CartLine $line): void {
         $qty = $line->quantity + 1;
