@@ -6,7 +6,7 @@
             class="btn btn-primary btn-lg"
             label="Comprar Ahora"
             icon-right="o-arrow-down"
-            x-on:click="navigateToProductos"
+            x-on:click="navigateToProductos()"
         />
     </div>
 
