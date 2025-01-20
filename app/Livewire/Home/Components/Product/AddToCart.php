@@ -16,7 +16,6 @@ class AddToCart extends Component {
         $line = CartSession::lines()->where('purchasable_id', $this->defaultVariant->id)->first();
         if ($this->stock < ($line?->quantity ?? 0) + $qty) {
             Toaster::error('No hay suficiente stock para agregar más unidades de este producto.');
-
             return;
         }
         CartSession::add(purchasable: $this->defaultVariant, quantity: $qty);
@@ -31,7 +30,7 @@ class AddToCart extends Component {
 
         if ($line->quantity - $qty <= 0) {
             CartSession::remove(cartLineId: $line->id);
-
+            $this->dispatch('cart-updated');
             return;
         }
 

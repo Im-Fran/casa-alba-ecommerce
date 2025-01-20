@@ -27,8 +27,8 @@ class PricesDetail extends Component {
         return CartSession::current();
     }
 
-    public function checkout() {
-        // TODO
+    public function checkout(): void {
+        $this->redirect(route('checkout'));
     }
 
     public function render(): View {

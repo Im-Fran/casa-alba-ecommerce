@@ -36,8 +36,9 @@ class HomePage extends Component {
     }
 
     public function render(): View {
-        $collectionProducts = $this->collection?->products()?->pluck('product_id') ?: collect();
-        $this->collection?->children()?->get()?->each(fn($it) => $collectionProducts->push($it->products()->pluck('product_id') ?: collect()));
+        $collectionProducts = ($this->collection?->products()?->pluck('product_id') ?: collect());
+
+        $this->collection?->children()?->get()?->flatMap(fn($it) => $it->products()->pluck('product_id'))->each(fn($it) => $collectionProducts->push($it));
 
         $products = Product::query()
             ->select('lunar_products.*', DB::raw('MIN(lunar_prices.price) as min_price'))
