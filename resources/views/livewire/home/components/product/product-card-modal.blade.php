@@ -13,6 +13,8 @@
                     <span class="text-md text-neutral-400 font-semibold">{{ $this->stock > 0 ? ("{$this->stock} en") : 'Sin' }} Stock</span>
                 </div>
                 <h3 class="text-xl text-primary font-semibold">${{ \Clemdesign\PhpMask\Mask::apply($this->product->prices()->first()->price->value, 'dot_separator.0') }}</h3>
+
+                <span class="mt-2.5 text-sm text-neutral-500">{{ $this->product->attr('descripcion-corta') }}</span>
                 <div class="text-sm md:text-md text-neutral-900 mt-2.5">{!! $this->product->attr('description') !!}</div>
             </div>
 
