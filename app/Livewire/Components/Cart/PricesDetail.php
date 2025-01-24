@@ -23,7 +23,8 @@ class PricesDetail extends Component {
         return '--';
     }
 
-    public function render(): View {
-        return view('livewire.components.cart.prices-detail');
+    #[Computed]
+    public function hasLines(): bool {
+        return $this->cart?->lines()->count() > 0;
     }
 }
