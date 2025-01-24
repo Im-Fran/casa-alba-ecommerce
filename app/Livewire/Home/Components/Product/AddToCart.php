@@ -2,63 +2,55 @@
 
 namespace App\Livewire\Home\Components\Product;
 
-use Illuminate\View\View;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Modelable;
 use Livewire\Component;
 use Lunar\Facades\CartSession;
-use Lunar\Models\Product;
+use Lunar\Models\ProductVariant;
 use Masmerise\Toaster\Toaster;
 
 class AddToCart extends Component {
-    public Product $product;
 
-    public function addToCart(int $qty = 1): void {
-        $line = CartSession::lines()->where('purchasable_id', $this->defaultVariant->id)->first();
-        if ($this->stock < ($line?->quantity ?? 0) + $qty) {
+    public string $size = 'sm';
+
+    #[Modelable]
+    public ProductVariant $variant;
+
+    public function mount(ProductVariant $variant): void {
+        $this->variant = $variant;
+    }
+
+    public function increase(): void {
+        $line = CartSession::lines()->where('purchasable_id', $this->variant->id)->first();
+        if ($this->stock < ($line?->quantity ?? 0) + 1) {
             Toaster::error('No hay suficiente stock para agregar más unidades de este producto.');
             return;
         }
-        CartSession::add(purchasable: $this->defaultVariant, quantity: $qty);
+        CartSession::add(purchasable: $this->variant, quantity: 1);
         $this->dispatch('cart-updated');
     }
 
-    public function removeFromCart(int $qty = 1): void {
-        $line = CartSession::lines()->where('purchasable_id', $this->defaultVariant->id)->first();
+    public function decrease(): void {
+        $line = CartSession::lines()->where('purchasable_id', $this->variant->id)->first();
         if ($line == null) {
             return;
         }
 
-        if ($line->quantity - $qty <= 0) {
+        if (($line->quantity - 1) <= 0) {
             CartSession::remove(cartLineId: $line->id);
-            $this->dispatch('cart-updated');
-            return;
+        } else {
+            CartSession::updateLine(cartLineId: $line->id, quantity: $line->quantity - 1);
         }
-
-        CartSession::updateLine(cartLineId: $line->id, quantity: $line->quantity - $qty);
         $this->dispatch('cart-updated');
     }
 
     #[Computed]
     public function stock(): int {
-        return $this->defaultVariant->stock;
+        return $this->variant->stock ?? 0;
     }
 
     #[Computed]
     public function inCart(): int {
-        $cart = CartSession::current();
-        if ($cart == null) {
-            return 0;
-        }
-
-        return $cart->lines->whereIn('purchasable_id', $this->product->variants()->pluck('id'))->sum('quantity');
-    }
-
-    #[Computed]
-    public function defaultVariant(): mixed {
-        return $this->product->variants()->first();
-    }
-
-    public function render(): View {
-        return view('livewire.home.components.product.add-to-cart');
+        return CartSession::current()?->lines?->where('purchasable_id', $this->variant->id)?->first()?->quantity ?? 0;
     }
 }

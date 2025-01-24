@@ -5,7 +5,12 @@
     <div id="productos" class="h-full w-full min-h-screen">
         <!-- Title & Sort -->
         <section class="flex items-center justify-between border-b-2 mb-2.5 py-2 border-secondary w-full">
-            <h2 class="text-2xl text-primary font-bold text-left">Productos</h2>
+            <h2 class="text-2xl text-primary font-bold text-left">
+                Productos
+                @if($this->search)
+                    <span class="text-lg text-neutral-500"> - "{{ $this->search }}"</span>
+                @endif
+            </h2>
 
             <x-button icon-right="{{ $this->price === \App\Lib\Sort::DESC ? 'o-chevron-down' : 'o-chevron-up'  }}" class="btn btn-sm btn-primary btn-outline" wire:click.stop="togglePrice" spinner>
                 Precio: {{ $this->price === \App\Lib\Sort::DESC ? 'Mayor a Menor' : 'Menor a Mayor' }}

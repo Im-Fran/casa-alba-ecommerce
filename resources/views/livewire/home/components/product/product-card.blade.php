@@ -8,7 +8,7 @@
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent p-2 rounded-xl border">
                 <div class="absolute bottom-0 right-0">
-                    <h3 class="text-2xl text-secondary font-black p-4">${{ \Clemdesign\PhpMask\Mask::apply($this->product->prices()->first()->price->value, 'dot_separator.0') }}</h3>
+                    <h3 class="text-2xl text-secondary font-black p-4">{{ $this->product->prices()->first()->price->unitFormatted('es-cl') }}</h3>
                 </div>
             </div>
         </div>
@@ -18,9 +18,16 @@
                 <h3 class="text-xl text-primary font-bold">{{ $this->product->attr('name') }}</h3>
                 <span class="text-gray-500 max-w-lg text-md h-12 line-clamp-2">{{ $this->product->attr('descripcion-corta') }}</span>
             </div>
-            <livewire:home.components.product.add-to-cart :product="$product"/>
+
+            @if($this->hasVariants)
+                <div class="flex items-center justify-center w-full px-2" x-on:cart-updated.window="$wire.$refresh()">
+                    <x-button class="btn btn-primary btn-sm" icon-right="o-shopping-cart" spinner>Elegir Variante</x-button>
+                </div>
+            @else
+                <livewire:home.components.product.add-to-cart wire:model="defaultVariant"/>
+            @endif
         </div>
     </div>
 
-    <livewire:home.components.product.product-card-modal wire:model="peek" :stock="$this->stock" :product="$product" />
+    <livewire:home.components.product.product-card-modal wire:model="peek" :$product />
 </div>

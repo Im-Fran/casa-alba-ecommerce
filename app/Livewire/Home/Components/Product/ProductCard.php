@@ -2,19 +2,22 @@
 
 namespace App\Livewire\Home\Components\Product;
 
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View as IlluminateView;
-use Illuminate\Foundation\Application;
-use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Lunar\Facades\CartSession;
 use Lunar\Models\Product;
+use Lunar\Models\ProductVariant;
 
 class ProductCard extends Component {
     public bool $peek = false;
 
     public Product $product;
+    public ProductVariant $defaultVariant;
+
+    public function mount(Product $product): void {
+        $this->product = $product;
+        $this->defaultVariant = $product->variants()->first();
+    }
 
     #[Computed]
     public function stock(): int {
@@ -22,8 +25,8 @@ class ProductCard extends Component {
     }
 
     #[Computed]
-    public function defaultVariant(): mixed {
-        return $this->product->variants()->first();
+    public function hasVariants(): bool {
+        return $this->product->variants()->count() > 1;
     }
 
     #[Computed]
@@ -34,9 +37,5 @@ class ProductCard extends Component {
         }
 
         return $cart->lines->whereIn('purchasable_id', $this->product->variants()->pluck('id'))->sum('quantity');
-    }
-
-    public function render(): Application|Factory|IlluminateView|View {
-        return view('livewire.home.components.product.product-card');
     }
 }

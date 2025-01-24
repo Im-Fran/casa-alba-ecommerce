@@ -1,4 +1,4 @@
-<header class="sticky top-0 bg-gradient-to-b from-primary to-transparent backdrop-blur-md border-b z-[9999] pb-5">
+<header class="sticky top-0 bg-gradient-to-b from-primary to-transparent backdrop-blur-md border-b z-[8] pb-5">
     <nav class="container mx-auto px-5 md:px-0 pt-5 flex items-center justify-between">
         <a href="{{ route('home') }}" class="hidden md:flex items-center justify-center">
             <img
@@ -11,10 +11,10 @@
         <x-drawer title="Casa Alba" wire:model="openMobileNav" class="w-11/12 lg:w-1/3" withCloseButton>
             <ul class="flex flex-col space-y-4">
                 <li>
-                    <a href="{{ route('home') }}" class="hover:text-primary">Inicio</a>
+                    <a href="{{ route('home') }}" class="hover:text-primary" wire:current="text-primary" wire:navigate>Inicio</a>
                 </li>
                 <li>
-                    <a href="{{ route('contact') }}" class="hover:text-primary">Contacto</a>
+                    <a href="{{ route('contact') }}" class="hover:text-primary" wire:current="text-primary" wire:navigate.hover>Contacto</a>
                 </li>
                 <li>
                     <a href="#" class="hover:text-primary">Nosotros</a>
@@ -30,10 +30,10 @@
 
         <ul class="hidden md:flex items-center space-x-4">
             <li>
-                <a href="{{ route('home') }}" class="hover:text-secondary text-2xl font-medium">Inicio</a>
+                <a href="{{ route('home') }}" class="hover:text-secondary text-2xl font-medium" wire:current="text-primary" wire:navigate>Inicio</a>
             </li>
             <li>
-                <a href="{{ route('contact') }}" class="hover:text-secondary text-2xl font-medium">Contacto</a>
+                <a href="{{ route('contact') }}" class="hover:text-secondary text-2xl font-medium" wire:current="text-primary" wire:navigate.hover>Contacto</a>
             </li>
             <li>
                 <a href="#" class="hover:text-secondary text-2xl font-medium">Nosotros</a>
@@ -42,10 +42,8 @@
 
 
         <div class="flex items-center space-x-4">
-            <a href="#">
-                <x-lucide-search class="hover:text-primary w-8 h-8"/>
-            </a>
-            <livewire:components.cart-component/>
+            <livewire:components.navigation.search-component/>
+            <livewire:components.navigation.cart-component/>
         </div>
     </nav>
 </header>
