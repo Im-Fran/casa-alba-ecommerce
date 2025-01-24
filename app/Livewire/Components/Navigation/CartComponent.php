@@ -12,7 +12,7 @@ use Masmerise\Toaster\Toaster;
 
 class CartComponent extends Component {
 
-    public Cart $cart;
+    public ?Cart $cart;
     public bool $openCart = false;
 
     public function boot(): void {
@@ -25,16 +25,16 @@ class CartComponent extends Component {
             Toaster::error('No hay suficiente stock para agregar más unidades de este producto.');
             return;
         }
-        $this->cart->updateLine(cartLineId: $line->id, quantity: min($line->quantity + 1, $line->purchasable->stock));
+        CartSession::updateLine(cartLineId: $line->id, quantity: min($line->quantity + 1, $line->purchasable->stock));
         $this->dispatch('cart-updated');
     }
 
     public function remFromCart(CartLine $line): void {
         $qty = max($line->quantity - 1, 0);
         if ($qty == 0) {
-            $this->cart->remove(cartLineId: $line->id);
+            CartSession::remove(cartLineId: $line->id);
         } else {
-            $this->cart->updateLine(cartLineId: $line->id, quantity: $qty);
+            CartSession::updateLine(cartLineId: $line->id, quantity: $qty);
         }
         $this->dispatch('cart-updated');
     }
