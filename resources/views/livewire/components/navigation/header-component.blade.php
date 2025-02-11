@@ -42,7 +42,6 @@
 
 
         <div class="flex items-center space-x-4">
-            <livewire:components.navigation.search-component/>
             <livewire:components.navigation.cart-component/>
         </div>
     </nav>

@@ -5,12 +5,7 @@
     <div id="productos" class="h-full w-full min-h-screen">
         <!-- Title & Sort -->
         <section class="flex items-center justify-between border-b-2 mb-2.5 py-2 border-secondary w-full">
-            <h2 class="text-2xl text-primary font-bold text-left">
-                Productos
-                @if($this->search)
-                    <span class="text-lg text-neutral-500"> - "{{ $this->search }}"</span>
-                @endif
-            </h2>
+            <h2 class="text-2xl text-primary font-bold text-left">Productos</h2>
 
             <x-button icon-right="{{ $this->price === \App\Lib\Sort::DESC ? 'o-chevron-down' : 'o-chevron-up'  }}" class="btn btn-sm btn-primary btn-outline" wire:click.stop="togglePrice" spinner>
                 Precio: {{ $this->price === \App\Lib\Sort::DESC ? 'Mayor a Menor' : 'Menor a Mayor' }}
@@ -20,25 +15,30 @@
         <section class="grid grid-cols-1 md:grid-cols-12 gap-5">
 
             <!-- Filters -->
-            <div class="col-span-2 flex flex-col items-start justify-start gap-2 bg-neutral-50 border rounded-lg p-2">
-                <div class="flex flex-col items-start justify-start gap-0.5">
-                    <h3 class="text-lg text-neutral-700">Categoría</h3>
+            <div class="col-span-2 flex flex-col items-start justify-start w-full gap-2">
+                <div class="grid w-full">
+                    <x-mary-input icon="o-magnifying-glass" wire:model.live="search" type="text" class="w-full p-2 bg-neutral-50 rounded-lg" placeholder="Buscar productos..."/>
+                </div>
 
-                    <x-menu>
-                        <x-menu-item title="Todos" wire:click.stop="selectCollection(null)" spinner/>
-                        @foreach($collections as $collection)
-                            @if($collection->children()->count() > 0)
-                                <x-menu-sub title="{{ $collection->attr('name') }}">
-                                    <x-menu-item title="Todo {{ $collection->attr('name') }}" wire:click.stop="selectCollection({{ $collection->id }})" :active="$collection->id == $this->categoryId" spinner/>
-                                    @foreach($collection->children()->get() as $subCollection)
-                                        <x-menu-item title="{{ $subCollection->attr('name') }}" wire:click.stop="selectCollection({{ $subCollection->id }})" :active="$subCollection->id == $this->categoryId" spinner/>
-                                    @endforeach
-                                </x-menu-sub>
-                            @else
-                                <x-menu-item title="{{ $collection->attr('name') }}" wire:click.stop="selectCollection({{ $collection->id }})" :active="$collection->id == $this->categoryId" spinner/>
-                            @endif
-                        @endforeach
-                    </x-menu>
+                <div class="flex flex-col items-start justify-start gap-2 bg-neutral-50 border rounded-lg p-2 w-full">
+                    <div class="flex flex-col items-start justify-start gap-0.5">
+                        <h3 class="text-lg text-neutral-700">Categoría</h3>
+                        <x-menu>
+                            <x-menu-item title="Todos" wire:click.stop="selectCollection(null)" spinner/>
+                            @foreach($collections as $collection)
+                                @if($collection->children()->count() > 0)
+                                    <x-menu-sub title="{{ $collection->attr('name') }}">
+                                        <x-menu-item title="Todo {{ $collection->attr('name') }}" wire:click.stop="selectCollection({{ $collection->id }})" :active="$collection->id == $this->categoryId" spinner/>
+                                        @foreach($collection->children()->get() as $subCollection)
+                                            <x-menu-item title="{{ $subCollection->attr('name') }}" wire:click.stop="selectCollection({{ $subCollection->id }})" :active="$subCollection->id == $this->categoryId" spinner/>
+                                        @endforeach
+                                    </x-menu-sub>
+                                @else
+                                    <x-menu-item title="{{ $collection->attr('name') }}" wire:click.stop="selectCollection({{ $collection->id }})" :active="$collection->id == $this->categoryId" spinner/>
+                                @endif
+                            @endforeach
+                        </x-menu>
+                    </div>
                 </div>
             </div>
 

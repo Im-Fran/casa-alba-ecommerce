@@ -14,7 +14,7 @@ class AddToCart extends Component {
     public string $size = 'sm';
 
     #[Modelable]
-    public ProductVariant $variant;
+    public ?ProductVariant $variant;
 
     public function mount(ProductVariant $variant): void {
         $this->variant = $variant;
@@ -45,12 +45,17 @@ class AddToCart extends Component {
     }
 
     #[Computed]
-    public function stock(): int {
-        return $this->variant->stock ?? 0;
+    public function stock(): ?int {
+        return $this->variant?->stock;
     }
 
     #[Computed]
     public function inCart(): int {
         return CartSession::current()?->lines?->where('purchasable_id', $this->variant->id)?->first()?->quantity ?? 0;
+    }
+
+    #[Computed]
+    public function hasOtherVariants(): bool {
+        return $this->variant->product->variants()->count() > 1;
     }
 }
