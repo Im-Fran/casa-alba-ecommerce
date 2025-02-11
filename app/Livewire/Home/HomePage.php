@@ -43,13 +43,14 @@ class HomePage extends Component {
 
         $this->collection?->children()?->get()?->flatMap(fn($it) => $it->products()->pluck('product_id'))->each(fn($it) => $collectionProducts->push($it));
 
-        // lunar_product.attribute_data is a json. Example value: {"name":{"field_type":"Lunar\\FieldTypes\\Text","value":"Limpia Vidrios"},"description":{"field_type":"Lunar\\FieldTypes\\Text","value":"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<\/p>"},"descripcion-corta":{"field_type":"Lunar\\FieldTypes\\Text","value":"Deja los vidrios claritos!"}}
-        // We are searching in the name field
-        // Select the name and the minimum price of the product
         $products = Product::query()
             ->select('lunar_products.*', DB::raw('MIN(lunar_prices.price) as min_price'))
             ->when($collectionProducts->isNotEmpty(), fn($query) => $query->whereIn('lunar_products.id', $collectionProducts))
-            ->when($this->search, fn($query) => $query->whereJsonContains('lunar_products.attribute_data->name.value', $this->search))
+            ->when($this->search, fn($query) => $query
+                ->whereRaw("translate(LOWER(lunar_products.attribute_data->'name'->>'value'), 'áéíóúÁÉÍÓÚ', 'aeiouAEIOU') LIKE ?", [strtolower("%$this->search%")])
+                ->orWhereRaw("translate(LOWER(lunar_products.attribute_data->'description'->>'value'), 'áéíóúÁÉÍÓÚ', 'aeiouAEIOU') LIKE ?", [strtolower("%$this->search%")])
+                ->orWhereRaw("translate(LOWER(lunar_products.attribute_data->'short_description'->>'value'), 'áéíóúÁÉÍÓÚ', 'aeiouAEIOU') LIKE ?", [strtolower("%$this->search%")])
+            )
             ->status('published')
             ->joinRelation('variants.prices')
             ->where('lunar_prices.priceable_type', 'product_variant')
