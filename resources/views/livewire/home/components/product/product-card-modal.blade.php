@@ -15,7 +15,7 @@
 
                 <h3 class="text-xl text-primary font-semibold">{{$this->selectedVariant->prices->first()->price->unitFormatted('es-cl')}}</h3>
 
-                <span class="mt-2.5 text-sm text-neutral-500">{{ $this->product->attr('descripcion-corta') }}</span>
+                <span class="mt-2.5 text-sm text-neutral-500">{{ $this->product->attr('short_description') }}</span>
                 <div class="text-sm md:text-md text-neutral-900 mt-2.5">{!! $this->product->attr('description') !!}</div>
 
                 @if($this->productOptions->isNotEmpty())
