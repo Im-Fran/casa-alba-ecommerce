@@ -1,44 +1,41 @@
 <div class="flex flex-col items-center justify-center py-20 w-full">
     <h1 class="text-4xl max-w-2xl font-bold text-center mb-10">Contactanos</h1>
 
-    <form class="w-full lg:w-1/2 bg-white p-8 rounded-2xl shadow-lg" wire:submit.prevent="submit">
-        <div class="mb-4">
-            <x-label for="name">Nombre</x-label>
-            <x-input
-                id="name"
-                type="text"
-                error-field="name"
-                wire:model="name"
-                placeholder="Tu Nombre"
-                autocomplete="name"
-                autofocus
-            />
-        </div>
+    <x-form class="w-full lg:w-1/2 bg-white p-8 rounded-2xl shadow-lg space-y-4" wire:submit.prevent="submit">
+        <x-input
+            class="rounded-lg"
+            id="name"
+            label="Nombre"
+            type="text"
+            wire:model.blur="form.name"
+            autocomplete="name"
+            placeholder="Tu Nombre"
+            first-error-only
+            autofocus
+        />
 
-        <div class="mb-4">
-            <x-label for="email">Correo Electrónico</x-label>
-            <x-input
-                id="email"
-                type="email"
-                error-field="email"
-                wire:model="email"
-                placeholder="Tu Correo Electrónico"
-                autocomplete="email"
-            />
-        </div>
+        <x-input
+            class="rounded-lg"
+            id="email"
+            label="Correo Electrónico"
+            type="email"
+            wire:model.blur="form.email"
+            autocomplete="email"
+            placeholder="Tu Correo Electrónico"
+            first-error-only
+        />
 
-        <div class="mb-4">
-            <x-label for="message">Mensaje</x-label>
-            <x-textarea
-                id="message"
-                error-field="message"
-                wire:model="message"
-                placeholder="Tu Mensaje"
-            />
-        </div>
+        <x-textarea
+            class="rounded-lg"
+            id="message"
+            label="Mensaje"
+            wire:model.blur="form.message"
+            placeholder="Tu Mensaje"
+            first-error-only
+        />
 
-        <div class="flex items-center justify-between">
+        <x-slot:actions>
             <x-button label="Enviar" type="submit" class="btn-primary"/>
-        </div>
-    </form>
+        </x-slot:actions>
+    </x-form>
 </div>

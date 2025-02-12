@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="casaalba">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="casaalba" dir="ltr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,14 +15,15 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased bg-neutral-100 text-neutral-800 min-h-screen w-full">
+<noscript>Por favor activa el JavaScript, ya que es necesario para acceder a la tienda!</noscript>
 <livewire:components.navigation.header-component/>
-<main class="min-h-screen w-full container mx-auto">
+<main class="min-h-screen w-full container mx-auto bg-neutral-100 p-2 md:p-0">
     @if(isset($slot))
         {{ $slot }}
     @endif
 </main>
-<x-toaster-hub/>
-@include('components.layout.footer')
+<livewire:toasts/>
+<x-layout.footer/>
 @livewireScriptConfig
 </body>
 </html>

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    /**
+    /*
      * Default component prefix.
      *
      * Make sure to clear view cache after renaming with `php artisan view:clear`
@@ -17,7 +17,7 @@ return [
      */
     'prefix' => '',
 
-    /**
+    /*
      * Default route prefix.
      *
      * Some maryUI components make network request to its internal routes.
@@ -34,12 +34,12 @@ return [
      */
     'route_prefix' => 'components',
 
-    /**
+    /*
      * Components settings
      */
     'components' => [
         'spotlight' => [
             'class' => 'App\Support\Spotlight',
-        ]
-    ]
+        ],
+    ],
 ];

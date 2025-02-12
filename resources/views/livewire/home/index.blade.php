@@ -2,30 +2,51 @@
     <livewire:home.components.banner-card/>
 
 
-    <div class="h-full w-full min-h-screen">
-        <!-- Products & Filters -->
-        <section class="col-span-8 flex flex-col gap-5">
-            <!-- Filters -->
-            <div class="flex items-center justify-start gap-5 p-2 md:p-0">
-                <x-dropdown label="{{ $this->collection?->attr('name') ?? 'Categoría' }}"
-                            class="border border-gray-800">
-                    <x-menu-item title="Todos" wire:click.stop="selectCollection(null)"/>
-                    @foreach($collections as $collection)
-                        <x-menu-item title="{{ $collection->attr('name') }}"
-                                     wire:click.stop="selectCollection('{{ $collection->attr('name') }}')"/>
-                    @endforeach
-                </x-dropdown>
+    <div id="productos" class="h-full w-full min-h-screen">
+        <!-- Title & Sort -->
+        <section class="flex items-center justify-between border-b-2 mb-2.5 py-2 border-secondary w-full">
+            <h2 class="text-2xl text-primary font-bold text-left">Productos</h2>
 
-                <x-button icon-right="{{ $this->price === \App\Lib\Sort::DESC ? 'o-chevron-down' : 'o-chevron-up'  }}"
-                          class="border border-gray-800 hover:border-gray-800" wire:click.stop="togglePrice()">
-                    Precio {{ $this->price === \App\Lib\Sort::DESC ? 'Mayor a Menor' : 'Menor a Mayor' }}
-                </x-button>
+            <x-button icon-right="{{ $this->price === \App\Lib\Sort::DESC ? 'o-chevron-down' : 'o-chevron-up'  }}" class="btn btn-sm btn-primary btn-outline" wire:click.stop="togglePrice" spinner>
+                Precio: {{ $this->price === \App\Lib\Sort::DESC ? 'Mayor a Menor' : 'Menor a Mayor' }}
+            </x-button>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-5">
+
+            <!-- Filters -->
+            <div class="col-span-2 flex flex-col items-start justify-start w-full gap-2">
+                <div class="grid w-full">
+                    <x-mary-input icon="o-magnifying-glass" wire:model.live="search" type="text" class="w-full p-2 bg-neutral-50 rounded-lg" placeholder="Buscar productos..."/>
+                </div>
+
+                <div class="flex flex-col items-start justify-start gap-2 bg-neutral-50 border rounded-lg p-2 w-full">
+                    <div class="flex flex-col items-start justify-start gap-0.5">
+                        <h3 class="text-lg text-neutral-700">Categoría</h3>
+                        <x-menu>
+                            <x-menu-item title="Todos" wire:click.stop="selectCollection(null)" spinner/>
+                            @foreach($collections as $collection)
+                                @if($collection->children()->count() > 0)
+                                    <x-menu-sub title="{{ $collection->attr('name') }}">
+                                        <x-menu-item title="Todo {{ $collection->attr('name') }}" wire:click.stop="selectCollection({{ $collection->id }})" :active="$collection->id == $this->categoryId" spinner/>
+                                        @foreach($collection->children()->get() as $subCollection)
+                                            <x-menu-item title="{{ $subCollection->attr('name') }}" wire:click.stop="selectCollection({{ $subCollection->id }})" :active="$subCollection->id == $this->categoryId" spinner/>
+                                        @endforeach
+                                    </x-menu-sub>
+                                @else
+                                    <x-menu-item title="{{ $collection->attr('name') }}" wire:click.stop="selectCollection({{ $collection->id }})" :active="$collection->id == $this->categoryId" spinner/>
+                                @endif
+                            @endforeach
+                        </x-menu>
+                    </div>
+                </div>
             </div>
 
+
             <!-- Products -->
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-5" wire:poll.3s>
+            <div class="col-span-1 md:col-span-10 grid grid-cols-2 lg:grid-cols-5 gap-5">
                 @foreach($products as $product)
-                    <livewire:home.components.product-card :product="$product" wire:key="index_product_card_{{ $product->id }}"/>
+                    <livewire:home.components.product.product-card :product="$product" wire:key="index_product_card_{{ $product->id }}"/>
                 @endforeach
             </div>
         </section>
