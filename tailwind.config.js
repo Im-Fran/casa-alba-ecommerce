@@ -10,6 +10,8 @@ export default {
 		 './resources/**/*.vue',
 		 "./vendor/robsontenorio/mary/src/View/Components/**/*.php",
         './vendor/masmerise/livewire-toaster/resources/views/*.blade.php',
+        './vendor/usernotnull/tall-toasts/config/**/*.php',
+        './vendor/usernotnull/tall-toasts/resources/views/**/*.blade.php',
 	],
     theme: {
         extend: {

@@ -5,17 +5,20 @@ namespace App\Livewire\Contact;
 use App\Livewire\Forms\ContactForm;
 use Illuminate\View\View;
 use Livewire\Component;
-use Toaster;
+use Usernotnull\Toast\Concerns\WireToast;
 
 class ContactPage extends Component {
+
+    use WireToast;
 
     public ContactForm $form;
 
     public function submit(): void {
-        $this->form->validate();
         // Handle form submission, e.g., send an email or save to the database
 
-        Toaster::success('Gracias por tu mensaje! Te contactaremos lo más pronto posible.');
+        toast()
+            ->success('Gracias por tu mensaje! Te contactaremos lo más pronto posible.')
+            ->push();
     }
 
     public function render(): View {

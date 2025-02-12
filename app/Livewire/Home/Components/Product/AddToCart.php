@@ -7,9 +7,11 @@ use Livewire\Attributes\Modelable;
 use Livewire\Component;
 use Lunar\Facades\CartSession;
 use Lunar\Models\ProductVariant;
-use Masmerise\Toaster\Toaster;
+use Usernotnull\Toast\Concerns\WireToast;
 
 class AddToCart extends Component {
+
+    use WireToast;
 
     public string $size = 'sm';
 
@@ -23,7 +25,9 @@ class AddToCart extends Component {
     public function increase(): void {
         $line = CartSession::lines()->where('purchasable_id', $this->variant->id)->first();
         if ($this->stock < ($line?->quantity ?? 0) + 1) {
-            Toaster::error('No hay suficiente stock para agregar más unidades de este producto.');
+            toast()
+                ->danger('No hay suficiente stock para agregar más unidades de este producto.')
+                ->push();
             return;
         }
         CartSession::add(purchasable: $this->variant, quantity: 1);

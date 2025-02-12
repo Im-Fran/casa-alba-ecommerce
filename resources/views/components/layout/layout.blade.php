@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="casaalba">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="casaalba" dir="ltr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,7 +22,7 @@
         {{ $slot }}
     @endif
 </main>
-<x-toaster-hub/>
+<livewire:toasts/>
 <x-layout.footer/>
 @livewireScriptConfig
 </body>

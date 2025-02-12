@@ -8,9 +8,11 @@ use Lunar\Facades\CartSession;
 use Lunar\Models\Cart;
 use Lunar\Models\CartLine;
 use Lunar\Pricing\DefaultPriceFormatter;
-use Masmerise\Toaster\Toaster;
+use Usernotnull\Toast\Concerns\WireToast;
 
 class CartComponent extends Component {
+
+    use WireToast;
 
     public ?Cart $cart;
     public bool $openCart = false;
@@ -22,7 +24,7 @@ class CartComponent extends Component {
     public function addToCart(CartLine $line): void {
         $qty = $line->quantity + 1;
         if ($qty > $line->purchasable->stock) {
-            Toaster::error('No hay suficiente stock para agregar más unidades de este producto.');
+            toast()->danger('No hay suficiente stock para agregar más unidades de este producto.')->push();
             return;
         }
         CartSession::updateLine(cartLineId: $line->id, quantity: min($line->quantity + 1, $line->purchasable->stock));
