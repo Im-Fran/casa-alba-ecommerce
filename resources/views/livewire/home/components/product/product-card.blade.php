@@ -34,7 +34,7 @@
     @script
     <script>
         $wire.on('product-variant-updated.{{ $product->id }}', () => $wire.$refresh());
-        document.addEventListener('livewire:init', () => Livewire.on('cart-updated', () => $wire.$refresh()));
+        Livewire.on('cart-updated', () => $wire.$refresh())
     </script>
     @endscript
 </div>
