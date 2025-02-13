@@ -17,6 +17,8 @@ class ProductCard extends Component {
     public function mount(Product $product): void {
         $this->product = $product;
         $this->defaultVariant = $product->variants()->first();
+
+        $this->dispatch("product-variant-updated.{$this->product->id}");
     }
 
     #[Computed]
