@@ -1,4 +1,8 @@
 <div>
+
+    <livewire:components.navigation.header-component/>
+
+
     <livewire:home.components.banner-card/>
 
 

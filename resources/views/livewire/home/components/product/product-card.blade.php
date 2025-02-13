@@ -1,4 +1,4 @@
-<div wire:poll.1m>
+<div>
     <div wire:click.stop="$toggle('peek')" class="col-span-1 flex flex-col w-full hover:cursor-pointer hover:shadow-2xl transition duration-300 ease-in-out rounded-xl p-2 bg-neutral-50 border border-neutral-200">
         <div class="relative">
             <img
@@ -20,7 +20,7 @@
             </div>
 
             @if($this->hasVariants)
-                <div class="flex items-center justify-center w-full px-2" x-on:cart-updated.window="$wire.$refresh()">
+                <div class="flex items-center justify-center w-full px-2">
                     <x-button class="btn btn-primary btn-sm" icon-right="o-shopping-cart" spinner>Elegir Variante</x-button>
                 </div>
             @else
@@ -30,4 +30,11 @@
     </div>
 
     <livewire:home.components.product.product-card-modal wire:model="peek" :$product />
+
+    @script
+    <script>
+        $wire.on('product-variant-updated.{{ $product->id }}', () => $wire.$refresh());
+        $wire.on('cart-updated', () => $wire.$refresh())
+    </script>
+    @endscript
 </div>
