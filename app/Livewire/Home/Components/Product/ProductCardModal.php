@@ -20,7 +20,7 @@ class ProductCardModal extends Component {
     public Collection $options;
 
     private function selectVariant(): void {
-        $this->selectedVariant = $this->product->variants->first(fn($variant) => !$variant->values->pluck('id')->diff(($this->options ?? ($this->productOptions->mapWithKeys(fn($it) => [$it['option']->id => $it['values']->first()->id])))->values())->count());
+        $this->selectedVariant = $this->productVariants->first(fn($variant) => !$variant->values->pluck('id')->diff(($this->options ?? ($this->productOptions->mapWithKeys(fn($it) => [$it['option']->id => $it['values']->first()->id])))->values())->count());
 
         if(!$this->selectedVariant) {
             abort(404);
@@ -28,8 +28,13 @@ class ProductCardModal extends Component {
     }
 
     #[Computed]
+    public function productVariants(): Collection {
+        return $this->product->variants;
+    }
+
+    #[Computed]
     public function productOptionValues(): Collection {
-        return $this->product->variants->pluck('values')->flatten();
+        return $this->productVariants->pluck('values')->flatten();
     }
 
     #[Computed]

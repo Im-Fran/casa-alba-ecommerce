@@ -18,10 +18,6 @@ class AddToCart extends Component {
     #[Modelable]
     public ?ProductVariant $variant;
 
-    public function mount(ProductVariant $variant): void {
-        $this->variant = $variant;
-    }
-
     public function increase(): void {
         $line = CartSession::lines()->where('purchasable_id', $this->variant->id)->first();
         if ($this->stock < ($line?->quantity ?? 0) + 1) {
@@ -60,6 +56,6 @@ class AddToCart extends Component {
 
     #[Computed]
     public function hasOtherVariants(): bool {
-        return $this->variant->product->variants()->count() > 1;
+        return $this->variant != null && ProductVariant::whereProductId($this->variant->product_id)->count('id') > 1;
     }
 }

@@ -16,7 +16,7 @@ class ProductCard extends Component {
 
     public function mount(Product $product): void {
         $this->product = $product;
-        $this->defaultVariant = $product->variants()->first();
+        $this->defaultVariant = $product->variants()->where('stock', '>=', 0)->first();
 
         $this->dispatch("product-variant-updated.{$this->product->id}");
     }
@@ -28,7 +28,7 @@ class ProductCard extends Component {
 
     #[Computed]
     public function hasVariants(): bool {
-        return $this->product->variants()->count() > 1;
+        return $this->product->variants()->count(['id']) > 1;
     }
 
     #[Computed]

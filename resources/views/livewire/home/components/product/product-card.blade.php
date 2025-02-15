@@ -2,13 +2,14 @@
     <div wire:click.stop="$toggle('peek')" class="col-span-1 flex flex-col w-full hover:cursor-pointer hover:shadow-2xl transition duration-300 ease-in-out rounded-xl p-2 bg-neutral-50 border border-neutral-200">
         <div class="relative">
             <img
-                src="{{ $this->product->images()->whereJsonContains('custom_properties->primary', true)->first()->original_url }}"
+                src="{{ $this->product->images()->whereJsonContains('custom_properties->primary', true)->first(['id', 'file_name', 'disk'])->getUrl() }}"
                 alt="{{ $this->product->attr('name') }}"
                 class="w-full rounded-xl border h-56 md:h-72 object-cover"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent p-2 rounded-xl border">
                 <div class="absolute bottom-0 right-0">
-                    <h3 class="text-2xl text-secondary font-black p-4">{{ $this->product->prices()->first()->price->unitFormatted('es-cl') }}</h3>
+                    @php($price = $this->product->prices()->first()->price)
+                    <h3 class="text-2xl text-secondary font-black p-4">{{ Blink::once("price-{$price->id}", fn () => $price->unitFormatted('es-cl')) }}</h3>
                 </div>
             </div>
         </div>
