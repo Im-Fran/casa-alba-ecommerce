@@ -25,23 +25,31 @@
                 </div>
 
                 <div class="flex flex-col items-start justify-start gap-2 bg-neutral-50 border rounded-lg p-2 w-full">
-                    <div class="flex flex-col items-start justify-start gap-0.5">
-                        <h3 class="text-lg text-neutral-700">Categoría</h3>
-                        <x-menu>
-                            <x-menu-item title="Todos" wire:click.stop="selectCollection(null)" spinner/>
-                            @foreach($collections as $collection)
-                                @if($collection->children()->count() > 0)
-                                    <x-menu-sub title="{{ $collection->attr('name') }}">
-                                        <x-menu-item title="Todo {{ $collection->attr('name') }}" wire:click.stop="selectCollection({{ $collection->id }})" :active="$collection->id == $this->categoryId" spinner/>
-                                        @foreach($collection->children()->get() as $subCollection)
-                                            <x-menu-item title="{{ $subCollection->attr('name') }}" wire:click.stop="selectCollection({{ $subCollection->id }})" :active="$subCollection->id == $this->categoryId" spinner/>
-                                        @endforeach
-                                    </x-menu-sub>
-                                @else
-                                    <x-menu-item title="{{ $collection->attr('name') }}" wire:click.stop="selectCollection({{ $collection->id }})" :active="$collection->id == $this->categoryId" spinner/>
-                                @endif
-                            @endforeach
-                        </x-menu>
+                    <div class="flex flex-col items-start justify-start gap-0.5 w-full">
+                        <div class="flex flex-col items-start justify-start gap-2 p-2 w-full" x-data="{ open: true }">
+                            <div class="flex items-center justify-between w-full cursor-pointer" @click="open = !open">
+                                <h3 class="text-lg text-neutral-700">Categoría</h3>
+                                <x-heroicon-o-plus x-bind:class="open ? 'rotate-180' : 'rotate-0'" class="w-6 h-6 transition duration-300"/>
+                            </div>
+
+                            <div x-show="open" x-collapse class="w-full">
+                                <x-menu>
+                                    <x-menu-item title="Todos" wire:click.stop="selectCollection(null)" spinner/>
+                                    @foreach($collections as $collection)
+                                        @if($collection->children()->count() > 0)
+                                            <x-menu-sub title="{{ $collection->attr('name') }}">
+                                                <x-menu-item title="Todo {{ $collection->attr('name') }}" wire:click.stop="selectCollection({{ $collection->id }})" :active="$collection->id == $this->categoryId" spinner/>
+                                                @foreach($collection->children()->get() as $subCollection)
+                                                    <x-menu-item title="{{ $subCollection->attr('name') }}" wire:click.stop="selectCollection({{ $subCollection->id }})" :active="$subCollection->id == $this->categoryId" spinner/>
+                                                @endforeach
+                                            </x-menu-sub>
+                                        @else
+                                            <x-menu-item title="{{ $collection->attr('name') }}" wire:click.stop="selectCollection({{ $collection->id }})" :active="$collection->id == $this->categoryId" spinner/>
+                                        @endif
+                                    @endforeach
+                                </x-menu>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
