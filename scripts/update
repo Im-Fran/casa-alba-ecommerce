@@ -1,17 +1,5 @@
 #!/bin/bash
 
-git fetch
-LOCAL=$(git rev-parse HEAD)
-REMOTE=$(git rev-parse @{u})
-
-if [ "$LOCAL" == "$REMOTE" ]; then
-    echo "Already up to date."
-    exit 0
-else
-    echo "New changes available."
-    git pull
-fi
-
 # We asume that the current directory is the root of the project. If the script includes '--no-interaction' then we don't want to ask for input, and assume all questions as 'yes'.
 args=("$@")
 
@@ -19,6 +7,8 @@ flags=()
 for arg in "${args[@]}"; do
     if [ "$arg" == "--no-interaction" ]; then
         flags+=("no_interaction")
+    elif [ "$arg" == "--force-update" ]; then
+        flags+=("force_update")
     elif [ "$arg" == "--help" ]; then
         echo "Usage: update [--no-interaction]"
         exit 0
@@ -27,6 +17,23 @@ for arg in "${args[@]}"; do
         exit 1
     fi
 done
+
+if [[ " ${flags[@]} " =~ "force_update" ]]; then
+    echo "Forcing update..."
+    git pull
+else
+    git fetch
+    LOCAL=$(git rev-parse HEAD)
+    REMOTE=$(git rev-parse @{u})
+
+    if [ "$LOCAL" == "$REMOTE" ]; then
+        echo "Already up to date."
+        exit 0
+    else
+        echo "Pulling changes..."
+        git pull
+    fi
+fi
 
 if [[ " ${flags[@]} " =~ "no_interaction" ]]; then
     echo "Installing composer dependencies..."
