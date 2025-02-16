@@ -1,4 +1,4 @@
-<div class="sticky top-0 z-10">
+<div x-data="{ sticky: $wire.entangle('sticky') }" x-bind:class="(sticky ? 'sticky' : 'relative') + ' top-0 z-10'">
     <div class="absolute inset-x-0 mt-10">
         <div class="bg-primary p-2 px-5 rounded-2xl">
             <div class="flex items-center justify-between">
