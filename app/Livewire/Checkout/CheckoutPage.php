@@ -16,7 +16,7 @@ class CheckoutPage extends Component {
     }
 
     public function mount(): void {
-        if (!$this->cart) {
+        if (!$this->cart || $this->cart?->lines()->count() == 0) {
             $this->redirect(route('home'), navigate: true);
         }
     }
