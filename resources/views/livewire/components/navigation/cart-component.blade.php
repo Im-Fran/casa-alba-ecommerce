@@ -4,10 +4,6 @@
             <livewire:components.cart.product-list wire:key="cart-product-list" wire:model="cart"/>
             <livewire:components.cart.prices-detail wire:key="cart-prices-detail" wire:model="cart"/>
         </div>
-
-        @script
-        <script>Livewire.on('cart-updated', () => $wire.$refresh())</script>
-        @endscript
     </x-drawer>
 
     <x-lucide-shopping-bag wire:click.stop="$toggle('openCart')" class="text-neutral-100 hover:text-secondary w-8 h-8 cursor-pointer"/>
