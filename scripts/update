@@ -18,24 +18,21 @@ for arg in "${args[@]}"; do
     fi
 done
 
-if [[ " ${flags[@]} " =~ "force_update" ]]; then
-    echo "Forcing update..."
-    git pull
-else
-    git fetch
-    LOCAL=$(git rev-parse HEAD)
-    REMOTE=$(git rev-parse @{u})
+git fetch
+LOCAL=$(git rev-parse HEAD)
+REMOTE=$(git rev-parse @{u})
 
-    if [ "$LOCAL" == "$REMOTE" ]; then
-        echo "Already up to date."
-        exit 0
-    else
-        echo "Pulling changes..."
-        git pull
-    fi
+if [ "$LOCAL" == "$REMOTE" ] && [[ ! " ${flags[@]} " =~ "force_update" ]]; then
+    echo "Already up to date."
+    exit 0
 fi
 
 if [[ " ${flags[@]} " =~ "no_interaction" ]]; then
+    if [ "$LOCAL" != "$REMOTE" ]; then
+        echo "Pulling changes..."
+        git pull
+    fi
+
     echo "Installing composer dependencies..."
     composer install --no-interaction --no-dev --optimize-autoloader
 
@@ -52,6 +49,14 @@ if [[ " ${flags[@]} " =~ "no_interaction" ]]; then
     bun install && bun run build
     echo "Update completed."
     exit 0
+fi
+
+if [ "$LOCAL" != "$REMOTE" ]; then
+    read -p "Do you want to pull changes? [y/n] " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        git pull
+    fi
 fi
 
 read -p "Do you want to install composer dependencies? [y/n] " -n 1 -r
