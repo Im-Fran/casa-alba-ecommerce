@@ -17,7 +17,7 @@ class CartComponent extends Component {
     public ?Cart $cart;
     public bool $openCart = false;
 
-    public function mount(): void {
+    public function boot(): void {
         $this->cart = CartSession::current();
     }
 
