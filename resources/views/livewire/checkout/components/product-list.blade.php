@@ -1,4 +1,4 @@
-<div class="flex flex-col h-full">
+<div class="flex flex-col h-full overflow-scroll max-h-[65vh]">
     @foreach(collect($this->cart?->lines ?? [])->sortBy('id') as $line)
         <div class="flex items-center justify-between p-4 {{ $this->cart->lines()->orderBy('id')->first()->id === $line->id ? '' : 'border-t' }} border-neutral-200 flex-grow">
             <div class="flex items-center space-x-4 h-full w-full">
@@ -32,7 +32,7 @@
                     <h3 class="text-lg font-bold">Editar Cantidad</h3>
                     <x-form x-on:submit.prevent="async () => { $wire.edit({{ $line->id }}, quantity); await edit_line_{{ $line->id }}.close(); }" method="dialog" no-separator>
                         <div class="flex flex-col py-4">
-                            <span>Por favor ingresa la cantidad de {{ $line->purchasable->getDescription() }} que deseas: </span>
+                            <span>Por favor ingresa la cantidad de <b>{{ $line->purchasable->getDescription() }}</b> que deseas: </span>
                         </div>
 
                         <div class="flex flex-col w-full gap-1">
@@ -60,24 +60,4 @@
             </dialog>
         </div>
     @endforeach
-
-    <!-- Pricing details -->
-    <div class="flex flex-col p-4 mt-4 ">
-        <div class="flex justify-between text-md font-medium text-neutral-800">
-            <span>Sub Total</span>
-            <span>{{ $this->subTotal }}</span>
-        </div>
-        <div class="flex justify-between text-md font-medium text-neutral-800">
-            <span>IVA</span>
-            <span>{{ $this->cart->taxTotal?->unitFormatted('es-cl') ?? '--' }}</span>
-        </div>
-        <div class="flex justify-between text-md font-medium text-neutral-800">
-            <span>Envío</span>
-            <span>{{ $this->cart->shippingTotal?->unitFormatted('es-cl') ?? '--' }}</span>
-        </div>
-        <div class="flex justify-between text-lg font-semibold text-primary mt-2">
-            <span>Total</span>
-            <span>{{ $this->cart->total?->unitFormatted('es-cl') ?? '--' }}</span>
-        </div>
-    </div>
 </div>
