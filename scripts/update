@@ -41,9 +41,11 @@ if [[ " ${flags[@]} " =~ "no_interaction" ]]; then
 
     echo "Clearing cache..."
     php artisan optimize:clear
+    php artisan icons:clear
 
     echo "Caching configuration..."
     php artisan optimize
+    php artisan icons:cache
 
     echo "Building assets..."
     bun install && bun run build
@@ -75,7 +77,9 @@ read -p "Do you want to update cache? [y/n] " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     php artisan optimize:clear
+    php artisan icons:clear
     php artisan optimize
+    php artisan icons:cache
 fi
 
 read -p "Do you want to build assets? [y/n] " -n 1 -r

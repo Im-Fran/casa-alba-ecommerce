@@ -15,9 +15,9 @@
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased bg-neutral-100 text-neutral-800 min-h-screen w-full">
+<body class="font-sans antialiased bg-neutral-50 text-neutral-800 min-h-screen w-full">
 <noscript>Por favor activa el JavaScript, ya que es necesario para acceder a la tienda!</noscript>
-<main class="min-h-screen w-full bg-neutral-100 p-2 md:p-0">
+<main class="min-h-screen w-full bg-neutral-50 p-2 md:p-0">
     @if(isset($slot))
         {{ $slot }}
     @endif

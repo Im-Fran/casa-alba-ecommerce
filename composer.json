@@ -20,6 +20,7 @@
         "lunarphp/lunar": "^1.0.0-beta",
         "meilisearch/meilisearch-php": "^1.11",
         "robsontenorio/mary": "^1.41",
+        "stijnvanouplines/blade-country-flags": "^1.0",
         "usernotnull/tall-toasts": "^2.1"
     },
     "require-dev": {

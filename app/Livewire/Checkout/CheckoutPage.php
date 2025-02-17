@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Checkout;
 
+use App\Livewire\Forms\Checkout\CheckoutForm;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Lunar\Facades\CartSession;
@@ -11,6 +12,7 @@ use Lunar\Pricing\DefaultPriceFormatter;
 class CheckoutPage extends Component {
 
     public ?Cart $cart;
+    public CheckoutForm $form;
 
     public function boot(): void {
         $this->cart = CartSession::current();
