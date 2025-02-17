@@ -10,7 +10,7 @@ for arg in "${args[@]}"; do
     elif [ "$arg" == "--force-update" ]; then
         flags+=("force_update")
     elif [ "$arg" == "--help" ]; then
-        echo "Usage: update [--no-interaction]"
+        echo "Usage: update [--no-interaction] [--force-update]"
         exit 0
     else
         echo "Invalid argument: $arg"
