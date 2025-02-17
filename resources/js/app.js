@@ -16,6 +16,4 @@ Livewire.hook('request', ({ fail }) => {
     })
 })
 
-document.addEventListener('livewire:navigating', () => document.getElementById('loading_wall').classList.remove('hidden'));
-document.addEventListener('livewire:navigated', () => setTimeout(() => document.getElementById('loading_wall').classList.add('hidden'), Math.floor(Math.random() * 250) + 250));
 livewire_hot_reload();
