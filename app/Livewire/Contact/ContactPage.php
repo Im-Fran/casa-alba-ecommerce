@@ -15,13 +15,10 @@ class ContactPage extends Component {
 
     public function submit(): void {
         // Handle form submission, e.g., send an email or save to the database
+        $this->form->validate();
 
         toast()
             ->success('Gracias por tu mensaje! Te contactaremos lo más pronto posible.')
             ->push();
-    }
-
-    public function render(): View {
-        return view('livewire.contact.index');
     }
 }

@@ -18,9 +18,15 @@ class ProductList extends Component {
 
     public function remove(CartLine $line): void {
         CartSession::remove(cartLineId: $line->id);
-        toast()->success('El producto fue eliminado del carrito.', 'Eliminado')->push();
+        $toast = toast()->success('El producto fue eliminado del carrito.', 'Eliminado');
 
-        $this->dispatch('checkout-cart-updated');
+        if(($this->cart?->lines()?->count() ?? 0) === 0) {
+            $toast->pushOnNextPage();
+            $this->redirect(route('home'), navigate: true);
+            return;
+        }
+
+        $toast->push();
     }
 
     public function edit(CartLine $line, int $qty): void {
@@ -33,7 +39,5 @@ class ProductList extends Component {
         }
         CartSession::updateLine(cartLineId: $line->id, quantity: min($qty, $line->purchasable->stock));
         toast()->success('El carrito fue actualizado correctamente.', 'Actualizado')->push();
-
-        $this->dispatch('checkout-cart-updated');
     }
 }

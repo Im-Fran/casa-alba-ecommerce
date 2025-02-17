@@ -1,55 +1,60 @@
 <div class="flex items-center justify-between p-4 border-b border-neutral-200 flex-grow">
     <div class="flex items-center space-x-4 h-full w-full">
-        <img src="{{ $image }}" alt="Product Image" class="w-20 h-28 object-cover object-center rounded-lg"/>
+        <img src="{{ $line->purchasable->getThumbnail()->getUrl() }}" alt="Product Image" class="w-20 h-28 object-cover object-center rounded-lg"/>
         <div class="flex flex-col items-start justify-between w-full h-full flex-grow">
             <div class="flex items-start justify-between w-full h-full">
                 <div class="flex flex-col items-start h-full">
                     <div class="flex flex-col items-start justify-start">
-                        <span class="text-lg font-semibold text-primary">{{ $name }}</span>
-                        <span class="text-md font-medium text-primary"><span class="text-md text-neutral-800 font-medium">{{ $quantity }} x </span> {{ $price }}</span>
+                        <span class="text-lg font-semibold text-primary">{{ $line?->purchasable?->getDescription() }}</span>
+                        <span class="text-md font-medium text-primary"><span class="text-md text-neutral-800 font-medium">{{ $line->quantity }} x </span> {{ $line->subTotal?->unitFormatted('es-cl') ?? '--' }}</span>
                     </div>
                     <div class="flex flex-col">
-                        @foreach($options as $opt)
-                            <span class="text-sm text-neutral-500" wire:key="cart_line_{{ $lineId }}_option_{{ $opt['id'] }}">
+                        @foreach(collect($line->purchasable->values)->map(fn($it) => ['id' => $it->id, 'name' => $it->option->translate('name'), 'value' => $it->translate('name')]) as $opt)
+                            <span class="text-sm text-neutral-500" wire:key="cart_line_{{ $line->id }}_option_{{ $opt['id'] }}">
                                 <span class="text-sm text-neutral-800 font-medium">{{ $opt['name'] }}</span>: {{ $opt['value'] }}
                             </span>
                         @endforeach
                     </div>
                 </div>
                 <div class="flex items-start justify-start text-primary gap-2.5">
-                    <span class="cursor-pointer hover:underline transition" wire:click.prevent="openModal">Editar</span>
+                    <span class="cursor-pointer hover:underline transition" x-on:click.prevent="edit_line_{{ $line->id }}.showModal()">Editar</span>
                     <div class="w-[1.5px] h-6 bg-neutral-300"></div>
-                    <span class="cursor-pointer hover:underline transition" wire:click.prevent="$parent.remove({{ $lineId }})">Eliminar</span>
+                    <span x-data="{ loading: false }" class="flex items-center justify-center gap-2 cursor-pointer hover:underline transition" x-on:click.prevent="async () => { if(loading) {return;} loading = true; await $wire.$parent.remove({{ $line->id }}); await $wire.$parent.$refresh(); loading = false; }">Eliminar <x-loading x-show="loading" class="w-4 h-4"/></span>
                 </div>
             </div>
         </div>
     </div>
 
-    <div x-data="{ quantity: $wire.entangle('newQuantity').live }">
-        <x-modal wire:model="showEditModal" class="backdrop-blur-md">
-            <div class="flex flex-col mb-5">
-                <span>Por favor ingresa la cantidad de {{ $name }} que deseas: </span>
-                <span class="text-xs">Si la cantidad es <b>0</b>, será eliminado del carrito.</span>
-            </div>
-
-            <div class="flex flex-col w-full gap-1">
-                <x-label for="quantity">Cantidad</x-label>
-                <div class="flex">
-                    <input
-                        id="quantity"
-                        name="quantity"
-                        type="number"
-                        class="w-full p-2 border border-neutral-200 rounded-lg"
-                        x-model="quantity"
-                        x-on:blur="$wire.set('newQuantity', quantity)"
-                    />
+    <dialog x-data="{ quantity: {{ $line->quantity }} }" id="edit_line_{{ $line->id }}" class="modal">
+        <div class="modal-box">
+            <h3 class="text-lg font-bold">Editar Cantidad</h3>
+            <x-form method="dialog" no-separator>
+                <div class="flex flex-col py-4">
+                    <span>Por favor ingresa la cantidad de {{ $line->purchasable->getDescription() }} que deseas: </span>
+                    <span class="text-xs">Si la cantidad es <b>0</b>, será eliminado del carrito.</span>
                 </div>
-            </div>
 
-            <x-slot:actions>
-                <x-button class="btn-error text-neutral-50" label="Cancelar" wire:click="$toggle('showEditModal')"/>
-                <x-button class="btn-primary" label="Guardar" x-on:click="async () => { await $wire.$parent.edit({{ $lineId }}, {{ $newQuantity }}); await $wire.$parent.$refresh(); await $wire.$toggle('showEditModal'); $wire.$dispatch('updated') }"/>
-            </x-slot:actions>
-        </x-modal>
-    </div>
+                <div class="flex flex-col w-full gap-1">
+                    <x-label for="quantity">Cantidad</x-label>
+                    <div class="flex">
+                        <input
+                            id="quantity"
+                            name="quantity"
+                            type="number"
+                            class="w-full p-2 border border-neutral-200 rounded-lg"
+                            x-model="quantity"
+                            min="1"
+                            step="1"
+                            max="{{ $line->purchasable->stock }}"
+                        />
+                    </div>
+                </div>
+            </x-form>
+            <div class="modal-action">
+                <x-button class="btn-error text-neutral-50" label="Cancelar" x-on:click.stop="edit_line_{{ $line->id }}.close()"/>
+                <x-button type="submit" class="btn-primary" label="Guardar" x-on:click.stop="async () => { await $wire.$parent.edit({{ $line->id }}, quantity); await edit_line_{{ $line->id }}.close(); }"/>
+            </div>
+        </div>
+    </dialog>
+
 </div>
