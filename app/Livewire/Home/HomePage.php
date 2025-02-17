@@ -4,12 +4,11 @@ namespace App\Livewire\Home;
 
 use App\Lib\Sort;
 use DB;
-use Illuminate\View\View;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
-use Lunar\Models\Collection;
 use Lunar\Models\Product;
 
 #[Title('Inicio')]
@@ -24,11 +23,6 @@ class HomePage extends Component {
     #[Url(as: 'precio', history: true)]
     public Sort $price = Sort::ASC;
 
-    #[Computed]
-    public function collection(): ?Collection {
-        return $this->categoryId != null && intval($this->categoryId) != 0 ? Collection::find(intval($this->categoryId)) : null;
-    }
-
     public function selectCollection(?string $categoryId): void {
         $this->categoryId = $categoryId;
     }
@@ -38,14 +32,22 @@ class HomePage extends Component {
         $this->dispatch('toggle-price');
     }
 
-    public function render(): View {
-        $collectionProducts = ($this->collection?->products()?->pluck('product_id') ?? collect());
-
-        $this->collection?->children()?->get()?->flatMap(fn($it) => $it->products()->pluck('product_id'))->each(fn($it) => $collectionProducts->push($it));
-
-        $products = Product::query()
+    #[Computed]
+    public function products(): LengthAwarePaginator {
+        return Product::query()
             ->select('lunar_products.*', DB::raw('MIN(lunar_prices.price) as min_price'))
-            ->when($collectionProducts->isNotEmpty(), fn($query) => $query->whereIn('lunar_products.id', $collectionProducts))
+            ->when($this->categoryId, function ($query) {
+                $query->whereIn('lunar_products.id', function ($subQuery) {
+                    $subQuery->select('product_id')
+                        ->from('lunar_collection_product')
+                        ->whereIn('collection_id', function ($subSubQuery) {
+                            $subSubQuery->select('id')
+                                ->from('lunar_collections')
+                                ->where('id', $this->categoryId)
+                                ->orWhere('parent_id', $this->categoryId);
+                        });
+                });
+            })
             ->when($this->search, fn($query) => $query
                 ->whereRaw("translate(LOWER(lunar_products.attribute_data->'name'->>'value'), 'áéíóúÁÉÍÓÚ', 'aeiouAEIOU') LIKE ?", [strtolower("%$this->search%")])
                 ->orWhereRaw("translate(LOWER(lunar_products.attribute_data->'description'->>'value'), 'áéíóúÁÉÍÓÚ', 'aeiouAEIOU') LIKE ?", [strtolower("%$this->search%")])
@@ -57,10 +59,5 @@ class HomePage extends Component {
             ->groupBy('lunar_products.id')
             ->orderBy('min_price', $this->price->value)
             ->paginate(12);
-
-        return view('livewire.home.index', [
-            'collections' => Collection::whereNull('parent_id')->get(),
-            'products' => $products,
-        ]);
     }
 }

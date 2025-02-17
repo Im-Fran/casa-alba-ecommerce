@@ -1,7 +1,6 @@
-@persist('navigation')
 <div x-data="{ sticky: $wire.entangle('sticky') }" x-bind:class="(sticky ? 'sticky' : 'relative') + ' top-0 z-10'">
-    <div class="absolute inset-x-0 mt-10">
-        <div class="bg-primary p-2 px-5 rounded-2xl">
+    <div class="absolute inset-x-0 mt-10 mx-5">
+        <div class="bg-primary p-2 px-5 rounded-[2rem]">
             <div class="flex items-center justify-between">
                 <a href="{{ route('home') }}" class="hover:text-secondary text-2xl font-medium" wire:navigate>
                     <img src="{{ asset('images/casaalba.webp') }}" alt="CasaAlba" class="rounded-full w-16"/>
@@ -42,4 +41,3 @@
         </div>
     </div>
 </div>
-@endpersist
