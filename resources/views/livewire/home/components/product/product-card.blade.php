@@ -8,8 +8,7 @@
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent p-2 rounded-xl border">
                 <div class="absolute bottom-0 right-0">
-                    @php($price = $this->product->prices()->first()->price)
-                    <h3 class="text-2xl text-secondary font-black p-4">{{ Blink::once("price-{$price->id}", fn () => $price->unitFormatted('es-cl')) }}</h3>
+                    <h3 class="text-2xl text-secondary font-black p-4">{{ $this->product->prices()->first()->price->unitFormatted('es-cl') }}</h3>
                 </div>
             </div>
         </div>

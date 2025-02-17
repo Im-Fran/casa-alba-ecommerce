@@ -13,8 +13,7 @@
                     <span class="text-md text-neutral-400 font-semibold">{{ $this->selectedVariant->stock > 0 ? ("{$this->selectedVariant->stock} en") : 'Sin' }} Stock</span>
                 </div>
 
-                @php($price = $this->selectedVariant->prices()->first()->price)
-                <h3 class="text-xl text-primary font-semibold">{{ Blink::once("price-{$price->id}", fn () => $price->unitFormatted('es-cl')) }}</h3>
+                <h3 class="text-xl text-primary font-semibold">{{ $this->selectedVariant->prices()->first()->price->unitFormatted('es-cl') }}</h3>
 
                 <span class="mt-2.5 text-sm text-neutral-500">{{ $this->product->attr('short_description') }}</span>
                 <div class="text-sm md:text-md text-neutral-900 mt-2.5">{!! $this->product->attr('description') !!}</div>
