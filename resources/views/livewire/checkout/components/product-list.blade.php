@@ -1,6 +1,6 @@
 <div class="flex flex-col h-full overflow-scroll max-h-[65vh]">
     @foreach(collect($this->cart?->lines ?? [])->sortBy('id') as $line)
-        <div class="flex items-center justify-between p-4 {{ $this->cart->lines()->orderBy('id')->first()->id === $line->id ? '' : 'border-t' }} border-neutral-200 flex-grow">
+        <div class="flex items-center justify-between p-4 {{ $this->cart->lines()->orderBy('id')->first()->id === $line->id ? '' : 'border-t' }} border-neutral-200">
             <div class="flex items-center space-x-4 h-full w-full">
                 <img src="{{ $line->purchasable->getThumbnail()->getUrl() }}" alt="Product Image" class="w-20 h-28 object-cover object-center rounded-lg"/>
                 <div class="flex flex-col items-start justify-between w-full h-full flex-grow">
