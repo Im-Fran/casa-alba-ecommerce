@@ -4,26 +4,17 @@
 
 
         <div class="flex items-center justify-between">
-            <p class="text-sm flex-grow flex items-center">
-                <span>Sub Total</span>
-                <span class="flex-1 border-dashed border-b border-gray-400 mx-2"></span>
-            </p>
+            <span class="text-sm flex-grow flex items-center">Sub Total</span>
             <span class="text-sm text-primary font-bold">{{ $this->subTotal }}</span>
         </div>
 
         <div class="flex items-center justify-between mt-0.5">
-            <p class="text-sm flex-grow flex items-center">
-                <span>IVA</span>
-                <span class="flex-1 border-dashed border-b border-gray-400 mx-2"></span>
-            </p>
+            <span class="text-sm flex-grow flex items-center">IVA</span>
             <span class="text-sm text-primary font-bold">{{ $this->cart?->taxTotal?->unitFormatted('es-cl') ?? '--' }}</span>
         </div>
 
         <div class="flex items-center justify-between mt-2">
-            <p class="text-sm flex-grow flex items-center">
-                <span>Total</span>
-                <span class="flex-1 border-dashed border-b border-gray-400 mx-2"></span>
-            </p>
+            <span class="text-sm flex-grow flex items-center">Total</span>
             <span class="text-sm text-primary font-bold">{{ $this->cart?->total?->unitFormatted('es-cl') ?? '--' }}</span>
         </div>
 
