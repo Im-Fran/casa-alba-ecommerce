@@ -34,7 +34,7 @@
 
                             <div x-show="open" x-collapse class="w-full">
                                 <x-menu>
-                                    <x-menu-item title="Todos" wire:click.stop="selectCollection(null)" spinner/>
+                                    <x-menu-item title="Todos" wire:click.stop="selectCollection(null)" :active="$this->categoryId === null || $this->categoryId === ''" spinner/>
                                     @foreach($collections as $collection)
                                         @if($collection->children()->count() > 0)
                                             <x-menu-sub title="{{ $collection->attr('name') }}">
