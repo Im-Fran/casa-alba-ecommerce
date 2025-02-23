@@ -6,6 +6,9 @@
 
     <title>{{ isset($title) ? "$title - Casa Alba" : 'Casa Alba' }}</title>
 
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('images/casaalba.webp') }}" type="image/webp">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
