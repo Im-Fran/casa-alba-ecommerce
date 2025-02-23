@@ -12,6 +12,7 @@
         "clemdesign/php-mask": "^1.0",
         "http-interop/http-factory-guzzle": "^1.2",
         "laravel-lang/common": "^6.4",
+        "laravel-validation-rules/credit-card": "^1.9",
         "laravel/framework": "^11.31",
         "laravel/scout": "^10.11",
         "laravel/tinker": "^2.9",

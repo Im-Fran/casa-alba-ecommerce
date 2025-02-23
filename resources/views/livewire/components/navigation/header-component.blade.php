@@ -13,9 +13,6 @@
                     <li>
                         <a href="{{ route('contact') }}" class="hover:text-secondary text-2xl font-medium" wire:navigate.hover>Contacto</a>
                     </li>
-                    <li>
-                        <a href="#" class="hover:text-secondary text-2xl font-medium">Nosotros</a>
-                    </li>
                 </ul>
 
                 <div class="flex items-center space-x-4">
@@ -30,9 +27,6 @@
                             </li>
                             <li>
                                 <a href="{{ route('contact') }}" class="hover:text-primary" wire:navigate.hover>Contacto</a>
-                            </li>
-                            <li>
-                                <a href="#" class="hover:text-primary">Nosotros</a>
                             </li>
                         </ul>
                     </x-drawer>

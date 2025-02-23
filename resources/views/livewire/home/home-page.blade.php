@@ -81,4 +81,6 @@
             </div>
         </section>
     </div>
+
+    <livewire:components.footer/>
 </div>

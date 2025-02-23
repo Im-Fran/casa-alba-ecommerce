@@ -48,4 +48,5 @@
         </div>
     </div>
 
+    <livewire:components.footer/>
 </div>

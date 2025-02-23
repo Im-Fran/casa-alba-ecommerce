@@ -40,7 +40,7 @@ export default {
             casaalba: {
                 ...require("daisyui/src/theming/themes")["pastel"],
                 primary: '#2B9D66',
-                'primary-content': '#FAFAFA',
+                'primary-content': '#d4ffe8',
                 secondary: '#AFE9CD',
                 'secondary-content': '#2B9D66',
             }

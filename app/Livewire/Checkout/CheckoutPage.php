@@ -2,12 +2,13 @@
 
 namespace App\Livewire\Checkout;
 
+use App\Helpers\Helpers;
 use App\Livewire\Forms\Checkout\CheckoutForm;
+use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Lunar\Facades\CartSession;
 use Lunar\Models\Cart;
-use Lunar\Pricing\DefaultPriceFormatter;
 
 class CheckoutPage extends Component {
 
@@ -24,13 +25,23 @@ class CheckoutPage extends Component {
         }
     }
 
-    #[Computed]
-    public function subTotal(): string {
-        if ($cart = $this->cart) {
-            return (new DefaultPriceFormatter(value: ($cart->subTotal?->value ?? 0) - ($cart->taxTotal?->value ?? 0), currency: $cart->currency))->unitFormatted('es-cl');
+    public function updated($field): void {
+        if($this->form->sameAddress) {
+            $this->form->billingAddress = $this->form->address;
+            $this->form->billingCity = $this->form->city;
+            $this->form->billingPostal = $this->form->postal;
         }
 
-        return '--';
+        if($field == 'form.sameAddress' && !$this->form->sameAddress) {
+            $this->form->billingAddress = '';
+            $this->form->billingCity = '';
+            $this->form->billingPostal = '';
+        }
+    }
+
+    #[Computed]
+    public function comunas(): Collection {
+        return Helpers::comunas();
     }
 
 }

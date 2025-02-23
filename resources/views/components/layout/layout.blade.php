@@ -23,7 +23,6 @@
     @endif
 </main>
 <livewire:toasts/>
-<x-layout.footer/>
 @livewireScriptConfig
 </body>
 </html>
