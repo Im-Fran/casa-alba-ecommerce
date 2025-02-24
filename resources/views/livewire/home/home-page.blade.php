@@ -2,9 +2,8 @@
 
     <livewire:components.navigation.header-component :sticky="true"/>
 
-
-    <div class="pb-20 pt-[10rem]">
-        <div id="banner" class="grid grid-cols-1 md:grid-cols-2 items-center justify-center w-full">
+    <div id="banner" class="pb-20 pt-[10rem]">
+        <div class="grid grid-cols-1 md:grid-cols-2 items-center justify-center w-full">
             <div class="absolute md:static col-span-1 flex flex-col items-center justify-center gap-5 z-[2] mt-[10rem] md:mt-0 inset-x-0">
                 <h1 class="text-2xl md:text-8xl max-w-2xl font-bold text-center">Productos de Aseo para tu Hogar</h1>
 
@@ -12,7 +11,7 @@
                     class="btn btn-primary btn-sm md:btn-lg"
                     label="Comprar Ahora"
                     icon-right="o-arrow-down"
-                    x-on:click="window.scrollTo({ top: window.screen.height/1.75, behavior: 'smooth' })"
+                    x-on:click="window.scrollTo({ top: document.getElementById('banner').scrollHeight * 0.85, behavior: 'smooth' })"
                 />
             </div>
 
@@ -39,7 +38,7 @@
             <!-- Filters -->
             <div class="col-span-2 flex flex-col items-start justify-start w-full gap-2">
                 <div class="grid w-full">
-                    <x-mary-input icon="o-magnifying-glass" wire:model.live="search" type="text" class="w-full p-2 bg-neutral-50 rounded-lg" placeholder="Buscar productos..."/>
+                    <x-mary-input icon="o-magnifying-glass" wire:model.live.debounce="search" @keydown.enter="$wire.$refresh()" type="text" class="w-full p-2 bg-neutral-50 rounded-lg" placeholder="Buscar productos..."/>
                 </div>
 
                 <div class="flex flex-col items-start justify-start gap-2 bg-neutral-50 border rounded-lg p-2 w-full">

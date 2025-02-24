@@ -25,7 +25,7 @@
 </head>
 <body class="font-sans antialiased bg-neutral-50 text-neutral-800 min-h-screen w-full">
 <noscript class="flex items-center justify-center bg-red-300 text-red-900 w-full h-10">Por favor activa el JavaScript, ya que es necesario para acceder a la tienda!</noscript>
-<main class="min-h-screen w-full bg-neutral-50 p-2 md:p-0">
+<main class="min-h-screen w-full bg-neutral-50 md:p-0">
     @if(isset($slot))
         {{ $slot }}
     @endif
