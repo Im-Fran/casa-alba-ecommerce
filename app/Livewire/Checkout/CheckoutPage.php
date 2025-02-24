@@ -44,4 +44,11 @@ class CheckoutPage extends Component {
         return Helpers::comunas();
     }
 
+    /* Run the checkout */
+    public function checkout(): void {
+        // TODO: Generar link de pago desde el proveedor
+
+        // Redirect to payment provider
+    }
+
 }

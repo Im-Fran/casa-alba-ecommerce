@@ -3,10 +3,10 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
             <livewire:checkout.components.product-list wire:model="cart"/>
 
-            <div class="col-span-1 p-20" x-data="{ contact: true, payment: true, shipping: true, billing: true, summary: true }">
+            <div class="col-span-1 p-[4.5rem]" x-data="{ contact: true, payment: true, shipping: true, billing: true, summary: true }">
                 <div class="flex flex-col gap-10">
                     <!-- Información de Contacto -->
-                    <section class="flex flex-col space-y-6 border-b border-neutral-300 pb-10">
+                    <section class="flex flex-col space-y-6">
                         <div class="flex items-center justify-between w-full cursor-pointer" @click="contact = !contact">
                             <h4 class="font-semibold text-xl">Información de Contacto</h4>
                             <x-heroicon-o-plus x-bind:class="contact ? 'rotate-180' : 'rotate-0'" class="w-6 h-6 transition duration-300"/>
@@ -42,12 +42,14 @@
                                     first-error-only
                                 />
                             </div>
+
+                            <div class="border-b border-neutral-300"/>
                         </div>
                     </section>
 
 
                     <!-- Dirección de Envío -->
-                    <section class="flex flex-col space-y-6 border-b border-neutral-300 pb-10">
+                    <section class="flex flex-col space-y-6">
                         <div class="flex items-center justify-between w-full cursor-pointer" @click="shipping = !shipping">
                             <h4 class="font-semibold text-xl">Dirección de Envío</h4>
                             <x-heroicon-o-plus x-bind:class="shipping ? 'rotate-180' : 'rotate-0'" class="w-6 h-6 transition duration-300"/>
@@ -84,11 +86,13 @@
                                 wire:model.live.debounce="form.postal"
                                 first-error-only
                             />
+
+                            <div class="border-b border-neutral-300"/>
                         </div>
                     </section>
 
                     <!-- Dirección de Facturación -->
-                    <section class="flex flex-col space-y-6">
+                    <section class="flex flex-col space-y-6 pb-10">
                         <div class="flex items-center justify-between w-full cursor-pointer" @click="billing = !billing">
                             <h4 class="font-semibold text-xl">Dirección de Facturación</h4>
                             <x-heroicon-o-plus x-bind:class="billing ? 'rotate-180' : 'rotate-0'" class="w-6 h-6 transition duration-300"/>
@@ -136,31 +140,13 @@
                                     first-error-only
                                 />
                             </div>
+                            <div class="border-b border-neutral-300"/>
                         </div>
                     </section>
 
-                    <!-- Resumen de la Compra -->
-                    <section class="flex flex-col space-y-6">
-                        <div class="flex items-center justify-between w-full cursor-pointer" @click="summary = !summary">
-                            <h4 class="font-semibold text-xl">Resumen de la Compra</h4>
-                            <x-heroicon-o-plus x-bind:class="summary ? 'rotate-180' : 'rotate-0'" class="w-6 h-6 transition duration-300"/>
-                        </div>
-
-                        <div class="flex flex-col space-y-6" x-show="summary" x-collapse>
-                            <div class="flex justify-between text-md font-medium text-neutral-800">
-                                <span>IVA</span>
-                                <span>{{ $this->cart->taxTotal?->unitFormatted('es-cl') ?? '--' }}</span>
-                            </div>
-                            <div class="flex justify-between text-md font-medium text-neutral-800">
-                                <span>Envío</span>
-                                <span>{{ $this->cart->shippingTotal?->unitFormatted('es-cl') ?? '--' }}</span>
-                            </div>
-                            <div class="flex justify-between text-lg font-semibold text-primary mt-2">
-                                <span>Total</span>
-                                <span>{{ $this->cart->total?->unitFormatted('es-cl') ?? '--' }}</span>
-                            </div>
-                        </div>
-                    </section>
+                    <x-button class="btn rounded-md btn-primary w-full" icon-right="o-shopping-cart" wire:click="checkout" spinner>
+                        Finalizar Compra
+                    </x-button>
                 </div>
             </div>
         </div>
