@@ -13,6 +13,28 @@
                         </div>
 
                         <div class="flex flex-col space-y-6" x-show="contact" x-collapse>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <x-input
+                                    class="rounded-md"
+                                    label="Nombre"
+                                    placeholder="Juan"
+                                    autocomplete="name"
+                                    wire:model.live.debounce="form.name"
+                                    required
+                                    first-error-only
+                                />
+
+                                <x-input
+                                    class="rounded-md"
+                                    label="Apellido"
+                                    placeholder="Pérez"
+                                    autocomplete="family-name"
+                                    wire:model.live.debounce="form.lastname"
+                                    required
+                                    first-error-only
+                                />
+                            </div>
+
                             <x-input
                                 class="rounded-md"
                                 label="Correo Electrónico"
@@ -51,10 +73,10 @@
                     </section>
 
 
-                    <!-- Dirección de Envío -->
+                    <!-- Datos de Envío -->
                     <section class="flex flex-col space-y-6">
                         <div class="flex items-center justify-between w-full cursor-pointer" @click="shipping = !shipping">
-                            <h4 class="font-semibold text-xl">Dirección de Envío</h4>
+                            <h4 class="font-semibold text-xl">Datos de Envío</h4>
                             <x-heroicon-o-plus x-bind:class="shipping ? 'rotate-180' : 'rotate-0'" class="w-6 h-6 transition duration-300"/>
                         </div>
 
@@ -78,6 +100,7 @@
                                 autocomplete="shipping address-level2"
                                 :options="$this->comunas"
                                 wire:model.live.debounce="form.city"
+                                required
                                 first-error-only
                             />
 
@@ -89,6 +112,15 @@
                                 placeholder="8320000"
                                 x-mask="9999999"
                                 wire:model.blur="form.postal"
+                                required
+                                first-error-only
+                            />
+
+                            <x-textarea
+                                class="rounded-md"
+                                label="Notas de Envío"
+                                placeholder="Dejar en conserjería."
+                                wire:model="form.deliveryInstructions"
                                 first-error-only
                             />
 
@@ -132,6 +164,7 @@
                                     :options="$this->comunas"
                                     wire:model.live.debounce="form.billingCity"
                                     x-bind:disabled="sameAddress"
+                                    required
                                     first-error-only
                                 />
 
@@ -144,6 +177,7 @@
                                     wire:model.blur="form.billingPostal"
                                     x-bind:disabled="sameAddress"
                                     x-mask="9999999"
+                                    required
                                     first-error-only
                                 />
                             </div>

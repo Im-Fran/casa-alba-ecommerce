@@ -8,6 +8,12 @@ use Livewire\Form;
 class CheckoutForm extends Form {
 
     /* Información de Contacto */
+    #[Validate(['required', 'string', 'max:255'], as: 'Nombre')]
+    public string $name = '';
+
+    #[Validate(['required', 'string', 'max:255'], as: 'Apellido')]
+    public string $lastname = '';
+
     #[Validate(['required', 'email', 'max:255'], as: 'Correo Electrónico')]
     public string $email = '';
 
@@ -27,7 +33,7 @@ class CheckoutForm extends Form {
     #[Validate(['required'], as: 'Comuna')]
     public string $city = '13101'; // Santiago
 
-    #[Validate(['nullable', 'digits:7'], as: 'Código Postal')]
+    #[Validate(['required', 'digits:7'], as: 'Código Postal')]
     public string $postal = '';
 
     /* Dirección de Facturación */
@@ -40,6 +46,17 @@ class CheckoutForm extends Form {
     #[Validate(['required_unless:sameAddress,1'], as: 'Comuna')]
     public string $billingCity = '13101'; // Santiago
 
-    #[Validate(['nullable', 'digits:7'], as: 'Código Postal')]
+    #[Validate(['required_unless:sameAddress,1', 'digits:7'], as: 'Código Postal')]
     public string $billingPostal = '';
+
+    #[Validate(['nullable', 'max:255'], as: 'Instrucciones de Envío')]
+    public ?string $deliveryInstructions = null;
+
+    public function messages(): array {
+        return [
+            'billingAddress.required_unless' => 'La dirección de facturación es obligatoria si no es la misma que la de envío',
+            'billingCity.required_unless' => 'La comuna de facturación es obligatoria si no es la misma que la de envío',
+            'billingPostal.required_unless' => 'El código postal de facturación es obligatorio si no es el mismo que el de envío',
+        ];
+    }
 }
