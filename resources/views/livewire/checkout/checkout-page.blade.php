@@ -21,17 +21,20 @@
                                 type="email"
                                 wire:model.live.debounce="form.email"
                                 autofocus
+                                required
                                 first-error-only
                             />
 
                             <x-input
-                                icon="flag.4x3-cl"
+                                icon="o-phone"
                                 class="rounded-md"
                                 label="Número de Teléfono"
-                                placeholder="912345678"
+                                placeholder="56 9 1234 5678"
                                 autocomplete="tel"
                                 type="tel"
+                                x-mask="99 9 9999 9999"
                                 wire:model.live.debounce="form.phone"
+                                required
                                 first-error-only
                             />
 
@@ -62,7 +65,8 @@
                                 label="Dirección"
                                 autocomplete="shipping street-address"
                                 placeholder="Calle 123"
-                                wire:model.live.debounce="form.address"
+                                wire:model.blur="form.address"
+                                required
                                 first-error-only
                             />
 
@@ -73,7 +77,7 @@
                                 label="Comuna"
                                 autocomplete="shipping address-level2"
                                 :options="$this->comunas"
-                                wire:model.live.live.debounce="form.city"
+                                wire:model.live.debounce="form.city"
                                 first-error-only
                             />
 
@@ -83,7 +87,8 @@
                                 label="Código Postal"
                                 autocomplete="shipping postal-code"
                                 placeholder="8320000"
-                                wire:model.live.debounce="form.postal"
+                                x-mask="9999999"
+                                wire:model.blur="form.postal"
                                 first-error-only
                             />
 
@@ -112,8 +117,9 @@
                                     label="Dirección"
                                     autocomplete="billing street-address"
                                     placeholder="Calle 123"
-                                    wire:model.live.debounce="form.billingAddress"
+                                    wire:model.blur="form.billingAddress"
                                     x-bind:disabled="sameAddress"
+                                    required
                                     first-error-only
                                 />
 
@@ -124,7 +130,7 @@
                                     label="Comuna"
                                     autocomplete="billing address-level2"
                                     :options="$this->comunas"
-                                    wire:model.live.live.debounce="form.billingCity"
+                                    wire:model.live.debounce="form.billingCity"
                                     x-bind:disabled="sameAddress"
                                     first-error-only
                                 />
@@ -135,8 +141,9 @@
                                     label="Código Postal"
                                     autocomplete="billing postal-code"
                                     placeholder="8320000"
-                                    wire:model.live.debounce="form.billingPostal"
+                                    wire:model.blur="form.billingPostal"
                                     x-bind:disabled="sameAddress"
+                                    x-mask="9999999"
                                     first-error-only
                                 />
                             </div>

@@ -15,13 +15,13 @@
 
         <div class="flex flex-col gap-2 mt-2">
             <div class="flex flex-col">
-                <h3 class="text-xl text-primary font-bold">{{ $this->product->attr('name') }}</h3>
-                <span class="text-gray-500 max-w-lg text-md h-12 line-clamp-2">{{ $this->product->attr('short_description') }}</span>
+                <h3 class="text-md md:text-xl text-primary font-bold">{{ $this->product->attr('name') }}</h3>
+                <span class="text-gray-500 max-w-lg text-sm md:text-md h-12 line-clamp-2">{{ $this->product->attr('short_description') }}</span>
             </div>
 
             @if($this->hasVariants)
                 <div class="flex items-center justify-center w-full px-2">
-                    <x-button class="btn btn-primary btn-sm" icon-right="o-shopping-cart" spinner>Elegir Variante</x-button>
+                    <x-button class="btn btn-primary btn-sm text-xs md:text-base" icon-right="o-shopping-cart" spinner>Elegir Variante</x-button>
                 </div>
             @else
                 <livewire:home.components.product.add-to-cart wire:model="defaultVariant"/>

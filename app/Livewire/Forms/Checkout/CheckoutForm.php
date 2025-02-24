@@ -11,7 +11,7 @@ class CheckoutForm extends Form {
     #[Validate(['required', 'email', 'max:255'], as: 'Correo Electrónico')]
     public string $email = '';
 
-    #[Validate(['required', 'numeric', 'digits:9'], as: 'Teléfono')]
+    #[Validate(['required', 'regex:/^\d{2}\s\d{1}\s\d{4}\s\d{4}$/'], as: 'Teléfono', message: ['regex' => 'El formato del teléfono debe ser 56 9 1234 5678'])]
     public string $phone = '';
 
     #[Validate(['accepted'], as: 'Términos y Condiciones')]
