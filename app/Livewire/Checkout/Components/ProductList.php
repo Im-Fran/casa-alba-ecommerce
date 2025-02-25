@@ -23,9 +23,10 @@ class ProductList extends Component {
         CartSession::remove(cartLineId: $line->id);
         $toast = toast()->success('El producto fue eliminado del carrito.', 'Eliminado');
 
-        if(($this->cart?->lines()?->count() ?? 0) === 0) {
+        if (($this->cart?->lines()?->count() ?? 0) === 0) {
             $toast->pushOnNextPage();
             $this->redirect(route('home'), navigate: true);
+
             return;
         }
 
@@ -33,17 +34,18 @@ class ProductList extends Component {
     }
 
     public function edit(CartLine $line, int $qty): void {
-        if($qty == 0) {
+        if ($qty == 0) {
             $this->remove($line);
+
             return;
-        } else if ($qty > $line->purchasable->stock) {
+        } elseif ($qty > $line->purchasable->stock) {
             toast()->danger('No hay suficiente stock para agregar más unidades de este producto.', 'Sin Stock')->push();
+
             return;
         }
         CartSession::updateLine(cartLineId: $line->id, quantity: min($qty, $line->purchasable->stock));
         toast()->success('El carrito fue actualizado correctamente.', 'Actualizado')->push();
     }
-
 
     #[Computed]
     public function subTotal(): string {

@@ -32,13 +32,14 @@ export default {
     ],
 
     plugins: [
-		require("daisyui")
+		require("@tailwindcss/typography"),
+		require("daisyui"),
 	],
 
     daisyui: {
         themes: [{
             casaalba: {
-                ...require("daisyui/src/theming/themes")["pastel"],
+                ...require("daisyui/src/theming/themes")["light"],
                 primary: '#2B9D66',
                 'primary-content': '#d4ffe8',
                 secondary: '#AFE9CD',

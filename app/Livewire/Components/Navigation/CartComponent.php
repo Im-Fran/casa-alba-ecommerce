@@ -11,10 +11,10 @@ use Lunar\Pricing\DefaultPriceFormatter;
 use Usernotnull\Toast\Concerns\WireToast;
 
 class CartComponent extends Component {
-
     use WireToast;
 
     public ?Cart $cart;
+
     public bool $openCart = false;
 
     public function boot(): void {
@@ -25,6 +25,7 @@ class CartComponent extends Component {
         $qty = $line->quantity + 1;
         if ($qty > $line->purchasable->stock) {
             toast()->danger('No hay suficiente stock para agregar más unidades de este producto.')->push();
+
             return;
         }
         CartSession::updateLine(cartLineId: $line->id, quantity: min($line->quantity + 1, $line->purchasable->stock));
@@ -49,5 +50,4 @@ class CartComponent extends Component {
 
         return '--';
     }
-
 }

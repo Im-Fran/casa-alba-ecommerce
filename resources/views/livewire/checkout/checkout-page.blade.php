@@ -3,7 +3,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
             <livewire:checkout.components.product-list wire:model="cart"/>
 
-            <div class="col-span-1 p-[4.5rem]" x-data="{ contact: true, payment: true, shipping: true, billing: true, summary: true }">
+            <form wire:submit.prevent="checkout" class="col-span-1 p-[4.5rem]" x-data="{ contact: true, payment: true, shipping: true, billing: true, summary: true }">
                 <div class="flex flex-col gap-10">
                     <!-- Información de Contacto -->
                     <section class="flex flex-col space-y-6">
@@ -15,7 +15,6 @@
                         <div class="flex flex-col space-y-6" x-show="contact" x-collapse>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                 <x-input
-                                    class="rounded-md"
                                     label="Nombre"
                                     placeholder="Juan"
                                     autocomplete="name"
@@ -25,7 +24,6 @@
                                 />
 
                                 <x-input
-                                    class="rounded-md"
                                     label="Apellido"
                                     placeholder="Pérez"
                                     autocomplete="family-name"
@@ -36,7 +34,6 @@
                             </div>
 
                             <x-input
-                                class="rounded-md"
                                 label="Correo Electrónico"
                                 placeholder="mi@correo.cl"
                                 autocomplete="email"
@@ -49,7 +46,6 @@
 
                             <x-input
                                 icon="o-phone"
-                                class="rounded-md"
                                 label="Número de Teléfono"
                                 placeholder="56 9 1234 5678"
                                 autocomplete="tel"
@@ -83,7 +79,6 @@
                         <div class="flex flex-col space-y-6" x-show="shipping" x-collapse>
                             <x-input
                                 icon="o-map-pin"
-                                class="rounded-md"
                                 label="Dirección"
                                 autocomplete="shipping street-address"
                                 placeholder="Calle 123"
@@ -95,7 +90,6 @@
                             <x-select
                                 wire:key="checkout_comunas"
                                 icon="o-building-library"
-                                class="rounded-md"
                                 label="Comuna"
                                 autocomplete="shipping address-level2"
                                 :options="$this->comunas"
@@ -106,7 +100,6 @@
 
                             <x-input
                                 icon="o-hashtag"
-                                class="rounded-md"
                                 label="Código Postal"
                                 autocomplete="shipping postal-code"
                                 placeholder="8320000"
@@ -117,7 +110,6 @@
                             />
 
                             <x-textarea
-                                class="rounded-md"
                                 label="Notas de Envío"
                                 placeholder="Dejar en conserjería."
                                 wire:model="form.deliveryInstructions"
@@ -185,11 +177,11 @@
                         </div>
                     </section>
 
-                    <x-button class="btn rounded-md btn-primary w-full" icon-right="o-shopping-cart" wire:click="checkout" spinner>
+                    <x-button type="submit" class="btn rounded-md btn-primary w-full" icon-right="o-shopping-cart" spinner>
                         Finalizar Compra
                     </x-button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>

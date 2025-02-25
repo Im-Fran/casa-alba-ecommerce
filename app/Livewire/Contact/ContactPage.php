@@ -3,12 +3,10 @@
 namespace App\Livewire\Contact;
 
 use App\Livewire\Forms\ContactForm;
-use Illuminate\View\View;
 use Livewire\Component;
 use Usernotnull\Toast\Concerns\WireToast;
 
 class ContactPage extends Component {
-
     use WireToast;
 
     public ContactForm $form;

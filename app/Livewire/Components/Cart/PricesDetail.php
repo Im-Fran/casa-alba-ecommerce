@@ -2,11 +2,9 @@
 
 namespace App\Livewire\Components\Cart;
 
-use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Modelable;
 use Livewire\Component;
-use Lunar\Facades\CartSession;
 use Lunar\Models\Cart;
 use Lunar\Pricing\DefaultPriceFormatter;
 

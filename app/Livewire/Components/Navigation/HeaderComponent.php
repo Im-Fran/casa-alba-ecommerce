@@ -2,10 +2,20 @@
 
 namespace App\Livewire\Components\Navigation;
 
-use Illuminate\View\View;
 use Livewire\Component;
 
 class HeaderComponent extends Component {
-    public bool $openMobileNav = false;
     public bool $sticky = false;
+
+    public bool $authModal = false;
+
+    public function clickAuthModal(): void {
+        if (!auth()->check()) {
+            $this->authModal = !$this->authModal;
+
+            return;
+        }
+
+        // $this->redirect(route('account'), navigate: true);
+    }
 }

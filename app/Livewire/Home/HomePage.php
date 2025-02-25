@@ -13,7 +13,6 @@ use Lunar\Models\Product;
 
 #[Title('Inicio')]
 class HomePage extends Component {
-
     #[Url(as: 'busqueda', history: true, keep: false, except: '')]
     public ?string $search = null;
 
@@ -36,11 +35,11 @@ class HomePage extends Component {
     public function products(): LengthAwarePaginator {
         return Product::query()
             ->select('lunar_products.*', DB::raw('MIN(lunar_prices.price) as min_price'))
-            ->when($this->categoryId, function ($query) {
-                $query->whereIn('lunar_products.id', function ($subQuery) {
+            ->when($this->categoryId, function($query) {
+                $query->whereIn('lunar_products.id', function($subQuery) {
                     $subQuery->select('product_id')
                         ->from('lunar_collection_product')
-                        ->whereIn('collection_id', function ($subSubQuery) {
+                        ->whereIn('collection_id', function($subSubQuery) {
                             $subSubQuery->select('id')
                                 ->from('lunar_collections')
                                 ->where('id', $this->categoryId)
@@ -48,10 +47,12 @@ class HomePage extends Component {
                         });
                 });
             })
-            ->when($this->search, fn($query) => $query
-                ->whereRaw("translate(LOWER(lunar_products.attribute_data->'name'->>'value'), 'áéíóúÁÉÍÓÚ', 'aeiouAEIOU') LIKE ?", [strtolower("%$this->search%")])
-                ->orWhereRaw("translate(LOWER(lunar_products.attribute_data->'description'->>'value'), 'áéíóúÁÉÍÓÚ', 'aeiouAEIOU') LIKE ?", [strtolower("%$this->search%")])
-                ->orWhereRaw("translate(LOWER(lunar_products.attribute_data->'short_description'->>'value'), 'áéíóúÁÉÍÓÚ', 'aeiouAEIOU') LIKE ?", [strtolower("%$this->search%")])
+            ->when(
+                $this->search,
+                fn ($query) => $query
+                    ->whereRaw("translate(LOWER(lunar_products.attribute_data->'name'->>'value'), 'áéíóúÁÉÍÓÚ', 'aeiouAEIOU') LIKE ?", [strtolower("%{$this->search}%")])
+                    ->orWhereRaw("translate(LOWER(lunar_products.attribute_data->'description'->>'value'), 'áéíóúÁÉÍÓÚ', 'aeiouAEIOU') LIKE ?", [strtolower("%{$this->search}%")])
+                    ->orWhereRaw("translate(LOWER(lunar_products.attribute_data->'short_description'->>'value'), 'áéíóúÁÉÍÓÚ', 'aeiouAEIOU') LIKE ?", [strtolower("%{$this->search}%")])
             )
             ->status('published')
             ->joinRelation('variants.prices')

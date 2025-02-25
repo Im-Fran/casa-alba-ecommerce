@@ -6,7 +6,6 @@ use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class CheckoutForm extends Form {
-
     /* Información de Contacto */
     #[Validate(['required', 'string', 'max:255'], as: 'Nombre')]
     public string $name = '';

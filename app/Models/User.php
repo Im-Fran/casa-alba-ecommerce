@@ -16,6 +16,7 @@ class User extends Authenticatable implements LunarUserInterface, MustVerifyEmai
 
     protected $fillable = [
         'name',
+        'last_name',
         'email',
         'password',
     ];

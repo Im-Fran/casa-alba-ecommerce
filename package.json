@@ -16,5 +16,8 @@
         "build": "vite build",
         "dev": "vite --host"
     },
-    "type": "module"
+    "type": "module",
+    "dependencies": {
+        "@tailwindcss/typography": "^0.5.16"
+    }
 }

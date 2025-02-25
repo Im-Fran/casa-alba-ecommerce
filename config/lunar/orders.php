@@ -30,7 +30,7 @@ return [
     'statuses' => [
 
         'awaiting-payment' => [
-            'label' => 'Awaiting Payment',
+            'label' => 'Esperando Pago',
             'color' => '#848a8c',
             'mailers' => [],
             'notifications' => [],
@@ -38,7 +38,7 @@ return [
         ],
 
         'payment-offline' => [
-            'label' => 'Payment Offline',
+            'label' => 'Pago Presencial',
             'color' => '#0A81D7',
             'mailers' => [],
             'notifications' => [],
@@ -46,7 +46,7 @@ return [
         ],
 
         'payment-received' => [
-            'label' => 'Payment Received',
+            'label' => 'Pago Recibido',
             'color' => '#6a67ce',
             'mailers' => [],
             'notifications' => [],
@@ -54,7 +54,7 @@ return [
         ],
 
         'dispatched' => [
-            'label' => 'Dispatched',
+            'label' => 'Despachado',
             'mailers' => [],
             'notifications' => [],
             'favourite' => true,
