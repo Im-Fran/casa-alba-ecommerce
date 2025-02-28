@@ -7,7 +7,9 @@ use App\Livewire\Forms\Checkout\CheckoutForm;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Lunar\Exceptions\Carts\CartException;
 use Lunar\Facades\CartSession;
+use Lunar\Facades\ShippingManifest;
 use Lunar\Models\Cart;
 use Lunar\Models\Country;
 use Usernotnull\Toast\Concerns\WireToast;
@@ -27,9 +29,34 @@ class CheckoutPage extends Component {
         if (!$this->cart || $this->cart?->lines()->count() == 0) {
             $this->redirect(route('home'), navigate: true);
         }
+
+        $this->form->shippingOption = $this->shippingOptions->first()->identifier;
+
+        if(auth()->check()) {
+            $user = auth()->user();
+            $this->form->name = $user->name;
+            $this->form->lastname = $user->last_name;
+            $this->form->email = $user->email;
+//            $this->form->phone = $user->phone;
+//            $this->form->rut = $user->rut;
+
+//            if($user->addresses->count() > 0) {
+//                $address = $user->addresses->first();
+//                $this->form->address = $address->line_one;
+//                $this->form->city = $address->city;
+//                $this->form->postal = $address->postcode;
+//            }
+        }
     }
 
     public function updated($field): void {
+        if($field === 'form.shippingOption') {
+            $options = $this->shippingOptions;
+            if($options->where('identifier', '=', $this->form->shippingOption)->count() === 0) {
+                $this->form->shippingOption = $options->first->identifier;
+            }
+        }
+
         if ($this->form->sameAddress) {
             $this->form->billingAddress = $this->form->address;
             $this->form->billingCity = $this->form->city;
@@ -48,8 +75,13 @@ class CheckoutPage extends Component {
     }
 
     #[Computed]
-    public function comunas(): Collection {
-        return Helpers::comunas();
+    public function comunas(): array {
+        return Helpers::groupedComunas();
+    }
+
+    #[Computed]
+    public function shippingOptions(): Collection {
+        return ShippingManifest::getOptions($this->cart);
     }
 
     /* Run the checkout */
@@ -68,8 +100,6 @@ class CheckoutPage extends Component {
             'contact_phone' => $this->form->phone,
         ];
 
-        dd($addressData);
-
         // Guarda la dirección de envío y facturación.
         $this->cart->setShippingAddress([
             ...$addressData,
@@ -84,13 +114,19 @@ class CheckoutPage extends Component {
             'postcode' => $this->form->billingPostal,
         ]);
 
-        if (!$this->cart->canCreateOrder()) {
-            toast()->danger('No se ha podido crear la orden. Intenta más tarde.', 'Error')->push();
-
+        $shipping = $this->shippingOptions->firstWhere('identifier', '=', $this->form->shippingOption);
+        if($shipping == null) {
+            toast()->danger('Ocurrió un error al configurar el envío. Intenta más tarde.', 'Error')->push();
             return;
         }
 
-        $order = $this->cart->createOrder();
-        dd($order);
+        $this->cart->setShippingOption($shipping);
+
+        try {
+            $order = $this->cart->createOrder();
+        } catch (CartException $e) {
+            toast()->danger($e->getMessage(), 'Error')->push();
+            return;
+        }
     }
 }

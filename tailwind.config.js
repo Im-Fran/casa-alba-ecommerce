@@ -39,11 +39,27 @@ export default {
     daisyui: {
         themes: [{
             casaalba: {
-                ...require("daisyui/src/theming/themes")["light"],
-                primary: '#2B9D66',
-                'primary-content': '#d4ffe8',
-                secondary: '#AFE9CD',
-                'secondary-content': '#2B9D66',
+                ...require("daisyui/src/theming/themes")["winter"],
+                "primary": "#2B9D66",
+                "primary-content": "#E3F7EE",
+                "secondary": "#AFE9CD",
+                "secondary-content": "#2B9D66",
+                "accent": "#05C367",
+                "accent-content": "#F3FCF7",
+                "neutral": "#FCFCFC",
+                "neutral-content": "#333333",
+                "base-100": "#FAFAFA",
+                "base-200": "#E6E6E6",
+                "base-300": "#D3D3D3",
+                "base-content": "#404040",
+                "info": "#025FFF",
+                "info-content": "#DAE7FF",
+                "success": "#05c367",
+                "success-content": "#f3fcf7",
+                "warning": "#F58105",
+                "warning-content": "#FEF4E8",
+                "error": "#BC3633",
+                "error-content": "#FCF3F3F3",
             }
         }],
 

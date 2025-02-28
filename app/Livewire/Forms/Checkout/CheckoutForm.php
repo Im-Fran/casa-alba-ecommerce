@@ -16,8 +16,11 @@ class CheckoutForm extends Form {
     #[Validate(['required', 'email', 'max:255'], as: 'Correo Electrónico')]
     public string $email = '';
 
-    #[Validate(['required', 'regex:/^\d{2}\s\d{1}\s\d{4}\s\d{4}$/'], as: 'Teléfono', message: ['regex' => 'El formato del teléfono debe ser 56 9 1234 5678'])]
+    #[Validate(['required', 'regex:/^\+\d{2}\s\d{1}\s\d{4}\s\d{4}$/'], as: 'Teléfono', message: ['phone.regex' => 'El formato del teléfono debe ser +56 9 1234 5678'])]
     public string $phone = '';
+
+    #[Validate(['required', 'regex:/^\d{1,2}(\.\d{3}){2}-[\dkK]$/'], as: 'RUT', message: ['rut.regex' => 'El formato del RUT debe ser xx.xxx.xxx-x'])]
+    public string $rut = '';
 
     #[Validate(['accepted'], as: 'Términos y Condiciones')]
     public bool $terms = false;
@@ -39,23 +42,17 @@ class CheckoutForm extends Form {
     #[Validate(['present'], as: 'Usar Dirección de Envío')]
     public bool $sameAddress = false;
 
-    #[Validate(['required_unless:sameAddress,1'], as: 'Dirección')]
+    #[Validate(['required_unless:sameAddress,1'], as: 'Dirección', message: ['required_unless' => 'La dirección de facturación es obligatoria si no es la misma que la de envío'])]
     public string $billingAddress = '';
 
-    #[Validate(['required_unless:sameAddress,1'], as: 'Comuna')]
+    #[Validate(['required_unless:sameAddress,1'], as: 'Comuna', message: ['required_unless' => 'La comuna de facturación es obligatoria si no es la misma que la de envío'])]
     public string $billingCity = '13101'; // Santiago
 
-    #[Validate(['required_unless:sameAddress,1', 'digits:7'], as: 'Código Postal')]
+    #[Validate(['required_unless:sameAddress,1', 'digits:7'], as: 'Código Postal', message: ['required_unless' => 'El código postal de facturación es obligatorio si no es el mismo que el de envío'])]
     public string $billingPostal = '';
 
     #[Validate(['nullable', 'max:255'], as: 'Instrucciones de Envío')]
     public ?string $deliveryInstructions = null;
 
-    public function messages(): array {
-        return [
-            'billingAddress.required_unless' => 'La dirección de facturación es obligatoria si no es la misma que la de envío',
-            'billingCity.required_unless' => 'La comuna de facturación es obligatoria si no es la misma que la de envío',
-            'billingPostal.required_unless' => 'El código postal de facturación es obligatorio si no es el mismo que el de envío',
-        ];
-    }
+    public string $shippingOption = '';
 }

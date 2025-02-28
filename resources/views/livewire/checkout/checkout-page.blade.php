@@ -3,8 +3,8 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
             <livewire:checkout.components.product-list wire:model="cart"/>
 
-            <form wire:submit.prevent="checkout" class="col-span-1 p-[4.5rem]" x-data="{ contact: true, payment: true, shipping: true, billing: true, summary: true }">
-                <div class="flex flex-col gap-10">
+            <form wire:submit.prevent="checkout" class="col-span-1 p-[4.5rem]" x-data="{ contact: true, payment: true, shipping: true, billing: true, shipping_options: true }">
+                <div class="flex flex-col gap-10 p-2">
                     <!-- Información de Contacto -->
                     <section class="flex flex-col space-y-6">
                         <div class="flex items-center justify-between w-full cursor-pointer" @click="contact = !contact">
@@ -38,23 +38,39 @@
                                 placeholder="mi@correo.cl"
                                 autocomplete="email"
                                 type="email"
+                                inputmode="email"
                                 wire:model.live.debounce="form.email"
                                 autofocus
                                 required
                                 first-error-only
                             />
 
-                            <x-input
-                                icon="o-phone"
-                                label="Número de Teléfono"
-                                placeholder="56 9 1234 5678"
-                                autocomplete="tel"
-                                type="tel"
-                                x-mask="99 9 9999 9999"
-                                wire:model.live.debounce="form.phone"
-                                required
-                                first-error-only
-                            />
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <x-input
+                                    icon="o-phone"
+                                    label="Número de Teléfono"
+                                    placeholder="+56 9 1234 5678"
+                                    autocomplete="tel"
+                                    type="tel"
+                                    inputmode="tel"
+                                    x-mask="+99 9 9999 9999"
+                                    wire:model.live.debounce="form.phone"
+                                    required
+                                    first-error-only
+                                />
+
+                                <x-input
+                                    icon="o-identification"
+                                    label="RUT"
+                                    placeholder="99.999.999-9"
+                                    x-mask:dynamic="$input.length < 12 ? '9.999.999-99' : '99.999.999-9'"
+                                    hint="Si tu RUT termina en K, reemplázalo por un 0"
+                                    inputmode="tel"
+                                    wire:model.live.debounce="form.rut"
+                                    required
+                                    first-error-only
+                                />
+                            </div>
 
                             <div class="flex items-center justify-start">
                                 <x-checkbox
@@ -67,7 +83,6 @@
                             <div class="border-b border-neutral-300"/>
                         </div>
                     </section>
-
 
                     <!-- Datos de Envío -->
                     <section class="flex flex-col space-y-6">
@@ -87,7 +102,7 @@
                                 first-error-only
                             />
 
-                            <x-select
+                            <x-select-group
                                 wire:key="checkout_comunas"
                                 icon="o-building-library"
                                 label="Comuna"
@@ -104,6 +119,7 @@
                                 autocomplete="shipping postal-code"
                                 placeholder="8320000"
                                 x-mask="9999999"
+                                inputmode="tel"
                                 wire:model.blur="form.postal"
                                 required
                                 first-error-only
@@ -121,7 +137,7 @@
                     </section>
 
                     <!-- Dirección de Facturación -->
-                    <section class="flex flex-col space-y-6 pb-10">
+                    <section class="flex flex-col space-y-6">
                         <div class="flex items-center justify-between w-full cursor-pointer" @click="billing = !billing">
                             <h4 class="font-semibold text-xl">Dirección de Facturación</h4>
                             <x-heroicon-o-plus x-bind:class="billing ? 'rotate-180' : 'rotate-0'" class="w-6 h-6 transition duration-300"/>
@@ -137,7 +153,7 @@
                             <div class="flex flex-col space-y-6">
                                 <x-input
                                     icon="o-map-pin"
-                                    class="rounded-md disabled:border disabled:border-neutral-300"
+                                    class="disabled:border disabled:border-neutral-300"
                                     label="Dirección"
                                     autocomplete="billing street-address"
                                     placeholder="Calle 123"
@@ -147,10 +163,10 @@
                                     first-error-only
                                 />
 
-                                <x-select
+                                <x-select-group
                                     wire:key="checkout_comunas"
                                     icon="o-building-library"
-                                    class="rounded-md disabled:border disabled:border-neutral-300"
+                                    class="disabled:border disabled:border-neutral-300"
                                     label="Comuna"
                                     autocomplete="billing address-level2"
                                     :options="$this->comunas"
@@ -162,10 +178,11 @@
 
                                 <x-input
                                     icon="o-hashtag"
-                                    class="rounded-md disabled:border disabled:border-neutral-300"
+                                    class="disabled:border disabled:border-neutral-300"
                                     label="Código Postal"
                                     autocomplete="billing postal-code"
                                     placeholder="8320000"
+                                    inputmode="tel"
                                     wire:model.blur="form.billingPostal"
                                     x-bind:disabled="sameAddress"
                                     x-mask="9999999"
@@ -176,6 +193,35 @@
                             <div class="border-b border-neutral-300"/>
                         </div>
                     </section>
+
+                    <!-- Opciones de Envío -->
+                    <section class="flex flex-col space-y-6">
+                        <div class="flex items-center justify-between w-full cursor-pointer" @click="shipping_options = !shipping_options">
+                            <h4 class="font-semibold text-xl">Opciones de Envío</h4>
+                            <x-heroicon-o-plus x-bind:class="shipping_options ? 'rotate-180' : 'rotate-0'" class="w-6 h-6 transition duration-300"/>
+                        </div>
+
+                        <div class="flex flex-col space-y-6" x-show="shipping_options" x-collapse>
+                            <div x-data="{ selectedShippingOption: $wire.entangle('form.shippingOption').live, loading: false }" class="grid grid-cols-3 gap-4 w-full">
+                                @foreach($this->shippingOptions as $shippingOption)
+                                    <div x-data="{ id: '{{ $shippingOption->identifier }}', name: '{{ $shippingOption->name }}', price: '{{ $shippingOption->price->value === 0 ? 'Gratis' : ($shippingOption->price->unitFormatted('es-cl') ?? '--') }}' }" wire:key="shipping_{{ $shippingOption->identifier }}" class="flex flex-col items-start justify-between bg-base-100 border rounded-md p-4 col-span-1 cursor-pointer hover:shadow-xl transition duration-300" x-bind:class="selectedShippingOption === id ? 'border-primary' : 'border-neutral-400'" x-on:click="async () => { if(loading){return;} if(selectedShippingOption === id) {return;}  loading=true; await $wire.$set('form.shippingOption', id); loading=false; }">
+                                        <div class="flex flex-col items-start justify-start w-full">
+                                            <div class="flex items-center justify-between w-full">
+                                                <h3 class="font-semibold text-sm" x-text="name"></h3>
+                                                <x-heroicon-o-check-circle class="w-5 h-5 text-primary fill-primary-content" x-show="selectedShippingOption === id"/>
+                                            </div>
+
+                                            <span class="text-sm text-neutral-500 w-5/6" x-text="name"></span>
+                                        </div>
+
+                                        <span class="font-semibold text-neutral-800 pt-2.5 text-sm" x-text="price"></span>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="py-10"/>
 
                     <x-button type="submit" class="btn rounded-md btn-primary w-full" icon-right="o-shopping-cart" spinner>
                         Finalizar Compra

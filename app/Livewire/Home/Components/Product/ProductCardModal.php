@@ -4,6 +4,7 @@ namespace App\Livewire\Home\Components\Product;
 
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Modelable;
 use Livewire\Component;
 use Lunar\Facades\CartSession;
@@ -19,6 +20,9 @@ class ProductCardModal extends Component {
     public ?ProductVariant $selectedVariant;
 
     public Collection $options;
+
+    #[Locked]
+    public bool $hasProductOptions = false;
 
     private function selectVariant(): void {
         $this->selectedVariant = $this->productVariants->first(fn ($variant) => !$variant->values->pluck('id')->diff(($this->options ?? ($this->productOptions->mapWithKeys(fn ($it) => [$it['option']->id => $it['values']->first()->id])))->values())->count());
@@ -40,12 +44,15 @@ class ProductCardModal extends Component {
 
     #[Computed]
     public function productOptions(): Collection {
-        return $this->productOptionValues->unique('id')->groupBy('product_option_id')
+        $opts = $this->productOptionValues->unique('id')->groupBy('product_option_id')
             ->map(fn ($it) => [
                 'option' => $it->first()->option,
                 'values' => $it,
             ])
             ->values();
+
+        $this->hasProductOptions = $opts->isNotEmpty();
+        return $opts;
     }
 
     public function addToCart(): void {
