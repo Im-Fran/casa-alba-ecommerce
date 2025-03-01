@@ -19,6 +19,8 @@ class User extends Authenticatable implements LunarUserInterface, MustVerifyEmai
         'last_name',
         'email',
         'password',
+        'phone',
+        'rut',
     ];
 
     protected $hidden = [

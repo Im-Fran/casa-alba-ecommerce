@@ -22,6 +22,12 @@ class RegisterForm extends Form {
     #[Validate(as: 'Confirmar contraseña')]
     public string $password_confirmation;
 
+    #[Validate(['required', 'regex:/^\+\d{2}\s\d{1}\s\d{4}\s\d{4}$/'], as: 'Teléfono', message: ['phone.regex' => 'El formato del teléfono debe ser +56 9 1234 5678'])]
+    public string $phone = '';
+
+    #[Validate(['required', 'regex:/^\d{1,2}(\.\d{3}){2}-[\dkK]$/'], as: 'RUT', message: ['rut.regex' => 'El formato del RUT debe ser xx.xxx.xxx-x'])]
+    public string $rut = '';
+
     public function rules(): array {
         return [
             'password' => ['required', 'confirmed', Password::min(8)],

@@ -9,6 +9,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Lunar\Exceptions\Carts\CartException;
 use Lunar\Facades\CartSession;
+use Lunar\Facades\Payments;
 use Lunar\Facades\ShippingManifest;
 use Lunar\Models\Cart;
 use Lunar\Models\Country;
@@ -128,5 +129,8 @@ class CheckoutPage extends Component {
             toast()->danger($e->getMessage(), 'Error')->push();
             return;
         }
+
+        $driver = Payments::driver('offline');
+        dd($driver);
     }
 }

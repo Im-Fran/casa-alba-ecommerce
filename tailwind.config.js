@@ -49,8 +49,8 @@ export default {
                 "neutral": "#FCFCFC",
                 "neutral-content": "#333333",
                 "base-100": "#FAFAFA",
-                "base-200": "#E6E6E6",
-                "base-300": "#D3D3D3",
+                "base-200": "#D3D3D3",
+                "base-300": "#C9C9C9",
                 "base-content": "#404040",
                 "info": "#025FFF",
                 "info-content": "#DAE7FF",
@@ -59,7 +59,7 @@ export default {
                 "warning": "#F58105",
                 "warning-content": "#FEF4E8",
                 "error": "#BC3633",
-                "error-content": "#FCF3F3F3",
+                "error-content": "#FCF3F3",
             }
         }],
 

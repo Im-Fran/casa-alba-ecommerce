@@ -2,7 +2,7 @@
 
     <livewire:components.navigation.header-component :sticky="true"/>
 
-    <div class="p-2">
+    <div class="p-2 md:p-0">
         <div id="banner" class="pb-20 pt-[10rem]">
             <div class="grid grid-cols-1 md:grid-cols-2 items-center justify-center w-full">
                 <div class="absolute md:static col-span-1 flex flex-col items-center justify-center gap-5 z-[2] mt-[10rem] md:mt-0 inset-x-0">
@@ -42,7 +42,7 @@
                         <x-mary-input icon="o-magnifying-glass" wire:model.live.debounce="search" @keydown.enter="$wire.$refresh()" type="text" class="w-full p-2 bg-neutral-50 rounded-lg" placeholder="Buscar productos..."/>
                     </div>
 
-                    <div class="flex flex-col items-start justify-start gap-2 bg-neutral-50 border rounded-lg p-2 w-full">
+                    <div class="flex flex-col items-start justify-start gap-2 border rounded-lg p-2 w-full">
                         <div class="flex flex-col items-start justify-start gap-0.5 w-full">
                             <div class="flex flex-col items-start justify-start gap-2 p-2 w-full" x-data="{ open: true }">
                                 <div class="flex items-center justify-between w-full cursor-pointer" @click="open = !open">

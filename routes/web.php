@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LogoutController;
+use App\Livewire\Account\AccountPage;
 use App\Livewire\Auth\EmailVerification;
 use App\Livewire\Auth\LoginPage;
 use App\Livewire\Auth\PasswordRequest;
@@ -23,11 +24,15 @@ Route::prefix('auth')->group(function() {
 
     Route::prefix('email-verification')->middleware(['auth'])->group(function() {
         Route::get('/resend', EmailVerification::class)->name('verification.resend');
-        Route::get('/verify', VerifyEmail::class)->name('verification.verify');
+        Route::get('/verify', VerifyEmail::class)->middleware(['signed'])->name('verification.verify');
     });
 
     Route::prefix('password-reset')->group(function() {
         Route::get('/request', PasswordRequest::class)->name('password.request');
         Route::get('/reset/{token}', PasswordReset::class)->name('password.reset');
     });
+});
+
+Route::prefix('/account')->middleware(['auth'])->group(function() {
+    Route::get('/', AccountPage::class)->name('account');
 });

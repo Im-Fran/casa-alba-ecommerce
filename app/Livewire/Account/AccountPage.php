@@ -2,68 +2,29 @@
 
 namespace App\Livewire\Account;
 
+use App\Livewire\Forms\Account\AccountForm;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Usernotnull\Toast\Concerns\WireToast;
 
-class AccountPage extends Component
-{
-    public $form = [
-        'name' => '',
-        'last_name' => '',
-        'email' => '',
-        'current_password' => '',
-        'new_password' => '',
-        'new_password_confirmation' => '',
-    ];
+class AccountPage extends Component {
+    use WireToast;
 
-    public function mount()
-    {
-        $user = Auth::user();
-        $this->form['name'] = $user->name;
-        $this->form['last_name'] = $user->last_name;
-        $this->form['email'] = $user->email;
+    public AccountForm $form;
+
+    public function mount(): void {
+        $user = auth()->user();
+        $this->form->name = $user->name;
+        $this->form->last_name = $user->last_name;
+        $this->form->email = $user->email;
+        $this->form->phone = $user->phone;
+        $this->form->rut = $user->rut;
     }
 
-    public function updateProfile()
-    {
-        $this->validate([
-            'form.name' => 'required|string|max:255',
-            'form.last_name' => 'required|string|max:255',
-            'form.email' => 'required|email|unique:users,email,' . Auth::id(),
-        ]);
+    public function submit(): void {
+        Auth::user()->update($this->form->validate());
 
-        Auth::user()->update([
-            'name' => $this->form['name'],
-            'last_name' => $this->form['last_name'],
-            'email' => $this->form['email'],
-        ]);
-
-        $this->dispatch('notify', [
-            'message' => 'Perfil actualizado correctamente',
-            'type' => 'success'
-        ]);
-    }
-
-    public function updatePassword()
-    {
-        $this->validate([
-            'form.current_password' => 'required|current_password',
-            'form.new_password' => 'required|min:8|confirmed',
-            'form.new_password_confirmation' => 'required'
-        ]);
-
-        Auth::user()->update([
-            'password' => bcrypt($this->form['new_password'])
-        ]);
-
-        $this->form['current_password'] = '';
-        $this->form['new_password'] = '';
-        $this->form['new_password_confirmation'] = '';
-
-        $this->dispatch('notify', [
-            'message' => 'Contraseña actualizada correctamente',
-            'type' => 'success'
-        ]);
+        toast()->success('Datos actualizados correctamente', '¡Éxito!')->push();
     }
 
 }

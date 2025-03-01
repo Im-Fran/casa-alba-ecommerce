@@ -16,6 +16,6 @@ class HeaderComponent extends Component {
             return;
         }
 
-        // $this->redirect(route('account'), navigate: true);
+        $this->redirect(route('account'), navigate: true);
     }
 }
