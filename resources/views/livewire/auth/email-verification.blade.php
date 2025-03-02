@@ -16,7 +16,7 @@
                 </p>
 
                 <div class="flex items-center justify-center gap-5">
-                    <x-button link="{{ route('logout') }}" class="btn text-red-50 btn-error" icon-right="o-arrow-left-on-rectangle">Cerrar Sesión</x-button>
+                    <x-button link="{{ route('logout') }}" class="btn text-red-50 btn-error" icon-right="o-arrow-left-on-rectangle" no-wire-navigate>Cerrar Sesión</x-button>
                     <x-button wire:click="submit" class="btn btn-primary" icon-right="o-paper-airplane" spinner>Reenviar Correo de Verificación</x-button>
                 </div>
             </div>

@@ -2,13 +2,13 @@
     @auth
         <x-dropdown>
             <x-menu-title title="Mi Cuenta"/>
-            <x-menu-item title="Información de la Cuenta" icon="o-identification" link="{{ route('account') }}" wire:current="text-primary"/>
-            <x-menu-item title="Seguridad" icon="o-lock-closed" link="{{ route('account') }}" wire:current="text-primary"/>
-            <x-menu-item title="Direcciones" icon="o-map-pin" link="{{ route('account') }}" wire:current="text-primary"/>
-            <x-menu-item title="Ordenes" icon="o-shopping-cart" link="{{ route('account') }}" wire:current="text-primary"/>
+            <x-menu-item title="Información de la Cuenta" icon="o-identification" link="{{ route('account') }}" wire:current="text-primary" no-wire-navigate/>
+            <x-menu-item title="Seguridad" icon="o-lock-closed" link="{{ route('account') }}" wire:current="text-primary" no-wire-navigate/>
+            <x-menu-item title="Direcciones" icon="o-map-pin" link="{{ route('account') }}" wire:current="text-primary" no-wire-navigate/>
+            <x-menu-item title="Ordenes" icon="o-shopping-cart" link="{{ route('account') }}" wire:current="text-primary" no-wire-navigate/>
 
             <x-menu-separator/>
-            <x-menu-item title="Cerrar Sesión" icon="o-arrow-left-on-rectangle" link="{{ route('logout') }}"/>
+            <x-menu-item title="Cerrar Sesión" icon="o-arrow-left-on-rectangle" link="{{ route('logout') }}" no-wire-navigate/>
 
             <x-slot:trigger>
                 <x-lucide-user class="w-6 h-6 md:w-8 md:h-8 cursor-pointer text-neutral-100"/>

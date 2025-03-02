@@ -16,7 +16,7 @@
         <span class="text-sm text-primary font-bold">{{ $this->cart?->total?->unitFormatted('es-cl') ?? '--' }}</span>
     </div>
 
-    <x-button link="{{ route('checkout') }}" wire:click="$parent.$toggle('openCart')" class="btn btn-primary mt-4" label="Ir a Pagar"/>
+    <x-button link="{{ route('checkout') }}" wire:click="$parent.$toggle('openCart')" class="btn btn-primary mt-4" label="Ir a Pagar" no-wire-navigate/>
     <div class="flex flex-col items-center justify-center">
         <x-button wire:click="$parent.$toggle('openCart')" class="btn btn-primary btn-link">Seguir comprando</x-button>
     </div>
