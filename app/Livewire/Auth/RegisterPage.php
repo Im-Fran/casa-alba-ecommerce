@@ -13,18 +13,8 @@ class RegisterPage extends Component {
     public RegisterForm $form;
 
     public function mount(): void {
-        if (session()->exists('email')) {
+        if (session()->has('email')) {
             $this->form->email = session('email');
-        }
-
-        if (auth()->check()) {
-            if (!auth()->user()->hasVerifiedEmail()) {
-                $this->redirect(route('verification.resend'), navigate: true);
-
-                return;
-            }
-
-            $this->redirect(route('home'), navigate: true);
         }
     }
 
@@ -35,6 +25,6 @@ class RegisterPage extends Component {
         session()->forget('email');
 
         toast()->success('Por favor verifica tu correo usando el link que enviamos. Recuerda revisar el Spam!', 'Verificación Necesaria')->pushOnNextPage();
-        $this->redirect(route('verification.resend'), navigate: true);
+        $this->redirect(route('verification.notice'), navigate: true);
     }
 }

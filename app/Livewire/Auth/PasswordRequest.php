@@ -12,12 +12,18 @@ class PasswordRequest extends Component {
 
     public PasswordRequestForm $form;
 
+    public function mount(): void {
+        if(session()->has('email')) {
+            $this->form->email = session('email');
+        }
+    }
+
     public function submit(): void {
         $status = Password::sendResetLink($this->form->validate());
 
         if ($status === Password::RESET_LINK_SENT) {
-            toast()->info(__($status))->push();
-            $this->redirect(route('auth.login'), navigate: true);
+            toast()->success(__($status))->pushOnNextPage();
+            $this->redirect(route('login'), navigate: true);
 
             return;
         }

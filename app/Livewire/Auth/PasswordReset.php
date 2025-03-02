@@ -7,25 +7,33 @@ use Illuminate\Auth\Events\PasswordReset as PasswordResetEvent;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Usernotnull\Toast\Concerns\WireToast;
 
 class PasswordReset extends Component {
     use WireToast;
 
-    private string $token;
+    #[Locked]
+    public string $token = '';
 
-    private string $email;
+    #[Locked]
+    public string $email = '';
 
     public PasswordResetForm $form;
 
-    public function mount(string $token): void {
-        $this->token = $token;
-        $this->email = request()->query('email', '');
+    public function mount(?string $token = null): void {
+        $this->token = $token ?? request('token');
+        $this->email = $email ?? request('email');
     }
 
     public function submit(): void {
-        $status = Password::reset($this->form->validate(), function($user) {
+        $data = [
+            ...$this->form->validate(),
+            'email' => $this->email,
+            'token' => $this->token,
+        ];
+        $status = Password::reset($data, function($user) {
             $user->forceFill([
                 'password' => Hash::make($this->form->password),
                 'remember_token' => Str::random(60),
@@ -35,7 +43,7 @@ class PasswordReset extends Component {
         });
 
         if ($status === Password::PASSWORD_RESET) {
-            toast()->success(__($status))->push();
+            toast()->success(__($status))->pushOnNextPage();
             $this->redirect(route('login'), navigate: true);
 
             return;

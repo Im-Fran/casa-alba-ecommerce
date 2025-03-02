@@ -8,7 +8,6 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class AuthModal extends Component {
-    #[Modelable]
     public bool $open = false;
 
     #[Validate(['required', 'email'])]
@@ -18,6 +17,16 @@ class AuthModal extends Component {
         if (session()->has('email')) {
             $this->email = session('email');
         }
+    }
+
+    public function clickAuthModal(): void {
+        if (!auth()->check()) {
+            $this->open = !$this->open;
+
+            return;
+        }
+
+        $this->redirect(route('account'), navigate: true);
     }
 
     public function submit(): void {

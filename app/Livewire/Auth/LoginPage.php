@@ -12,13 +12,13 @@ class LoginPage extends Component {
     public LoginForm $form;
 
     public function mount(): void {
-        if (session()->exists('email')) {
+        if (session()->has('email')) {
             $this->form->email = session('email');
         }
 
         if (auth()->check()) {
             if (!auth()->user()->hasVerifiedEmail()) {
-                $this->redirect(route('verification.resend'), navigate: true);
+                $this->redirect(route('verification.notice'), navigate: true);
 
                 return;
             }
@@ -37,6 +37,6 @@ class LoginPage extends Component {
 
         session()->forget('email');
         request()->session()->regenerate();
-        $this->redirect(route(auth()->user()->hasVerifiedEmail() ? 'home' : 'verification.resend'), navigate: true);
+        $this->redirect(route(auth()->user()->hasVerifiedEmail() ? 'home' : 'verification.notice'), navigate: true);
     }
 }

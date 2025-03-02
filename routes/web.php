@@ -18,21 +18,21 @@ Route::get('/contacto', ContactPage::class)->name('contact');
 Route::get('/checkout', CheckoutPage::class)->name('checkout');
 
 Route::prefix('auth')->group(function() {
-    Route::get('/login', LoginPage::class)->name('login');
-    Route::get('/register', RegisterPage::class)->name('register');
-    Route::get('/logout', LogoutController::class)->name('logout');
+    Route::get('/login', LoginPage::class)->middleware(['guest'])->name('login');
+    Route::get('/register', RegisterPage::class)->middleware(['guest'])->name('register');
+    Route::get('/logout', LogoutController::class)->middleware(['auth'])->name('logout');
 
     Route::prefix('email-verification')->middleware(['auth'])->group(function() {
-        Route::get('/resend', EmailVerification::class)->name('verification.resend');
+        Route::get('/resend', EmailVerification::class)->name('verification.notice');
         Route::get('/verify', VerifyEmail::class)->middleware(['signed'])->name('verification.verify');
     });
 
     Route::prefix('password-reset')->group(function() {
         Route::get('/request', PasswordRequest::class)->name('password.request');
-        Route::get('/reset/{token}', PasswordReset::class)->name('password.reset');
-    });
+        Route::get('/reset', PasswordReset::class)->name('password.reset');
+    })->middleware(['guest']);
 });
 
-Route::prefix('/account')->middleware(['auth'])->group(function() {
+Route::prefix('/account')->middleware(['auth', 'verified'])->group(function() {
     Route::get('/', AccountPage::class)->name('account');
 });

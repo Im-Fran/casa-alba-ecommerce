@@ -19,6 +19,7 @@
         "livewire/livewire": "^3.5",
         "livewire/volt": "^1.6",
         "lunarphp/lunar": "^1.0.0-beta",
+        "mailersend/laravel-driver": "^2.7",
         "meilisearch/meilisearch-php": "^1.11",
         "robsontenorio/mary": "^1.41",
         "stijnvanouplines/blade-country-flags": "^1.0",

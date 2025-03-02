@@ -4,7 +4,6 @@ namespace App\Livewire\Account;
 
 use App\Livewire\Forms\Account\AccountForm;
 use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
 use Usernotnull\Toast\Concerns\WireToast;
 
 class AccountPage extends Component {
@@ -14,17 +13,24 @@ class AccountPage extends Component {
 
     public function mount(): void {
         $user = auth()->user();
-        $this->form->name = $user->name;
-        $this->form->last_name = $user->last_name;
-        $this->form->email = $user->email;
-        $this->form->phone = $user->phone;
-        $this->form->rut = $user->rut;
+        collect($this->form->all())->keys()->each(fn($key) => $this->form->$key = $user->$key);
     }
 
     public function submit(): void {
-        Auth::user()->update($this->form->validate());
+        $user = auth()->user();
+        $user->update($this->form->validate());
 
-        toast()->success('Datos actualizados correctamente', '¡Éxito!')->push();
+        $toast = toast()->success('Datos actualizados correctamente', '¡Éxito!');;
+
+        if($user->wasChanged(['email'])) {
+            $user->forceFill(['email_verified_at' => null])->save();
+            $user->sendEmailVerificationNotification();
+            $toast->pushOnNextPage();
+            $this->redirect(route('verification.notice'), navigate: true);
+            return;
+        }
+
+        $toast->push();
     }
 
 }
