@@ -25,6 +25,6 @@ class RegisterPage extends Component {
         session()->forget('email');
 
         toast()->success('Por favor verifica tu correo usando el link que enviamos. Recuerda revisar el Spam!', 'Verificación Necesaria')->pushOnNextPage();
-        $this->redirect(route('verification.notice'), navigate: true);
+        $this->redirect(route('verification.notice'));
     }
 }

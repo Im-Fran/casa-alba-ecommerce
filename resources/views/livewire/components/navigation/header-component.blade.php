@@ -6,14 +6,14 @@
     <div class="absolute inset-x-0 mx-0 md:mx-5 z-50">
         <div class="bg-primary transition-all duration-[.75s]" x-bind:class="{'px-2 py-5 rounded-none': mobileNavOpen, 'mx-2 mt-5 rounded-[1rem]': !mobileNavOpen}">
             <div class="flex items-center justify-between p-2">
-                <a href="{{ route('home') }}" wire:navigate>
+                <a href="{{ route('home') }}">
                     <img src="{{ asset('images/casaalba.webp') }}" alt="CasaAlba" class="rounded-full h-10 md:h-12"/>
                 </a>
 
                 <ul class="hidden md:flex items-center space-x-4 text-neutral-100">
                     @foreach($links as $link)
                         <li wire:key="nav_link_{{$loop->index}}">
-                            <a href="{{$link['url']}}" class="hover:text-secondary text-2xl font-medium relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-secondary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-right" wire:current.exact="after:scale-x-100" wire:navigate>{{$link['title']}}</a>
+                            <a href="{{$link['url']}}" class="hover:text-secondary text-2xl font-medium relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-secondary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-right" wire:current.exact="after:scale-x-100">{{$link['title']}}</a>
                         </li>
                     @endforeach
                 </ul>
@@ -46,7 +46,7 @@
                     <ul class="flex flex-col space-y-4 mt-20">
                         @foreach($links as $link)
                             <li>
-                                <a href="{{ $link['url'] }}" class="flex items-center justify-start gap-2 text-xl text-primary-content hover:text-secondary" wire:navigate><x-icon name="{{ $link['icon'] }}" class="w-6 h-6"/> {{ $link['title'] }}</a>
+                                <a href="{{ $link['url'] }}" class="flex items-center justify-start gap-2 text-xl text-primary-content hover:text-secondary"><x-icon name="{{ $link['icon'] }}" class="w-6 h-6"/> {{ $link['title'] }}</a>
                             </li>
                         @endforeach
                     </ul>

@@ -28,7 +28,7 @@ class CheckoutPage extends Component {
 
     public function mount(): void {
         if (!$this->cart || $this->cart?->lines()->count() == 0) {
-            $this->redirect(route('home'), navigate: true);
+            $this->redirect(route('home'));
         }
 
         $this->form->shippingOption = $this->shippingOptions->first()->identifier;
@@ -38,8 +38,8 @@ class CheckoutPage extends Component {
             $this->form->name = $user->name;
             $this->form->lastname = $user->last_name;
             $this->form->email = $user->email;
-//            $this->form->phone = $user->phone;
-//            $this->form->rut = $user->rut;
+            $this->form->phone = $user->phone;
+            $this->form->rut = $user->rut;
 
 //            if($user->addresses->count() > 0) {
 //                $address = $user->addresses->first();

@@ -26,16 +26,16 @@ class AuthModal extends Component {
             return;
         }
 
-        $this->redirect(route('account'), navigate: true);
+        $this->redirect(route('account'));
     }
 
     public function submit(): void {
         session()->put('email', $this->email);
 
         if (User::whereEmail($this->email)->exists()) {
-            $this->redirect(route('login'), navigate: true);
+            $this->redirect(route('login'));
         } else {
-            $this->redirect(route('register'), navigate: true);
+            $this->redirect(route('register'));
         }
     }
 }

@@ -44,7 +44,7 @@ class PasswordReset extends Component {
 
         if ($status === Password::PASSWORD_RESET) {
             toast()->success(__($status))->pushOnNextPage();
-            $this->redirect(route('login'), navigate: true);
+            $this->redirect(route('login'));
 
             return;
         }

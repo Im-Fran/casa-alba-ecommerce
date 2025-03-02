@@ -25,7 +25,7 @@ class ProductList extends Component {
 
         if (($this->cart?->lines()?->count() ?? 0) === 0) {
             $toast->pushOnNextPage();
-            $this->redirect(route('home'), navigate: true);
+            $this->redirect(route('home'));
 
             return;
         }

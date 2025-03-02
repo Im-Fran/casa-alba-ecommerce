@@ -23,7 +23,7 @@ class PasswordRequest extends Component {
 
         if ($status === Password::RESET_LINK_SENT) {
             toast()->success(__($status))->pushOnNextPage();
-            $this->redirect(route('login'), navigate: true);
+            $this->redirect(route('login'));
 
             return;
         }

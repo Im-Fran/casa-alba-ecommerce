@@ -29,7 +29,7 @@
                 <p class="text-gray-500 mt-2">No se pudo verificar tu correo electrónico. El enlace puede haber expirado o ser inválido.</p>
             @endif
 
-            <x-button link="{{ route('home') }}" class="btn btn-primary mt-6" wire:navigate>
+            <x-button link="{{ route('home') }}" class="btn btn-primary mt-6">
                 Ir al Inicio
             </x-button>
         </div>

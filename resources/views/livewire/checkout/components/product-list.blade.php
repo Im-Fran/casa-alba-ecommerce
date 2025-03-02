@@ -1,5 +1,5 @@
 <div class="col-span-1 top-0 h-screen overflow-y-auto lg:overflow-y-visible static lg:sticky bg-primary pt-4 md:pt-10 px-10" x-on:cart-updated.window="$wire.$refresh()">
-    <a wire:navigate href="{{ route('home') }}" class="flex items-center justify-start gap-2.5 text-lg font-semibold text-primary-content hover:underline transition pt-8 md:pt-16 pb-8">
+    <a href="{{ route('home') }}" class="flex items-center justify-start gap-2.5 text-lg font-semibold text-primary-content hover:underline transition pt-8 md:pt-16 pb-8">
         <x-heroicon-o-chevron-left class="w-6 h-6"/>
         <span>Seguir Comprando</span>
     </a>

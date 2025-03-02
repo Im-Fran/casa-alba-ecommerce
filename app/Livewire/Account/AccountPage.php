@@ -26,7 +26,7 @@ class AccountPage extends Component {
             $user->forceFill(['email_verified_at' => null])->save();
             $user->sendEmailVerificationNotification();
             $toast->pushOnNextPage();
-            $this->redirect(route('verification.notice'), navigate: true);
+            $this->redirect(route('verification.notice'));
             return;
         }
 

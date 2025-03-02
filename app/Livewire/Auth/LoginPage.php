@@ -18,12 +18,12 @@ class LoginPage extends Component {
 
         if (auth()->check()) {
             if (!auth()->user()->hasVerifiedEmail()) {
-                $this->redirect(route('verification.notice'), navigate: true);
+                $this->redirect(route('verification.notice'));
 
                 return;
             }
 
-            $this->redirect(route('home'), navigate: true);
+            $this->redirect(route('home'));
         }
     }
 
@@ -37,6 +37,6 @@ class LoginPage extends Component {
 
         session()->forget('email');
         request()->session()->regenerate();
-        $this->redirect(route(auth()->user()->hasVerifiedEmail() ? 'home' : 'verification.notice'), navigate: true);
+        $this->redirect(route(auth()->user()->hasVerifiedEmail() ? 'home' : 'verification.notice'));
     }
 }

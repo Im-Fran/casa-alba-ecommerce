@@ -10,13 +10,13 @@ class EmailVerification extends Component {
 
     public function mount(): void {
         if (auth()->check() && auth()->user()->hasVerifiedEmail()) {
-            $this->redirect(route('home'), navigate: true);
+            $this->redirect(route('home'));
         }
     }
 
     public function submit(): void {
         if (auth()->user()->hasVerifiedEmail()) {
-            $this->redirect(route('home'), navigate: true);
+            $this->redirect(route('home'));
 
             return;
         }
