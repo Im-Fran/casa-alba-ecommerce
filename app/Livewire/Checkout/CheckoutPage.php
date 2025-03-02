@@ -31,7 +31,8 @@ class CheckoutPage extends Component {
             $this->redirect(route('home'));
         }
 
-        $this->form->shippingOption = $this->shippingOptions->first()->identifier;
+        $shippingOption = $this->shippingOptions->first();
+        $this->form->shippingOption = $shippingOption->identifier;
 
         if(auth()->check()) {
             $user = auth()->user();
@@ -47,14 +48,25 @@ class CheckoutPage extends Component {
 //                $this->form->city = $address->city;
 //                $this->form->postal = $address->postcode;
 //            }
+
+            if($this->updateAddresses()) {
+                $this->cart->setShippingOption($shippingOption);
+            }
         }
     }
 
     public function updated($field): void {
         if($field === 'form.shippingOption') {
             $options = $this->shippingOptions;
-            if($options->where('identifier', '=', $this->form->shippingOption)->count() === 0) {
-                $this->form->shippingOption = $options->first->identifier;
+            $shippingOption = $this->shippingOptions->firstWhere('identifier', '=', $this->form->shippingOption);
+            if($shippingOption == null) {
+                $shippingOption = $options->first();
+                $this->form->shippingOption = $shippingOption->identifier;
+            }
+
+            if($this->updateAddresses()) {
+                $this->cart->setShippingOption($shippingOption);
+                $this->dispatch('cart-updated');
             }
         }
 
@@ -64,7 +76,7 @@ class CheckoutPage extends Component {
             $this->form->billingPostal = $this->form->postal;
         }
 
-        if ($field == 'form.sameAddress' && !$this->form->sameAddress) {
+        if ($field === 'form.sameAddress' && !$this->form->sameAddress) {
             $this->form->billingAddress = '';
             $this->form->billingCity = '';
             $this->form->billingPostal = '';
@@ -85,43 +97,48 @@ class CheckoutPage extends Component {
         return ShippingManifest::getOptions($this->cart);
     }
 
+    private function updateAddresses(): bool {
+        if(empty($this->form->name) || empty($this->form->lastname) || empty($this->form->email) || empty($this->form->phone) || empty($this->form->address) || empty($this->form->city) || empty($this->form->postal)) {
+            return false;
+        }
+
+        $addressData = [
+            'first_name' => $this->form->name,
+            'last_name' => $this->form->lastname,
+            'country_id' => Country::whereIso3('CHL')->first()->id,
+            'contact_email' => $this->form->email,
+            'contact_phone' => $this->form->phone,
+        ];
+
+
+        $this->cart->setShippingAddress([
+            ...$addressData,
+            'line_one' => $this->form->address,
+            'city' => Helpers::comunas()->where('id', '=', $this->form->city)->first()['name'],
+            'postcode' => $this->form->postal,
+            'delivery_instructions' => $this->form->deliveryInstructions,
+            'meta' => ['city_id' => $this->form->city]
+        ]);
+
+        $this->cart->setBillingAddress([
+            ...$addressData,
+            'line_one' => $this->form->billingAddress,
+            'city' => Helpers::comunas()->where('id', '=', $this->form->billingCity)->first()['name'],
+            'postcode' => $this->form->billingPostal,
+            'meta' => ['city_id' => $this->form->billingCity]
+        ]);
+
+        return true;
+    }
+
     /* Run the checkout */
     public function checkout(): void {
         // TODO: Generar link de pago desde el proveedor
 
         // Redirect to payment provider
 
-        $data = $this->form->validate();
-        $country = Country::whereIso3('CHL')->first()->id;
-        $addressData = [
-            'first_name' => $this->form->name,
-            'last_name' => $this->form->lastname,
-            'country_id' => $country,
-            'contact_email' => $this->form->email,
-            'contact_phone' => $this->form->phone,
-        ];
-
-        // Guarda la dirección de envío y facturación.
-        $this->cart->setShippingAddress([
-            ...$addressData,
-            'line_one' => $this->form->address,
-            'city' => $this->form->city,
-            'postcode' => $this->form->postal,
-            'delivery_instructions' => $this->form->deliveryInstructions,
-        ])->setBillingAddress([
-            ...$addressData,
-            'line_one' => $this->form->billingAddress,
-            'city' => $this->form->billingCity,
-            'postcode' => $this->form->billingPostal,
-        ]);
-
-        $shipping = $this->shippingOptions->firstWhere('identifier', '=', $this->form->shippingOption);
-        if($shipping == null) {
-            toast()->danger('Ocurrió un error al configurar el envío. Intenta más tarde.', 'Error')->push();
-            return;
-        }
-
-        $this->cart->setShippingOption($shipping);
+        $this->form->validate();
+        $this->updateAddresses();
 
         try {
             $order = $this->cart->createOrder();

@@ -15,4 +15,4 @@ If you want to check out the packages used please check `package.json`.
 You can check the `scripts/init` script to check out the initial setup.
 
 ## License
-This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [GNU AGPLv3](https://www.gnu.org/licenses/agpl-3.0.html) license.

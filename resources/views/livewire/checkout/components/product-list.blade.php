@@ -27,7 +27,8 @@
                             <div class="flex items-center justify-start text-primary-content gap-2.5">
                                 <span class="text-sm md:text-base cursor-pointer hover:underline transition" x-on:click.prevent="edit_line_{{ $line->id }}.showModal()">Editar</span>
                                 <div class="w-[1.5px] h-4 md:h-6 bg-neutral-300"></div>
-                                <span x-data="{ loading_{{ $line->id }}: false }" class="flex items-center justify-center gap-2 cursor-pointer hover:underline transition text-sm md:text-base" x-on:click.prevent="async () => { if(loading_{{ $line->id }}) {return;} loading_{{ $line->id }} = true; await $wire.remove({{ $line->id }}); await $wire.$refresh(); loading_{{ $line->id }} = false; }"><x-lucide-trash class="w-4 h-4 md:w-5 md:h-5"/> <x-loading x-show="loading_{{ $line->id }}" class="w-4 h-4"/></span>
+                                <x-lucide-trash class="w-5 h-5 inline" wire:click.prevent="remove({{ $line->id }})" wire:target="remove({{ $line->id }})" wire:loading.class="hidden"/>
+                                <x-loading class="w-5 h-5 inline hidden" wire:target="remove({{ $line->id }})" wire:loading.class.remove="hidden"/>
                             </div>
                         </div>
                     </div>

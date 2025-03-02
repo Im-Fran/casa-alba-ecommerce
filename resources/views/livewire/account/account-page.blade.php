@@ -54,13 +54,8 @@
                             <x-input
                                 icon="o-identification"
                                 label="RUT"
-                                placeholder="99.999.999-9"
-                                x-mask:dynamic="$input.length < 12 ? '9.999.999-99' : '99.999.999-9'"
-                                hint="Si tu RUT termina en K, reemplázalo por un 0"
-                                inputmode="tel"
-                                wire:model.live.debounce="form.rut"
-                                required
-                                first-error-only
+                                value="{{ auth()->user()->rut }}"
+                                disabled
                             />
                         </div>
 

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\LogoutController;
 use App\Livewire\Account\AccountPage;
+use App\Livewire\Account\AddressesPage;
+use App\Livewire\Account\SecurityPage;
 use App\Livewire\Auth\EmailVerification;
 use App\Livewire\Auth\LoginPage;
 use App\Livewire\Auth\PasswordRequest;
@@ -35,4 +37,6 @@ Route::prefix('auth')->group(function() {
 
 Route::prefix('/account')->middleware(['auth', 'verified'])->group(function() {
     Route::get('/', AccountPage::class)->name('account');
+    Route::get('/security', SecurityPage::class)->name('account.security');
+    Route::get('/addresses', AddressesPage::class)->name('account.addresses');
 });

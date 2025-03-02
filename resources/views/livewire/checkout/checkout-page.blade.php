@@ -96,7 +96,7 @@
                                 icon="o-map-pin"
                                 label="Dirección"
                                 autocomplete="shipping street-address"
-                                placeholder="Calle 123"
+                                placeholder="Calle, número, dpto/casa"
                                 wire:model.blur="form.address"
                                 required
                                 first-error-only

@@ -57,6 +57,25 @@ return [
             'throw' => false,
         ],
 
+        // Cloudflare R2 - https://developers.cloudflare.com/r2
+        // See https://developers.cloudflare.com/r2/examples/aws-sdk-php/ for configuration
+        'r2' => [
+            'driver' => 's3',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'auto',
+            'bucket' => env('R2_BUCKET'),
+            'endpoint' => env('R2_ENDPOINT'),
+            'url' => env('R2_URL'),
+
+            'throw' => true,
+
+            'options' => [
+                'StorageClass' => 'STANDARD',
+            ],
+            'request_checksum_calculation' => 'when_required',
+            'response_checksum_validation' => 'when_required',
+        ],
     ],
 
     /*
