@@ -29,27 +29,31 @@ class CheckoutForm extends Form {
     public string $expiration = '';
 
     /* Dirección de Envío */
+    public ?int $shipping_id = null;
+
     #[Validate(['required'], as: 'Dirección')]
-    public string $address = '';
+    public string $shipping_address = '';
 
     #[Validate(['required'], as: 'Comuna')]
-    public string $city = '13101'; // Santiago
+    public string $shipping_city = '13101'; // Santiago
 
     #[Validate(['required', 'digits:7'], as: 'Código Postal')]
-    public string $postal = '';
+    public string $shipping_postal = '';
 
     /* Dirección de Facturación */
     #[Validate(['present'], as: 'Usar Dirección de Envío')]
     public bool $sameAddress = false;
 
+    public ?int $billing_id = null;
+
     #[Validate(['required_unless:sameAddress,1'], as: 'Dirección', message: ['required_unless' => 'La dirección de facturación es obligatoria si no es la misma que la de envío'])]
-    public string $billingAddress = '';
+    public string $billing_address = '';
 
     #[Validate(['required_unless:sameAddress,1'], as: 'Comuna', message: ['required_unless' => 'La comuna de facturación es obligatoria si no es la misma que la de envío'])]
-    public string $billingCity = '13101'; // Santiago
+    public string $billing_city = '13101'; // Santiago
 
     #[Validate(['required_unless:sameAddress,1', 'digits:7'], as: 'Código Postal', message: ['required_unless' => 'El código postal de facturación es obligatorio si no es el mismo que el de envío'])]
-    public string $billingPostal = '';
+    public string $billing_postal = '';
 
     #[Validate(['nullable', 'max:255'], as: 'Instrucciones de Envío')]
     public ?string $deliveryInstructions = null;

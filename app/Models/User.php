@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Lunar\Base\LunarUser as LunarUserInterface;
 use Lunar\Base\Traits\LunarUser;
+use Lunar\Models\Customer;
 
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable implements LunarUserInterface, MustVerifyEmail {
@@ -30,6 +31,10 @@ class User extends Authenticatable implements LunarUserInterface, MustVerifyEmai
         'password',
         'remember_token',
     ];
+
+    public function selfCustomer(): ?Customer {
+        return $this->customers()->firstWhere('vat_no','=', $this->rut);
+    }
 
     protected function casts(): array {
         return [

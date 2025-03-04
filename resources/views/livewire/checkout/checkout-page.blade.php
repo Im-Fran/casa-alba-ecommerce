@@ -3,7 +3,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
             <livewire:checkout.components.product-list wire:model="cart"/>
 
-            <form wire:submit.prevent="checkout" class="col-span-1 p-[4.5rem]" x-data="{ contact: true, payment: true, shipping: true, billing: true, shipping_options: true }">
+            <form wire:submit.prevent="checkout" class="col-span-1 p-[4.5rem]" x-data="{ contact: true, payment: true, shipping: {{ (!empty($form->shipping_address) && !empty($form->shipping_city) && !empty($form->shipping_postal)) ? 'false' : 'true' }}, billing: {{ ($form->sameAddress || (!empty($form->billing_address) && !empty($form->billing_city) && !empty($form->billing_postal)) ? 'false' : 'true') ? 'false' : 'true' }}, shipping_options: false }">
                 <div class="flex flex-col gap-10 p-2">
                     <!-- Información de Contacto -->
                     <section class="flex flex-col space-y-6">
@@ -92,12 +92,22 @@
                         </div>
 
                         <div class="flex flex-col space-y-6" x-show="shipping" x-collapse>
+                            @if($this->addresses?->count() > 0)
+                                <x-select
+                                    label="Seleccionar Dirección"
+                                    placeholder="Selecciona una dirección"
+                                    hint="Elige una de tus direcciones guardadas."
+                                    :options="$this->addresses"
+                                    wire:model.live="form.shipping_id"
+                                />
+                            @endif
+
                             <x-input
                                 icon="o-map-pin"
                                 label="Dirección"
                                 autocomplete="shipping street-address"
                                 placeholder="Calle, número, dpto/casa"
-                                wire:model.blur="form.address"
+                                wire:model.blur="form.shipping_address"
                                 required
                                 first-error-only
                             />
@@ -108,7 +118,7 @@
                                 label="Comuna"
                                 autocomplete="shipping address-level2"
                                 :options="$this->comunas"
-                                wire:model.live.debounce="form.city"
+                                wire:model.live.debounce="form.shipping_city"
                                 required
                                 first-error-only
                             />
@@ -120,7 +130,7 @@
                                 placeholder="8320000"
                                 x-mask="9999999"
                                 inputmode="tel"
-                                wire:model.blur="form.postal"
+                                wire:model.blur="form.shipping_postal"
                                 required
                                 first-error-only
                             />
@@ -150,6 +160,19 @@
                                 first-error-only
                             />
 
+
+                            @if($this->addresses?->count() > 0)
+                                <div x-show="!sameAddress" x-collapse>
+                                    <x-select
+                                        label="Seleccionar Dirección"
+                                        placeholder="Selecciona una dirección"
+                                        hint="Elige una de tus direcciones guardadas."
+                                        :options="$this->addresses"
+                                        wire:model.live="form.billing_id"
+                                    />
+                                </div>
+                            @endif
+
                             <div class="flex flex-col space-y-6">
                                 <x-input
                                     icon="o-map-pin"
@@ -157,7 +180,7 @@
                                     label="Dirección"
                                     autocomplete="billing street-address"
                                     placeholder="Calle 123"
-                                    wire:model.blur="form.billingAddress"
+                                    wire:model.blur="form.billing_address"
                                     x-bind:disabled="sameAddress"
                                     required
                                     first-error-only
@@ -170,7 +193,7 @@
                                     label="Comuna"
                                     autocomplete="billing address-level2"
                                     :options="$this->comunas"
-                                    wire:model.live.debounce="form.billingCity"
+                                    wire:model.live.debounce="form.billing_city"
                                     x-bind:disabled="sameAddress"
                                     required
                                     first-error-only
@@ -183,7 +206,7 @@
                                     autocomplete="billing postal-code"
                                     placeholder="8320000"
                                     inputmode="tel"
-                                    wire:model.blur="form.billingPostal"
+                                    wire:model.blur="form.billing_postal"
                                     x-bind:disabled="sameAddress"
                                     x-mask="9999999"
                                     required
@@ -202,16 +225,16 @@
                         </div>
 
                         <div class="flex flex-col space-y-6" x-show="shipping_options" x-collapse>
-                            <div x-data="{ selectedShippingOption: $wire.entangle('form.shippingOption').live, loading: false }" class="grid grid-cols-3 gap-4 w-full">
+                            <div x-data="{ selectedShippingOption: $wire.entangle('form.shippingOption').live, loading: false }" class="grid grid-cols-2 gap-4 w-full">
                                 @foreach($this->shippingOptions as $shippingOption)
-                                    <div x-data="{ id: '{{ $shippingOption->identifier }}', name: '{{ $shippingOption->name }}', price: '{{ $shippingOption->price->value === 0 ? 'Gratis' : ($shippingOption->price->unitFormatted('es-cl') ?? '--') }}' }" wire:key="shipping_{{ $shippingOption->identifier }}" class="flex flex-col items-start justify-between bg-base-100 border rounded-md p-4 col-span-1 cursor-pointer hover:shadow-xl transition duration-300" x-bind:class="selectedShippingOption === id ? 'border-primary' : 'border-neutral-400'" x-on:click="async () => { if(loading){return;} if(selectedShippingOption === id) {return;}  loading=true; await $wire.$set('form.shippingOption', id); loading=false; }">
+                                    <div x-data="{ id: '{{ $shippingOption->identifier }}', name: '{{ $shippingOption->name }}', description: '{{ $shippingOption->description }}', price: '{{ $shippingOption->price->value === 0 ? 'Gratis' : ($shippingOption->price->unitFormatted('es-cl') ?? '--') }}' }" wire:key="shipping_{{ $shippingOption->identifier }}" class="flex flex-col items-start justify-between bg-base-100 border rounded-md p-4 col-span-1 cursor-pointer hover:shadow-xl transition duration-300" x-bind:class="selectedShippingOption === id ? 'border-primary' : 'border-neutral-400'" x-on:click="async () => { if(loading){return;} if(selectedShippingOption === id) {return;}  loading=true; await $wire.$set('form.shippingOption', id); loading=false; }">
                                         <div class="flex flex-col items-start justify-start w-full">
                                             <div class="flex items-center justify-between w-full">
                                                 <h3 class="font-semibold text-sm" x-text="name"></h3>
                                                 <x-heroicon-o-check-circle class="w-5 h-5 text-primary fill-primary-content" x-show="selectedShippingOption === id"/>
                                             </div>
 
-                                            <span class="text-sm text-neutral-500 w-5/6" x-text="name"></span>
+                                            <span class="text-sm text-neutral-500 w-5/6" x-text="description"></span>
                                         </div>
 
                                         <span class="font-semibold text-neutral-800 pt-2.5 text-sm" x-text="price"></span>

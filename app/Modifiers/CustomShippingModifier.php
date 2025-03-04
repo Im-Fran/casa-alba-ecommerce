@@ -19,17 +19,8 @@ class CustomShippingModifier extends ShippingModifier {
             name: 'Despacho a Domicilio',
             description: 'Recibe tu compra en tu domicilio',
             identifier: 'home_delivery',
-            price: new Price(5000, $cart->currency, 1),
+            price: new Price(2000, $cart->currency, 1),
             taxClass: $taxClass,
-        ));
-
-        ShippingManifest::addOption(new ShippingOption(
-            name: 'Retiro en Tienda',
-            description: 'Retira tu compra en nuestra tienda',
-            identifier: 'store_pickup',
-            price: new Price(0, $cart->currency, 1),
-            taxClass: $taxClass,
-            collect: true,
         ));
 
         return $next($cart);
