@@ -19,7 +19,7 @@
                 <img
                     src="{{ asset('/images/productos_limpieza.webp') }}"
                     alt="Productos de Limpieza"
-                    class="col-span-1 object-cover object-center w-full rounded-l-2xl blur-[5px] md:blur-0 z-[1]"
+                    class="col-span-1 object-cover object-center w-full rounded-l-2xl blur-[10px] md:blur-0 z-[1]"
                 />
             </div>
         </div>
@@ -27,14 +27,18 @@
         <div id="productos" class="container mx-auto h-full w-full min-h-screen">
             <!-- Title & Sort -->
             <section class="flex items-center justify-between border-b-2 mb-2.5 py-2 border-secondary w-full">
-                <h2 class="text-2xl text-primary font-bold text-left">Productos</h2>
+                <h2 class="text-2xl text-primary-content font-bold text-left">Productos</h2>
 
-                <x-button icon-right="{{ $this->price === \App\Lib\Sort::DESC ? 'o-chevron-down' : 'o-chevron-up'  }}" class="btn btn-sm btn-primary btn-outline" wire:click.stop="togglePrice" spinner>
-                    Precio: {{ $this->price === \App\Lib\Sort::DESC ? 'Mayor a Menor' : 'Menor a Mayor' }}
-                </x-button>
+                <div class="svg-primary-content">
+                    <x-button icon-right="{{ $this->price === \App\Lib\Sort::DESC ? 'o-chevron-down' : 'o-chevron-up'  }}" class="btn btn-sm btn-primary btn-outline" wire:click.stop="togglePrice" spinner>
+                        <span class="text-primary-content">
+                            Precio: {{ $this->price === \App\Lib\Sort::DESC ? 'Mayor a Menor' : 'Menor a Mayor' }}
+                        </span>
+                    </x-button>
+                </div>
             </section>
 
-            <section class="grid grid-cols-1 md:grid-cols-12 gap-5">
+            <section class="grid grid-cols-1 lg:grid-cols-10 xl:grid-cols-12 gap-5">
 
                 <!-- Filters -->
                 <div class="col-span-2 flex flex-col items-start justify-start w-full gap-2">
@@ -74,7 +78,7 @@
 
 
                 <!-- Products -->
-                <div class="col-span-1 md:col-span-10 grid grid-cols-2 lg:grid-cols-5 gap-5">
+                <div class="col-span-1 lg:col-span-8 xl:col-span-10 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
                     @foreach($this->products as $product)
                         <livewire:home.components.product.product-card :product="$product" wire:key="index_product_card_{{ $product->id }}"/>
                     @endforeach

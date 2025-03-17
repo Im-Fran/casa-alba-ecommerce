@@ -6,13 +6,13 @@
                 <div class="flex flex-col items-start justify-between w-full h-full">
                     <div class="flex items-start justify-between w-full">
                         <div class="flex flex-col items-start justify-start">
-                            <span class="text-lg font-semibold text-primary">{{ $line->purchasable->getDescription() }}</span>
+                            <span class="text-lg font-semibold text-primary-content">{{ $line->purchasable->getDescription() }}</span>
                             @foreach($line->purchasable->values as $value)
                                 <span class="text-sm text-neutral-500" wire:key="cart_line_{{ $line->id }}_option_{{ $value->id }}"><span class="text-sm text-neutral-800 font-medium">{{ $value->option->translate('name') }}</span>: {{ $value->translate('name') }}</span>
                             @endforeach
                         </div>
                         <div class="flex flex-col items-start justify-start">
-                            <span class="text-lg font-medium text-primary">{{ $line->subTotal?->unitFormatted('es-cl') ?? '--' }}</span>
+                            <span class="text-lg font-medium text-primary-content">{{ $line->subTotal?->unitFormatted('es-cl') ?? '--' }}</span>
                         </div>
                     </div>
 
@@ -22,7 +22,7 @@
                             <x-icon name="o-minus" class="w-5 h-5" x-show="!loading"/>
                             <span class="loading loading-spinner w-5 h-5" x-show="loading"/>
                         </x-button>
-                        <span class="flex items-center justify-center text-xs md:text-md text-primary border border-primary rounded-md w-8 h-6 font-bold">{{ $line->quantity }}</span>
+                        <span class="flex items-center justify-center text-xs md:text-md text-primary-content border border-primary rounded-md w-8 h-6 font-bold">{{ $line->quantity }}</span>
                         <x-button x-data="{ loading: false }" x-on:click.stop="async () => { loading = true; await $wire.$parent.addToCart({{ $line->id }}); loading = false; }" class="btn btn-xs btn-primary btn-circle" x-bind:class="{ 'btn-disabled': loading }" x-bind:disabled="loading">
                             <x-icon name="o-plus" class="w-5 h-5" x-show="!loading"/>
                             <span class="loading loading-spinner w-5 h-5" x-show="loading"/>

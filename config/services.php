@@ -35,4 +35,15 @@ return [
         ],
     ],
 
+    'turnstile' => [
+        'key' => env('TURNSTILE_SITE_KEY'),
+        'secret' => env('TURNSTILE_SECRET_KEY'),
+    ],
+
+    'ventipay' => [
+        'commerce_id' => env('VENTIPAY_COMMERCE_ID'),
+        'public_key' => env('VENTIPAY_PUBLIC_KEY'),
+        'private_key' => env('VENTIPAY_PRIVATE_KEY'),
+    ],
+
 ];

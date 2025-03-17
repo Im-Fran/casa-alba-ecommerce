@@ -15,7 +15,7 @@
 
         <div class="flex flex-col gap-2 mt-2">
             <div class="flex flex-col">
-                <h3 class="text-md md:text-xl text-primary font-bold">{{ $this->product->attr('name') }}</h3>
+                <h3 class="text-md md:text-xl text-primary-content font-bold">{{ $this->product->attr('name') }}</h3>
                 <span class="text-gray-500 max-w-lg text-sm md:text-md h-12 line-clamp-2">{{ $this->product->attr('short_description') }}</span>
             </div>
 

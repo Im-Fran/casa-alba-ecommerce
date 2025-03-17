@@ -37,10 +37,15 @@
                     first-error-only
                 />
 
+{{--                <livewire:components.turnstile--}}
+{{--                    wire:model="form.cfTurnstileResponse"--}}
+{{--                />--}}
+
+
                 <div class="flex items-center justify-between">
                     <div class="space-x-4">
-                        <a href="{{ route('password.request') }}" class="text-primary hover:underline">¿Olvidaste tu contraseña?</a>
-                        <a href="{{ route('register') }}" class="text-primary hover:underline">¿No tienes cuenta?</a>
+                        <a href="{{ route('password.request') }}" class="text-primary-content hover:underline">¿Olvidaste tu contraseña?</a>
+                        <a href="{{ route('register') }}" class="text-primary-content hover:underline">¿No tienes cuenta?</a>
                     </div>
                     <x-button type="submit" class="btn btn-primary">Iniciar Sesión</x-button>
                 </div>

@@ -15,11 +15,6 @@ export default {
 	],
     theme: {
         extend: {
-            colors: {
-                primary: '#2B9D66',
-                secondary: '#AFE9CD',
-                'secondary-opaque': '#496E5D'
-            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
@@ -40,8 +35,8 @@ export default {
         themes: [{
             casaalba: {
                 ...require("daisyui/src/theming/themes")["winter"],
-                "primary": "#2B9D66",
-                "primary-content": "#E3F7EE",
+                "primary": "#BEEED5",
+                "primary-content": "#2B9D66",
                 "secondary": "#AFE9CD",
                 "secondary-content": "#2B9D66",
                 "accent": "#05C367",

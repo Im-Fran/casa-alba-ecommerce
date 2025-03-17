@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Helpers\TurnstileClient;
+use App\Lib\VentiPay;
 use App\Modifiers\CustomShippingModifier;
 use Illuminate\Support\ServiceProvider;
 use Lunar\Admin\Support\Facades\LunarPanel;
@@ -13,6 +15,9 @@ class AppServiceProvider extends ServiceProvider {
      */
     public function register(): void {
         LunarPanel::register();
+
+        $this->app->singleton(TurnstileClient::class, fn() => new TurnstileClient(secret: config('services.turnstile.secret')));
+        $this->app->singleton(VentiPay::class, fn() => new VentiPay(privateKey: config('services.ventipay.private_key')));
     }
 
     /**
@@ -20,5 +25,6 @@ class AppServiceProvider extends ServiceProvider {
      */
     public function boot(ShippingModifiers $modifiers): void {
         $modifiers->add(CustomShippingModifier::class);
+
     }
 }

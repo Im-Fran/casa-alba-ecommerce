@@ -94,7 +94,7 @@
             />
 
             <div class="flex justify-between">
-                <a href="{{ route('login') }}" class="text-primary hover:underline">¿Ya tienes una cuenta?</a>
+                <a href="{{ route('login') }}" class="text-primary-content hover:underline">¿Ya tienes una cuenta?</a>
                 <x-button type="submit" class="btn btn-primary">Crear Cuenta</x-button>
             </div>
         </x-form>

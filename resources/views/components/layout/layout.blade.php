@@ -22,6 +22,7 @@
     <!-- Styles / Scripts -->
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
 </head>
 <body class="font-sans antialiased h-screen">
 <noscript class="flex items-center justify-center bg-red-300 text-red-900 w-full h-10">Por favor activa el JavaScript, ya que es necesario para acceder a la tienda!</noscript>

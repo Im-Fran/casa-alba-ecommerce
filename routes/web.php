@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Webhooks\VentiPayController;
 use App\Livewire\Account\AccountPage;
 use App\Livewire\Account\AddressesPage;
 use App\Livewire\Account\SecurityPage;
@@ -39,4 +40,12 @@ Route::prefix('/account')->middleware(['auth', 'verified'])->group(function() {
     Route::get('/', AccountPage::class)->name('account');
     Route::get('/security', SecurityPage::class)->name('account.security');
     Route::get('/addresses', AddressesPage::class)->name('account.addresses');
+});
+
+
+Route::post('/webhooks/ventipay', VentiPayController::class)->name('webhooks.ventipay');
+
+Route::prefix('/r')->group(function() {
+    Route::get('/tiktok', fn () => redirect()->away('https://www.tiktok.com/@productoscasaalba', 301))->name('redirect.tiktok');
+    Route::get('/instagram', fn () => redirect()->away('https://www.instagram.com/productoscasaalba', 301))->name('redirect.instagram');
 });

@@ -11,11 +11,11 @@
             <x-menu-item title="Cerrar Sesión" icon="o-arrow-left-on-rectangle" link="{{ route('logout') }}" no-wire-navigate/>
 
             <x-slot:trigger>
-                <x-lucide-user class="w-6 h-6 md:w-8 md:h-8 cursor-pointer text-neutral-100"/>
+                <x-lucide-user class="w-6 h-6 md:w-8 md:h-8 cursor-pointer text-primary-content"/>
             </x-slot:trigger>
         </x-dropdown>
     @else
-        <x-lucide-user wire:click="clickAuthModal" class="w-6 h-6 md:w-8 md:h-8 cursor-pointer text-neutral-100"/>
+        <x-lucide-user wire:click="clickAuthModal" class="w-6 h-6 md:w-8 md:h-8 cursor-pointer text-primary-content hover:text-primary-content/80"/>
     @endauth
 
     <x-modal wire:model="open" title="Ingresar a la Tienda" subtitle="Ingresa tu correo para iniciar sesión o registrarte">

@@ -2,7 +2,7 @@
     @if($this->inCart() > 0)
         <div class="flex items-center justify-between w-full md:w-[90%] gap-2">
             <x-button wire:click.stop="decrease" class="btn btn-primary {{ $size == 'sm' ? 'btn-xs md:btn-sm' : 'btn-sm'  }} btn-circle text-neutral-50" icon="o-minus" spinner/>
-            <span class="flex items-center justify-center text-xs md:text-base text-primary border border-primary rounded-md w-full {{ $size == 'sm' ? 'h-6 md:h-8' : 'h-8' }} font-bold">{{ $this->inCart() }} en Carro</span>
+            <span class="flex items-center justify-center text-xs md:text-base text-primary-content border border-primary rounded-md w-full {{ $size == 'sm' ? 'h-6 md:h-8' : 'h-8' }} font-bold">{{ $this->inCart() }} en Carro</span>
             <x-button wire:click.stop="increase" class="btn btn-primary {{ $size == 'sm' ? 'btn-xs md:btn-sm' : 'btn-sm'  }} btn-circle text-neutral-50" icon="o-plus" spinner/>
         </div>
     @elseif($this->stock === null)

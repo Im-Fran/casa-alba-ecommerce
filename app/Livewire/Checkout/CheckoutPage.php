@@ -3,6 +3,7 @@
 namespace App\Livewire\Checkout;
 
 use App\Helpers\Helpers;
+use App\Lib\VentiPay;
 use App\Livewire\Forms\Checkout\CheckoutForm;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
@@ -16,6 +17,8 @@ use Lunar\Facades\ShippingManifest;
 use Lunar\Models\Address;
 use Lunar\Models\Cart;
 use Lunar\Models\Country;
+use Lunar\Models\OrderLine;
+use Lunar\Models\ProductVariant;
 use Usernotnull\Toast\Concerns\WireToast;
 
 class CheckoutPage extends Component {
@@ -30,6 +33,13 @@ class CheckoutPage extends Component {
     }
 
     public function mount(): void {
+        if(request()->has('cancel')) {
+            toast()->danger('El pago fue cancelado', 'Error')->push();
+        } else if (request()->has('success')) {
+            toast()->success('El pago fue exitoso', 'Éxito')->push();
+        }
+
+
         if (!$this->cart || $this->cart?->lines()->count() == 0) {
             $this->redirect(route('home'));
         }
@@ -96,20 +106,6 @@ class CheckoutPage extends Component {
             }
         }
 
-        if($field === 'form.shippingOption') {
-            $options = $this->shippingOptions;
-            $shippingOption = $this->shippingOptions->firstWhere('identifier', '=', $this->form->shippingOption);
-            if($shippingOption == null) {
-                $shippingOption = $options->first();
-                $this->form->shippingOption = $shippingOption->identifier;
-            }
-
-            if($this->updateAddresses()) {
-                $this->cart->setShippingOption($shippingOption);
-                $this->dispatch('cart-updated');
-            }
-        }
-
         if ($this->form->sameAddress) {
             $this->form->billing_address = $this->form->shipping_address;
             $this->form->billing_city = $this->form->shipping_city;
@@ -125,11 +121,23 @@ class CheckoutPage extends Component {
         if ($field === 'form.sameAddress') {
             $this->form->resetErrorBag(['billing_address', 'billing_city', 'billing_postal']);
         }
+
+        $options = $this->shippingOptions;
+        $shippingOption = $this->shippingOptions->firstWhere('identifier', '=', $this->form->shippingOption);
+        if($shippingOption == null) {
+            $shippingOption = $options->first();
+            $this->form->shippingOption = $shippingOption->identifier;
+        }
+
+        if($this->updateAddresses()) {
+            $this->cart->setShippingOption($shippingOption);
+            $this->dispatch('cart-updated');
+        }
     }
 
     #[Computed]
     public function addresses(): Collection {
-        return optional(auth()->user()->selfCustomer())->addresses()->get()->map(fn($it) => ['id' => $it->id, 'name' => "{$it->line_one}, {$it->postcode}, {$it->city}, {$it->country->name}"]) ?? collect();
+        return auth()->user()?->selfCustomer()?->addresses()?->get()?->map(fn($it) => ['id' => $it->id, 'name' => "{$it->line_one}, {$it->postcode}, {$it->city}, {$it->country->name}"]) ?? collect();
     }
 
     #[Computed]
@@ -181,14 +189,33 @@ class CheckoutPage extends Component {
         $this->form->validate();
         $this->updateAddresses();
 
+        $shippingOption = ($this->shippingOptions->where('identifier', '=', $this->form->shippingOption)->first());
+
         try {
             $order = $this->cart->createOrder();
-        } catch (CartException $e) {
+        } catch (\Exception $e) {
             toast()->danger($e->getMessage(), 'Error')->push();
             return;
         }
 
-        $driver = Payments::driver('offline');
-        dd($driver);
+        $customerId = app(VentiPay::class)->getOrCreateCustomerId(
+            email: $this->form->email,
+            name: $this->form->name,
+            last_name: $this->form->lastname,
+            rut: $this->form->rut,
+        );
+
+        $items = $order->lines->map(fn(OrderLine $it) => [
+            'unit_price' => $it->unit_price->value,
+            'quantity' => $it->quantity,
+            'sku' => $it->purchasable->sku,
+            'name' => $it->description,
+        ]);
+
+        dd($items);
+
+        app(VentiPay::class)->createCheckout($order->id, $customerId, $items);
+
+//        Payments::driver('offline');
     }
 }

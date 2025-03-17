@@ -40,7 +40,7 @@
                 />
 
                 <div class="flex items-center justify-between">
-                    <a href="{{ route('login') }}" class="text-primary hover:underline">Volver al inicio de sesión</a>
+                    <a href="{{ route('login') }}" class="text-primary-content hover:underline">Volver al inicio de sesión</a>
                     <x-button type="submit" class="btn btn-primary">Restablecer Contraseña</x-button>
                 </div>
             </x-form>

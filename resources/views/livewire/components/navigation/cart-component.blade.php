@@ -6,5 +6,5 @@
         </div>
     </x-drawer>
 
-    <x-lucide-shopping-bag x-on:click.stop="closeMobileNav" wire:click.stop="$toggle('openCart')" class="text-neutral-100 hover:text-secondary w-6 h-6 md:w-8 md:h-8 cursor-pointer"/>
+    <x-lucide-shopping-bag x-on:click.stop="closeMobileNav" wire:click.stop="$toggle('openCart')" class="text-primary-content hover:text-primary-content/80 w-6 h-6 md:w-8 md:h-8 cursor-pointer"/>
 </div>

@@ -28,7 +28,8 @@ class LoginPage extends Component {
     }
 
     public function submit(): void {
-        $this->form->validate();
+        $this->validate();
+
         if (!auth()->attempt($this->form->only(['email', 'password']), remember: $this->form->remember)) {
             toast()->danger('Las credenciales no coinciden con nuestros registros.', 'Credenciales Incorrectas')->push();
 
