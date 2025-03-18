@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Webhooks\VentiPayController;
 use App\Livewire\Account\AccountPage;
 use App\Livewire\Account\AddressesPage;
@@ -18,7 +19,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomePage::class)->name('home');
 Route::get('/contacto', ContactPage::class)->name('contact');
-Route::get('/checkout', CheckoutPage::class)->name('checkout');
+
+Route::prefix('/checkout')->group(function(){
+    Route::get('/', CheckoutPage::class)->name('checkout');
+    Route::get('/success', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+});
 
 Route::prefix('auth')->group(function() {
     Route::get('/login', LoginPage::class)->middleware(['guest'])->name('login');

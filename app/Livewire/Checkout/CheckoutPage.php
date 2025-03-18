@@ -40,7 +40,7 @@ class CheckoutPage extends Component {
         }
 
 
-        if (!$this->cart || $this->cart?->lines()->count() == 0) {
+        if (!$this->cart || $this->cart->lines()->count() == 0) {
             $this->redirect(route('home'));
         }
 
@@ -173,7 +173,7 @@ class CheckoutPage extends Component {
                 'city' => Helpers::comunas()->where('id', '=', $this->form->{"{$type}_city"})->first()['name'],
                 'postcode' => $this->form->{"{$type}_postal"},
                 'delivery_instructions' => $type === 'shipping' ? $this->form->deliveryInstructions : null,
-                'meta' => ['city_id' => $this->form->{"{$type}_city"}]
+                'meta' => ['city_id' => $this->form->{"{$type}_city"}, 'rut' => $this->form->rut]
             ]);
         }
 
@@ -190,32 +190,11 @@ class CheckoutPage extends Component {
         $this->updateAddresses();
 
         $shippingOption = ($this->shippingOptions->where('identifier', '=', $this->form->shippingOption)->first());
+        $this->cart->setShippingOption($shippingOption);
 
-        try {
-            $order = $this->cart->createOrder();
-        } catch (\Exception $e) {
-            toast()->danger($e->getMessage(), 'Error')->push();
-            return;
-        }
+        $res = Payments::driver('ventipay')->cart($this->cart)->authorize();
+        dd($res);
 
-        $customerId = app(VentiPay::class)->getOrCreateCustomerId(
-            email: $this->form->email,
-            name: $this->form->name,
-            last_name: $this->form->lastname,
-            rut: $this->form->rut,
-        );
-
-        $items = $order->lines->map(fn(OrderLine $it) => [
-            'unit_price' => $it->unit_price->value,
-            'quantity' => $it->quantity,
-            'sku' => $it->purchasable->sku,
-            'name' => $it->description,
-        ]);
-
-        dd($items);
-
-        app(VentiPay::class)->createCheckout($order->id, $customerId, $items);
-
-//        Payments::driver('offline');
+//        redirect()->away($redirectUri); // Redirect to check out
     }
 }

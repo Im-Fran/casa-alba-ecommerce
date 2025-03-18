@@ -5,9 +5,11 @@ namespace App\Providers;
 use App\Helpers\TurnstileClient;
 use App\Lib\VentiPay;
 use App\Modifiers\CustomShippingModifier;
+use App\PaymentTypes\VentiPayPayment;
 use Illuminate\Support\ServiceProvider;
 use Lunar\Admin\Support\Facades\LunarPanel;
 use Lunar\Base\ShippingModifiers;
+use Lunar\Facades\Payments;
 
 class AppServiceProvider extends ServiceProvider {
     /**
@@ -26,5 +28,6 @@ class AppServiceProvider extends ServiceProvider {
     public function boot(ShippingModifiers $modifiers): void {
         $modifiers->add(CustomShippingModifier::class);
 
+        Payments::extend('ventipay', fn($app) => $app->make(VentiPayPayment::class));
     }
 }
