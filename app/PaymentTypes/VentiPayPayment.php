@@ -17,11 +17,7 @@ class VentiPayPayment extends AbstractPayment {
      * @throws Exception
      */
     public function authorize(): ?PaymentAuthorize {
-        if (!$this->order) {
-            if (!$this->order = $this->cart->order) {
-                $this->order = $this->cart->createOrder();
-            }
-        }
+        $this->order = $this->order ?: ($this->cart->draftOrder ?: $this->cart->completedOrder);
 
         if ($this->order->placed_at) {
             // ¡Ocurrió un error!
@@ -38,8 +34,8 @@ class VentiPayPayment extends AbstractPayment {
         }
 
         try {
-            $redirectUri = app(VentiPay::class)->createCheckout(order: $this->order);
-        } catch (\Exception $e){
+            app(VentiPay::class)->createCheckout(order: $this->order);
+        } catch (Exception $e){
             $failure = new PaymentAuthorize(
                 success: false,
                 message: $e->getMessage(),
@@ -51,8 +47,15 @@ class VentiPayPayment extends AbstractPayment {
             return $failure;
         }
 
-        // TODO
-        return null;
+        $success = new PaymentAuthorize(
+            success: true,
+            message: 'Redirigiendo a VentiPay...',
+            orderId: $this->order?->id,
+            paymentType: 'ventipay',
+        );
+
+        PaymentAttemptEvent::dispatch($success);
+        return $success;
     }
 
     public function refund(Transaction $transaction, int $amount, $notes = null): PaymentRefund {

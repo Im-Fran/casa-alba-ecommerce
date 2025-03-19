@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
+use Lunar\Base\DataTransferObjects\PaymentAuthorize;
 use Lunar\DataTypes\ShippingOption;
 use Lunar\Exceptions\Carts\CartException;
 use Lunar\Facades\CartSession;
@@ -17,6 +18,7 @@ use Lunar\Facades\ShippingManifest;
 use Lunar\Models\Address;
 use Lunar\Models\Cart;
 use Lunar\Models\Country;
+use Lunar\Models\Order;
 use Lunar\Models\OrderLine;
 use Lunar\Models\ProductVariant;
 use Usernotnull\Toast\Concerns\WireToast;
@@ -185,16 +187,23 @@ class CheckoutPage extends Component {
         // TODO: Generar link de pago desde el proveedor
 
         // Redirect to payment provider
-
         $this->form->validate();
         $this->updateAddresses();
 
         $shippingOption = ($this->shippingOptions->where('identifier', '=', $this->form->shippingOption)->first());
         $this->cart->setShippingOption($shippingOption);
 
-        $res = Payments::driver('ventipay')->cart($this->cart)->authorize();
-        dd($res);
+        /** @var PaymentAuthorize $res */
+        $res = Payments::driver('ventipay')
+            ->cart($this->cart)
+            ->authorize();
 
-//        redirect()->away($redirectUri); // Redirect to check out
+        if(!$res->success || $res->orderId == null) {
+            toast()->danger($res->message, '¡Error al autorizar!')->push();
+            return;
+        }
+
+        $order = Order::find($res->orderId);
+        redirect()->away("https://ventipay.com/checkout/{$order->meta['ventipay_checkout_id']}"); // Redirect to check out
     }
 }

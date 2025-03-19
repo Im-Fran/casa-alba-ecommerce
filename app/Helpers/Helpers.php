@@ -6,6 +6,8 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Collection;
+use Lunar\Models\Currency;
+use Lunar\Pricing\DefaultPriceFormatter;
 use Psr\SimpleCache\InvalidArgumentException;
 
 class Helpers {
@@ -76,5 +78,17 @@ class Helpers {
 
             return $categorizado;
         });
+    }
+
+    public static function money(int $value, int $qty = 1): DefaultPriceFormatter {
+        return new DefaultPriceFormatter(
+            value: $value,
+            currency: Currency::whereCode('CLP')->first() ?? Currency::first(),
+            unitQty: $qty,
+        );
+    }
+
+    public static function moneyFormatted(int $value, int $qty = 1, string $locale = 'es-cl'): string {
+        return self::money($value, $qty)->unitFormatted($locale);
     }
 }
