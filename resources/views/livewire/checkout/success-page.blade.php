@@ -56,7 +56,7 @@
                     <x-button link="{{ route('home') }}" class="btn btn-outline" icon="o-home">
                         Volver a Inicio
                     </x-button>
-                    <x-button link="{{ route('account') }}" class="btn btn-primary" icon="o-user">
+                    <x-button link="{{ route('account.orders.view', ['order' => $this->order->id]) }}" class="btn btn-primary" icon="o-user">
                         Ver Mis Pedidos
                     </x-button>
                 </div>

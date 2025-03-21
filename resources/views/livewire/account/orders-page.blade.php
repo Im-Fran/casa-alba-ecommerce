@@ -37,7 +37,7 @@
                                 @foreach($orders as $order)
                                     <tr class="border-b border-gray-100 hover:bg-gray-50">
                                         <td class="py-4 text-sm">#{{ $order->id }}</td>
-                                        <td class="py-4 text-sm">{{ $order->created_at?->format('d/m/Y H:i') }}</td>
+                                        <td class="py-4 text-sm">{{ $order->created_at?->fromNow()  }}</td>
                                         <td class="py-4 text-sm">
                                             @php($orderColor = \Lunar\Admin\Support\OrderStatus::getColor($order->status))
                                             <span class="px-2 py-1 rounded-full text-xs" style="background-color: rgb({{ $orderColor[500] }}); color: rgb({{ $orderColor[100] }})">{{ \Lunar\Admin\Support\OrderStatus::getLabel($order->status) }}</span>

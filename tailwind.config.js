@@ -39,7 +39,7 @@ export default {
                 "primary-content": "#2B9D66",
                 "secondary": "#AFE9CD",
                 "secondary-content": "#2B9D66",
-                "accent": "#05C367",
+                "accent": "#2B9D66",
                 "accent-content": "#F3FCF7",
                 "neutral": "#FCFCFC",
                 "neutral-content": "#333333",

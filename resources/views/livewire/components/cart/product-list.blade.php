@@ -40,7 +40,7 @@
                 <span class="text-lg text-center text-neutral-500">Agrega productos para comenzar a comprar</span>
             </div>
 
-            <x-button wire:click="$parent.$toggle('openCart')" class="btn-primary btn-outline text-neutral-50 mt-4" label="Seguir Comprando"/>
+            <x-button wire:click="$parent.$toggle('openCart')" class="btn-accent btn-outline text-neutral-50 mt-4" label="Seguir Comprando"/>
         </div>
     @endforelse
 </div>

@@ -5,8 +5,8 @@
         <div class="container max-w-4xl mx-auto">
             <div class="bg-white p-6 md:p-10 rounded-lg shadow-lg">
                 <div class="flex flex-col items-center mb-8 text-center">
-                    <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
-                        <x-heroicon-o-exclamation-triangle class="w-10 h-10 text-amber-500"/>
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                        <x-heroicon-o-exclamation-triangle class="w-10 h-10 text-red-500"/>
                     </div>
                     <h1 class="text-3xl font-bold">Pago Cancelado</h1>
                     <p class="text-gray-600 mt-2">El proceso de pago ha sido cancelado. Puedes intentarlo nuevamente cuando estés listo.</p>
@@ -53,10 +53,10 @@
                 </div>
 
                 <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-                    <x-button tag="a" href="{{ route('home') }}" class="btn btn-secondary" icon="o-home">
+                    <x-button link="{{ route('home') }}" class="btn btn-neutral" icon="o-home">
                         Volver a Inicio
                     </x-button>
-                    <x-button tag="a" href="{{ route('checkout') }}" class="btn btn-primary" icon="o-credit-card">
+                    <x-button wire:click="retry" class="btn btn-primary" icon="o-credit-card">
                         Reintentar Pago
                     </x-button>
                 </div>

@@ -17,7 +17,7 @@
             <span>Direcciones</span>
         </a>
 
-        <a href="{{ route('account') }}" class="flex items-center gap-2 p-2 rounded-lg hover:bg-neutral-100 transition-colors" wire:current.exact="text-primary-content">
+        <a href="{{ route('account.orders') }}" class="flex items-center gap-2 p-2 rounded-lg hover:bg-neutral-100 transition-colors" wire:current.exact="text-primary-content">
             <x-icon name="o-shopping-cart" class="w-5 h-5" />
             <span>Ordenes</span>
         </a>

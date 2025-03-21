@@ -2,10 +2,10 @@
     @auth
         <x-dropdown>
             <x-menu-title title="Mi Cuenta"/>
-            <x-menu-item title="Información de la Cuenta" icon="o-identification" link="{{ route('account') }}" wire:current.exact="text-primary" no-wire-navigate/>
-            <x-menu-item title="Seguridad" icon="o-lock-closed" link="{{ route('account.security') }}" wire:current.exact="text-primary" no-wire-navigate/>
-            <x-menu-item title="Direcciones" icon="o-map-pin" link="{{ route('account.addresses') }}" wire:current.exact="text-primary" no-wire-navigate/>
-            <x-menu-item title="Ordenes" icon="o-shopping-cart" link="{{ route('account') }}" wire:current.exact="text-primary" no-wire-navigate/>
+            <x-menu-item title="Información de la Cuenta" icon="o-identification" link="{{ route('account') }}" wire:current.exact="text-primary-content" no-wire-navigate/>
+            <x-menu-item title="Seguridad" icon="o-lock-closed" link="{{ route('account.security') }}" wire:current.exact="text-primary-content" no-wire-navigate/>
+            <x-menu-item title="Direcciones" icon="o-map-pin" link="{{ route('account.addresses') }}" wire:current.exact="text-primary-content" no-wire-navigate/>
+            <x-menu-item title="Ordenes" icon="o-shopping-cart" link="{{ route('account.orders') }}" wire:current.exact="text-primary-content" no-wire-navigate/>
 
             <x-menu-separator/>
             <x-menu-item title="Cerrar Sesión" icon="o-arrow-left-on-rectangle" link="{{ route('logout') }}" no-wire-navigate/>

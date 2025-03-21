@@ -184,8 +184,6 @@ class CheckoutPage extends Component {
 
     /* Run the checkout */
     public function checkout(): void {
-        // TODO: Generar link de pago desde el proveedor
-
         // Redirect to payment provider
         $this->form->validate();
         $this->updateAddresses();

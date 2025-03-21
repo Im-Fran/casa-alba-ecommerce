@@ -17,7 +17,7 @@ class VentiPayPayment extends AbstractPayment {
      * @throws Exception
      */
     public function authorize(): ?PaymentAuthorize {
-        $this->order = $this->order ?: ($this->cart->draftOrder ?: $this->cart->completedOrder);
+        $this->order = $this->order ?: $this->cart->createOrder();
 
         if ($this->order->placed_at) {
             // ¡Ocurrió un error!

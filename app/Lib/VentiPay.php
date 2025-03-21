@@ -12,6 +12,7 @@ use Illuminate\Http\Client\Factory;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
+use Lunar\DataTypes\ShippingOption;
 use Lunar\Models\Address;
 use Lunar\Models\Order;
 use Lunar\Models\OrderLine;
@@ -137,10 +138,10 @@ readonly class VentiPay {
      * @throws Exception
      */
     public function createCheckout(Order $order) {
-        $items = $order->productLines->map(fn(OrderLine $it) => [
+        $items = $order->lines->map(fn(OrderLine $it) => [
             'unit_price' => $it->unit_price->value,
             'quantity' => $it->quantity,
-            'sku' => $it->purchasable->sku,
+            'sku' => $it->purchasable_type === ShippingOption::class ? 'shipping' : ($it->purchasable?->sku ?? 'N/A'),
             'name' => $it->description,
         ]);
 
