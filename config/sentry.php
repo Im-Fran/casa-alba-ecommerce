@@ -10,6 +10,9 @@ return [
     // @see https://docs.sentry.io/product/sentry-basics/dsn-explainer/
     'dsn' => env('SENTRY_LARAVEL_DSN', env('SENTRY_DSN')),
 
+    'http_connect_timeout' => env('SENTRY_HTTP_CONNECT_TIMEOUT', 6),
+    'http_timeout' => env('SENTRY_HTTP_TIMEOUT', 8),
+
     // @see https://spotlightjs.com/
     // 'spotlight' => env('SENTRY_SPOTLIGHT', false),
 
