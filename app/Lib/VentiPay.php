@@ -112,16 +112,16 @@ readonly class VentiPay {
     /**
      * Gets the checkout for the given order.
      *
-     * @param Order $order The order to get the checkout for.
+     * @param string $id The id of the checkout
      * @param array|null $query Additional query parameters.
      * @return array
      * @throws ConnectionException
      */
-    public function getCheckout(Order $order, ?array $query = null): array {
+    public function getCheckout(string $id, ?array $query = null): array {
         return $this->baseHttpClient()
             ->asJson()
             ->throw()
-            ->get("/v1/checkouts/{$order->meta['ventipay_checkout_id']}", $query)
+            ->get("/v1/checkouts/$id", $query)
             ->json();
     }
 
@@ -181,5 +181,25 @@ readonly class VentiPay {
         $order->save();
 
         return $response['url'];
+    }
+
+    /**
+     * Refunds the given checkout. If used electronic transfer you can't refund to payment method but the customer balance.
+     *
+     * @param string $id The id for the checkout
+     * @param string $method The payment method of the checkout. Defaults to 'payment_method'. (payment_method|customer_balance)
+     * @param int|null $amount The amount to refund. If null, the maximum amount will be refunded.
+     * @return array|mixed
+     * @throws ConnectionException
+     */
+    public function refundCheckout(string $id, string $method = 'payment_method', int $amount = null) {
+        return $this->baseHttpClient()
+            ->withBody(json_encode([
+                'destination' => $method,
+                'amount' => $amount,
+            ]))
+            ->throw()
+            ->post("/v1/checkouts/$id/refund")
+            ->json();
     }
 }

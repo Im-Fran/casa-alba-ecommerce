@@ -10,6 +10,8 @@ use Lunar\Base\DataTransferObjects\PaymentRefund;
 use Lunar\Events\PaymentAttemptEvent;
 use Lunar\Models\Transaction;
 use Lunar\PaymentTypes\AbstractPayment;
+use function Sentry\captureException;
+use function Sentry\captureMessage;
 
 class VentiPayPayment extends AbstractPayment {
 
@@ -29,6 +31,7 @@ class VentiPayPayment extends AbstractPayment {
             );
 
             PaymentAttemptEvent::dispatch($failure);
+            captureMessage("Intento de pago duplicado");
 
             return $failure;
         }
@@ -36,6 +39,7 @@ class VentiPayPayment extends AbstractPayment {
         try {
             app(VentiPay::class)->createCheckout(order: $this->order);
         } catch (Exception $e){
+            captureException($e);
             $failure = new PaymentAuthorize(
                 success: false,
                 message: $e->getMessage(),
@@ -59,7 +63,41 @@ class VentiPayPayment extends AbstractPayment {
     }
 
     public function refund(Transaction $transaction, int $amount, $notes = null): PaymentRefund {
-        // TODO: Implement refund() method.
+        $checkoutId = $transaction->order->meta['ventipay_checkout_id'];
+        // Get the checkout
+
+        try {
+            $checkout = app(VentiPay::class)
+                ->getCheckout(id: $checkoutId);
+        } catch (Exception $e) {
+            captureException($e);
+
+            return new PaymentRefund(
+                success: false,
+                message: $e->getMessage(),
+            );
+        }
+
+        $availableForRefund = min($amount, $checkoutId['available_for_refund']);
+
+        try {
+            $refund = app(VentiPay::class)
+                ->refundCheckout(id: $checkoutId, amount: $availableForRefund);
+        } catch (Exception $e) {
+            captureException($e);
+
+            return new PaymentRefund(
+                success: false,
+                message: $e->getMessage(),
+            );
+        }
+
+        if($refund['status'] === 'paid') {
+            return new PaymentRefund(
+                success: true,
+                message: 'Reembolso exitoso',
+            );
+        }
     }
 
     public function capture(Transaction $transaction, $amount = 0): PaymentCapture {

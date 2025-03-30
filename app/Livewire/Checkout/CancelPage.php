@@ -13,7 +13,7 @@ class CancelPage extends Component {
     public Order $order;
 
     public function retry(): void {
-        $data = app(VentiPay::class)->getCheckout($this->order);
+        $data = app(VentiPay::class)->getCheckout(id: $this->order->meta['ventipay_checkout_id']);
         redirect()->away($data['url']);
     }
 }

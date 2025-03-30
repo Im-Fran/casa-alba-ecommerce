@@ -13,6 +13,18 @@
                         </div>
 
                         <div class="flex flex-col space-y-6" x-show="contact" x-collapse>
+                            @if(!auth()->check())
+                                <x-button
+                                    class="btn btn-primary w-full"
+                                    icon="o-user-circle"
+                                    :link="route('login')"
+                                    no-wire-navigate
+                                    spinner
+                                >
+                                    ¿Ya tienes cuenta?
+                                </x-button>
+                            @endif
+
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                 <x-input
                                     label="Nombre"

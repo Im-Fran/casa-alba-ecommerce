@@ -35,13 +35,6 @@ class CheckoutPage extends Component {
     }
 
     public function mount(): void {
-        if(request()->has('cancel')) {
-            toast()->danger('El pago fue cancelado', 'Error')->push();
-        } else if (request()->has('success')) {
-            toast()->success('El pago fue exitoso', 'Éxito')->push();
-        }
-
-
         if (!$this->cart || $this->cart->lines()->count() == 0) {
             $this->redirect(route('home'));
         }

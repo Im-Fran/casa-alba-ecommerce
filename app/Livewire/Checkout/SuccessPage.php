@@ -8,6 +8,7 @@ use Livewire\Component;
 use Lunar\Facades\CartSession;
 use Lunar\Models\Order;
 use Usernotnull\Toast\Concerns\WireToast;
+use function Sentry\captureException;
 
 class SuccessPage extends Component {
 
@@ -19,8 +20,10 @@ class SuccessPage extends Component {
     public function mount(): void {
         // From here (and if rendered because of the signature) we know the payment was successful, so now we validate it.
         try {
-            $checkout = app(VentiPay::class)->getCheckout(order: $this->order, query: ['expand[]' => 'payment_method']);
+            $checkout = app(VentiPay::class)
+                ->getCheckout(id: $this->order->meta['ventipay_checkout_id'], query: ['expand[]' => 'payment_method']);
         } catch (\Exception $e) {
+            captureException($e);
             toast()->danger($e->getMessage(), '¡Error al Contactar VentiPay!')->push();
             return;
         }

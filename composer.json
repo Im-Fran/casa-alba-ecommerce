@@ -23,6 +23,7 @@
         "mailersend/laravel-driver": "^2.7",
         "meilisearch/meilisearch-php": "^1.11",
         "robsontenorio/mary": "^1.41",
+        "sentry/sentry-laravel": "^4.13",
         "stijnvanouplines/blade-country-flags": "^1.0",
         "usernotnull/tall-toasts": "^2.1"
     },

@@ -14,7 +14,7 @@ export default ({ mode }) => {
 
     return defineConfig({
         plugins: [
-            process.env.APP_ENV === 'local' && basicSsl({
+            process.env.VITE_APP_ENV === 'local' && basicSsl({
                 domains: [host]
             }),
             laravel({
