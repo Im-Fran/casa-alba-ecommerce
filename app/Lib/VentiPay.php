@@ -55,7 +55,7 @@ readonly class VentiPay {
             $customer->save();
         }
 
-        return $customer->meta['ventipay_id'];
+        return $customer?->meta['ventipay_id'] ?? $response['id'];
     }
 
     /**

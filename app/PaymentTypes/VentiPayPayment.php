@@ -78,7 +78,7 @@ class VentiPayPayment extends AbstractPayment {
             );
         }
 
-        $availableForRefund = min($amount, $checkoutId['available_for_refund']);
+        $availableForRefund = min($amount, $checkout['available_for_refund']);
 
         try {
             $refund = app(VentiPay::class)
