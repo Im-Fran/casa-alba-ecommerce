@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Webhooks\VentiPayController;
+use App\Http\Middleware\Webhooks\VentiSignatureValidatorMiddleware;
 use App\Livewire\Account\AccountPage;
 use App\Livewire\Account\AddressesPage;
 use App\Livewire\Account\OrdersPage;
@@ -54,7 +55,7 @@ Route::prefix('/account')->middleware(['auth', 'verified'])->group(function() {
 });
 
 
-Route::post('/webhooks/ventipay', VentiPayController::class)->name('webhooks.ventipay');
+Route::post('/webhooks/ventipay', VentiPayController::class)->middleware([VentiSignatureValidatorMiddleware::class])->name('webhooks.ventipay');
 
 Route::prefix('/r')->group(function() {
     Route::get('/tiktok', fn () => redirect()->away('https://www.tiktok.com/@productoscasaalba', 301))->name('redirect.tiktok');

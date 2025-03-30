@@ -44,6 +44,7 @@ return [
         'commerce_id' => env('VENTIPAY_COMMERCE_ID'),
         'public_key' => env('VENTIPAY_PUBLIC_KEY'),
         'private_key' => env('VENTIPAY_PRIVATE_KEY'),
+        'webhook_secret' => env('VENTIPAY_WEBHOOK_SECRET'),
     ],
 
 ];
