@@ -15,6 +15,7 @@ use App\Livewire\Auth\RegisterPage;
 use App\Livewire\Auth\VerifyEmail;
 use App\Livewire\Checkout\CancelPage;
 use App\Livewire\Checkout\CheckoutPage;
+use App\Livewire\Checkout\ForgottenOrder;
 use App\Livewire\Checkout\OrderPreviewPage;
 use App\Livewire\Checkout\SuccessPage;
 use App\Livewire\Contact\ContactPage;
@@ -28,6 +29,7 @@ Route::prefix('/checkout')->group(function(){
     Route::get('/', CheckoutPage::class)->name('checkout');
     Route::get('/success/{order}', SuccessPage::class)->middleware(['signed'])->name('checkout.success');
     Route::get('/cancel/{order}', CancelPage::class)->middleware(['signed'])->name('checkout.cancel');
+    Route::get('/forgotten/{order}', ForgottenOrder::class)->middleware([])->name('checkout.forgotten');
 });
 
 Route::prefix('auth')->group(function() {

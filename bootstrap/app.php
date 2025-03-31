@@ -14,7 +14,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->use([LivewirePatchMiddleware::class, SentryContextMiddleware::class]);
+        $middleware->validateCsrfTokens(except: [
+            'webhooks/*',
+        ])->use([
+            LivewirePatchMiddleware::class,
+            SentryContextMiddleware::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         SentryIntegration::handles($exceptions);

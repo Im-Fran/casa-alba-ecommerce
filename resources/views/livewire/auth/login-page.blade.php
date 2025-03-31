@@ -7,7 +7,7 @@
                 <h1 class="text-2xl font-bold text-center">Iniciar Sesión</h1>
                 <p class="text-center text-gray-500 mt-2">Ingresa tus credenciales para acceder</p>
             </div>
-            <x-form class="mt-5" wire:submit.prevent="submit" action="dialog">
+            <x-form class="mt-5" wire:submit.prevent="submit">
                 <x-input
                     label="Correo Electrónico"
                     type="email"

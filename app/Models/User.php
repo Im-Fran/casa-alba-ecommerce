@@ -32,8 +32,13 @@ class User extends Authenticatable implements LunarUserInterface, MustVerifyEmai
         'remember_token',
     ];
 
-    public function selfCustomer(): ?Customer {
-        return $this->customers()->firstWhere('vat_no','=', $this->rut);
+    public function selfCustomer(): Customer {
+        return $this->customers()->firstOrCreate([
+            'vat_no' => $this->rut
+        ], [
+            'first_name' => $this->name,
+            'last_name' => $this->last_name,
+        ]);
     }
 
     protected function casts(): array {

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Jobs\Orders\SyncGuestOrdersWithUserJob;
 use App\Livewire\Forms\Auth\RegisterForm;
 use App\Models\User;
 use Livewire\Component;
@@ -23,6 +24,8 @@ class RegisterPage extends Component {
         auth()->login($user);
         $user->sendEmailVerificationNotification();
         session()->forget('email');
+
+        SyncGuestOrdersWithUserJob::dispatch($user);
 
         toast()->success('Por favor verifica tu correo usando el link que enviamos. Recuerda revisar el Spam!', 'Verificación Necesaria')->pushOnNextPage();
         $this->redirect(route('verification.notice'));

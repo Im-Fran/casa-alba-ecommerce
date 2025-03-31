@@ -16,29 +16,38 @@ class VentiSignatureValidatorMiddleware {
         }
 
         // Sample header: 't=unixtimestamp,v1=hmac-sha256hash'
-        $webhookSecret = config('services.ventipay.secret');
+        $webhookSecret = config('services.ventipay.webhook_secret');
         $header = explode(',', $request->header('venti-signature'));
         $signature = null;
-        $timestamp = null;
+        $unixTimestamp = null;
         foreach($header as $h) {
             if(str_starts_with($h, 't=')) {
-                $timestamp = substr($h, 2);
+                $unixTimestamp = substr($h, 2);
             } else if(str_starts_with($h, 'v1=')) {
                 $signature = substr($h, 3);
             }
         }
 
-        if($signature == null || $timestamp == null) {
+        if($signature == null || $unixTimestamp == null) {
             return response()->json([
                 'error' => 'Invalid Signature Header!'
             ]);
         }
 
+        // If timestamp is older than 5 minutes, reject the request
+        $currentTimestamp = time();
+        if($currentTimestamp - $unixTimestamp > 300) { // Tolerance of 5 minutes as recommended by VentiPay
+            return response()->json([
+                'error' => 'Request expired!'
+            ]);
+        }
+
         // Verification string: <timestamp>.<payload>
-        $hash = hash_hmac('sha256', "$timestamp.{$request->getContent()}", $webhookSecret);
+        $string = "{$unixTimestamp}.{$request->getContent()}";
+        $hash = hash_hmac('sha256', $string, $webhookSecret);
         if(!hash_equals($signature, $hash)) {
             return response()->json([
-                'error' => 'Invalid Signature!'
+                'error' => 'Invalid Signature!',
             ]);
         }
 

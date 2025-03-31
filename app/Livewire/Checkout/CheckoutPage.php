@@ -142,6 +142,10 @@ class CheckoutPage extends Component {
 
     #[Computed]
     public function shippingOptions(): Collection {
+        if($this->cart == null) {
+            return collect();
+        }
+
         return ShippingManifest::getOptions($this->cart);
     }
 

@@ -60,6 +60,13 @@ return [
             'favourite' => true,
         ],
 
+        'cancelled' => [
+            'label' => 'Cancelado',
+            'color' => '#d9534f',
+            'mailers' => [],
+            'notifications' => [],
+            'favourite' => true,
+        ],
     ],
 
     /*
