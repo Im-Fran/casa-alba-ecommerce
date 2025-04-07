@@ -46,6 +46,7 @@ if [[ " ${flags[@]} " =~ "no_interaction" ]]; then
     echo "Caching configuration..."
     php artisan optimize
     php artisan icons:cache
+    php artisan filament:upgrade
 
     echo "Building assets..."
     bun install && bun run build
@@ -80,6 +81,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     php artisan icons:clear
     php artisan optimize
     php artisan icons:cache
+    php artisan filament:upgrade
 fi
 
 read -p "Do you want to build assets? [y/n] " -n 1 -r
