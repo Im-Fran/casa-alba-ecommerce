@@ -27,7 +27,7 @@ class RegisterPage extends Component {
 
         SyncGuestOrdersWithUserJob::dispatch($user);
 
-        toast()->success('Por favor verifica tu correo usando el link que enviamos. Recuerda revisar el Spam!', 'Verificación Necesaria')->pushOnNextPage();
+        toast()->success('Por favor verifica tu correo usando el link que enviamos. ¡Recuerda revisar el Spam!', 'Verificación Necesaria')->pushOnNextPage();
         $this->redirect(route('verification.notice'));
     }
 }

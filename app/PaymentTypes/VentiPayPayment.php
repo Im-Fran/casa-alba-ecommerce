@@ -64,8 +64,8 @@ class VentiPayPayment extends AbstractPayment {
 
     public function refund(Transaction $transaction, int $amount, $notes = null): PaymentRefund {
         $checkoutId = $transaction->order->meta['ventipay_checkout_id'];
-        // Get the checkout
 
+        // Get the checkout
         try {
             $checkout = app(VentiPay::class)
                 ->getCheckout(id: $checkoutId);
@@ -78,11 +78,16 @@ class VentiPayPayment extends AbstractPayment {
             );
         }
 
-        $availableForRefund = min($amount, $checkout['available_for_refund']);
+        if($amount > intval($checkout['available_for_refund'])) {
+            return new PaymentRefund(
+                success: false,
+                message: 'El monto a reembolsar es mayor al disponible. Monto disponible: ' . $checkout['available_for_refund'],
+            );
+        }
 
         try {
             $refund = app(VentiPay::class)
-                ->refundCheckout(id: $checkoutId, amount: $availableForRefund);
+                ->refundCheckout(id: $checkoutId, amount: $amount);
         } catch (Exception $e) {
             captureException($e);
 

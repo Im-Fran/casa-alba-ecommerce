@@ -14,7 +14,11 @@ class OrdersPage extends Component {
     protected $paginationTheme = 'tailwind';
 
     public function orders(): LengthAwarePaginator {
-        return auth()->user()->orders()->latest('created_at')->paginate(10);
+        return auth()
+            ->user()
+            ->orders()
+            ->latest('created_at')
+            ->paginate(10);
     }
 
     public function render(): View {

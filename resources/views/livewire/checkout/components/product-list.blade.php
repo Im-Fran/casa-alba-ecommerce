@@ -4,7 +4,7 @@
         <span>Seguir Comprando</span>
     </a>
 
-    <div class="flex flex-col overflow-scroll h-[55vh] md:h-[65vh] container mx-auto">
+    <div class="flex flex-col overflow-auto h-[55vh] md:h-[65vh] container mx-auto">
         @foreach(collect($this->cart?->lines ?? [])->sortBy('id') as $line)
             <div class="flex items-center justify-between p-1 md:p-4 {{ $this->cart->lines()->orderBy('id')->first()->id === $line->id ? '' : 'border-t' }} border-neutral-200">
                 <div class="flex items-center space-x-4 h-full w-full">

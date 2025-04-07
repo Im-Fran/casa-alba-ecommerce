@@ -28,7 +28,6 @@ return [
     'draft_status' => 'awaiting-payment',
 
     'statuses' => [
-
         'awaiting-payment' => [
             'label' => 'Esperando Pago',
             'color' => '#848a8c',
@@ -55,6 +54,7 @@ return [
 
         'dispatched' => [
             'label' => 'Despachado',
+            'color' => '#0A81D7',
             'mailers' => [],
             'notifications' => [],
             'favourite' => true,
@@ -62,6 +62,22 @@ return [
 
         'cancelled' => [
             'label' => 'Cancelado',
+            'color' => '#d9534f',
+            'mailers' => [],
+            'notifications' => [],
+            'favourite' => true,
+        ],
+
+        'refunded' => [
+            'label' => 'Reembolsado',
+            'color' => '#d9534f',
+            'mailers' => [],
+            'notifications' => [],
+            'favourite' => true,
+        ],
+
+        'partially-refunded' => [
+            'label' => 'Reembolsado Parcialmente',
             'color' => '#d9534f',
             'mailers' => [],
             'notifications' => [],

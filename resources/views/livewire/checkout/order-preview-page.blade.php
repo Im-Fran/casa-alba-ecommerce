@@ -173,8 +173,9 @@
                                                                             </td>
                                                                             <td class="py-4 text-right font-medium">{{ $transaction->amount->unitFormatted('es-cl') }}</td>
                                                                             <td class="py-4 text-right">
-                                                                                <span class="px-2 py-1 rounded-full text-xs {{ $transaction->success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                                                                    {{ $transaction->status === 'paid' ? 'Pagado' : 'Desconocido' }}
+                                                                                @php($color = \App\Helpers\TransactionText::getColor($transaction->status))
+                                                                                <span class="px-2 py-1 rounded-full text-xs" style="background-color: rgb({{ $color[500] }}); color: rgb({{ $color[100] }});">
+                                                                                    {{ \App\Helpers\TransactionText::getLabel($transaction->status) }}
                                                                                 </span>
                                                                             </td>
                                                                             <td class="py-4 text-right">{{ $transaction->created_at->fromNow() }}</td>

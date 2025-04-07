@@ -3,15 +3,11 @@
 namespace App\Livewire\Checkout;
 
 use App\Helpers\Helpers;
-use App\Lib\VentiPay;
 use App\Livewire\Forms\Checkout\CheckoutForm;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Lunar\Base\DataTransferObjects\PaymentAuthorize;
-use Lunar\DataTypes\ShippingOption;
-use Lunar\Exceptions\Carts\CartException;
 use Lunar\Facades\CartSession;
 use Lunar\Facades\Payments;
 use Lunar\Facades\ShippingManifest;
@@ -19,8 +15,6 @@ use Lunar\Models\Address;
 use Lunar\Models\Cart;
 use Lunar\Models\Country;
 use Lunar\Models\Order;
-use Lunar\Models\OrderLine;
-use Lunar\Models\ProductVariant;
 use Usernotnull\Toast\Concerns\WireToast;
 
 class CheckoutPage extends Component {

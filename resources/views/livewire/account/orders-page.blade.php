@@ -56,7 +56,7 @@
                         </div>
 
                         <div class="mt-6">
-                            {{ $orders->links() }}
+                            {{ $orders->links('pagination::tailwind') }}
                         </div>
                     @endif
                 </div>

@@ -4,9 +4,6 @@ namespace App\Lib;
 
 use App\Models\User;
 use Exception;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Factory;
 use Illuminate\Http\Client\PendingRequest;
@@ -192,7 +189,7 @@ readonly class VentiPay {
      * @return array|mixed
      * @throws ConnectionException
      */
-    public function refundCheckout(string $id, string $method = 'payment_method', int $amount = null) {
+    public function refundCheckout(string $id, string $method = 'payment_method', int $amount = null): mixed {
         return $this->baseHttpClient()
             ->withBody(json_encode([
                 'destination' => $method,
