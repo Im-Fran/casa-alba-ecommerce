@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Webhooks\MercadoPagoController;
 use App\Http\Controllers\Webhooks\VentiPayController;
 use App\Http\Middleware\Webhooks\VentiSignatureValidatorMiddleware;
 use App\Livewire\Account\AccountPage;
@@ -27,8 +28,8 @@ Route::get('/contacto', ContactPage::class)->name('contact');
 
 Route::prefix('/checkout')->group(function(){
     Route::get('/', CheckoutPage::class)->name('checkout');
-    Route::get('/success/{order}', SuccessPage::class)->middleware(['signed'])->name('checkout.success');
-    Route::get('/cancel/{order}', CancelPage::class)->middleware(['signed'])->name('checkout.cancel');
+    Route::get('/success', SuccessPage::class)->middleware([])->name('checkout.success');
+    Route::get('/cancel', CancelPage::class)->middleware([])->name('checkout.cancel');
     Route::get('/forgotten/{order}', ForgottenOrder::class)->middleware([])->name('checkout.forgotten');
 });
 
@@ -58,6 +59,7 @@ Route::prefix('/account')->middleware(['auth', 'verified'])->group(function() {
 
 
 Route::post('/webhooks/ventipay', VentiPayController::class)->middleware([VentiSignatureValidatorMiddleware::class])->name('webhooks.ventipay');
+Route::post('/webhooks/mercadopago', MercadoPagoController::class)->name('webhooks.mercadopago');
 
 Route::prefix('/r')->group(function() {
     Route::get('/tiktok', fn () => redirect()->away('https://www.tiktok.com/@productoscasaalba', 301))->name('redirect.tiktok');

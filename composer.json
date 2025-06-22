@@ -22,6 +22,7 @@
         "lunarphp/lunar": "^1.0.0-beta",
         "mailersend/laravel-driver": "^2.7",
         "meilisearch/meilisearch-php": "^1.11",
+        "mercadopago/dx-php": "^3.5",
         "robsontenorio/mary": "^1.41",
         "sentry/sentry-laravel": "^4.13",
         "stijnvanouplines/blade-country-flags": "^1.0",
@@ -69,7 +70,7 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite"
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"bun run dev\" --names=server,queue,logs,vite"
         ]
     },
     "extra": {

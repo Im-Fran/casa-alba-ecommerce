@@ -47,4 +47,11 @@ return [
         'webhook_secret' => env('VENTIPAY_WEBHOOK_SECRET'),
     ],
 
+    'mercadopago' => [
+        'user_id' => env('MERCADOPAGO_USER_ID'),
+        'app_number' => env('MERCADOPAGO_APP_NUMBER'),
+        'public_key' => env('MERCADOPAGO_PUBLIC_KEY'),
+        'access_token' => env('MERCADOPAGO_ACCESS_TOKEN'),
+    ]
+
 ];

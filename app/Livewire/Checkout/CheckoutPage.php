@@ -3,6 +3,7 @@
 namespace App\Livewire\Checkout;
 
 use App\Helpers\Helpers;
+use App\Lib\MercadoPago;
 use App\Livewire\Forms\Checkout\CheckoutForm;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
@@ -14,6 +15,7 @@ use Lunar\Facades\ShippingManifest;
 use Lunar\Models\Address;
 use Lunar\Models\Cart;
 use Lunar\Models\Country;
+use Lunar\Models\Customer;
 use Lunar\Models\Order;
 use Usernotnull\Toast\Concerns\WireToast;
 
@@ -181,9 +183,15 @@ class CheckoutPage extends Component {
 
         $shippingOption = ($this->shippingOptions->where('identifier', '=', $this->form->shippingOption)->first());
         $this->cart->setShippingOption($shippingOption);
+        $customer = auth()->user()?->selfCustomer() ?? Customer::whereVatNo($this->form->rut)->firstOrCreate([
+            'first_name' => $this->form->name,
+            'last_name' => $this->form->lastname,
+            'vat_no' => $this->form->rut,
+        ]);
+        $this->cart->setCustomer($customer);
 
         /** @var PaymentAuthorize $res */
-        $res = Payments::driver('ventipay')
+        $res = Payments::driver('mercadopago')
             ->cart($this->cart)
             ->authorize();
 
@@ -193,6 +201,13 @@ class CheckoutPage extends Component {
         }
 
         $order = Order::find($res->orderId);
-        redirect()->away("https://ventipay.com/checkout/{$order->meta['ventipay_checkout_id']}"); // Redirect to check out
+        try {
+            $uri = app(MercadoPago::class)->getCheckoutUrl(preference_id: $order->meta['mercadopago_pref_id'] ?? '');
+            toast()->success('¡Redirigiendo a Mercado Pago!', '¡Éxito!')->push();
+            redirect()->away($uri); // Redirect to check out
+        } catch (\Exception $e) {
+            toast()->danger($e->getMessage(), '¡Error al obtener la URL de pago!')->push();
+            return;
+        }
     }
 }
