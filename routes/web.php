@@ -62,6 +62,7 @@ Route::post('/webhooks/ventipay', VentiPayController::class)->middleware([VentiS
 Route::post('/webhooks/mercadopago', MercadoPagoController::class)->name('webhooks.mercadopago');
 
 Route::prefix('/r')->group(function() {
+    Route::get('/whatsapp', fn () => redirect()->away('https://wa.me/c/56942717395', 301))->name('redirect.whatsapp');
     Route::get('/tiktok', fn () => redirect()->away('https://www.tiktok.com/@productoscasaalba', 301))->name('redirect.tiktok');
     Route::get('/instagram', fn () => redirect()->away('https://www.instagram.com/productoscasaalba', 301))->name('redirect.instagram');
 });

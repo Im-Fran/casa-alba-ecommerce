@@ -3,35 +3,16 @@
     <livewire:components.navigation.header-component :sticky="true"/>
 
     <div class="p-2 md:p-0">
-        <div id="banner" class="pb-20 pt-[10rem]">
-            <div class="grid grid-cols-1 md:grid-cols-2 items-center justify-center w-full">
-                <div class="absolute md:static col-span-1 flex flex-col items-center justify-center gap-5 z-[2] mt-[10rem] md:mt-0 inset-x-0">
-                    <h1 class="text-2xl md:text-8xl max-w-2xl font-bold text-center">Productos de Aseo para tu Hogar</h1>
-
-                    <x-button
-                        class="btn btn-primary btn-sm md:btn-lg"
-                        label="Comprar Ahora"
-                        icon-right="o-arrow-down"
-                        x-on:click="window.scrollTo({ top: document.getElementById('banner').scrollHeight * 0.85, behavior: 'smooth' })"
-                    />
-                </div>
-
-                <img
-                    src="{{ asset('/images/productos_limpieza.webp') }}"
-                    alt="Productos de Limpieza"
-                    class="col-span-1 object-cover object-center w-full rounded-l-2xl blur-[10px] md:blur-0 z-[1]"
-                />
-            </div>
-        </div>
+        <livewire:home.components.banner-carousel/>
 
         <div id="productos" class="container mx-auto h-full w-full min-h-screen">
             <!-- Title & Sort -->
             <section class="flex items-center justify-between border-b-2 mb-2.5 py-2 border-secondary w-full">
-                <h2 class="text-2xl text-primary-content font-bold text-left">Productos</h2>
+                <h2 class="text-2xl text-primary-content font-thin text-left">Productos</h2>
 
                 <div class="svg-primary-content">
                     <x-button icon-right="{{ $this->price === \App\Lib\Sort::DESC ? 'o-chevron-down' : 'o-chevron-up'  }}" class="btn btn-sm btn-primary btn-outline" wire:click.stop="togglePrice" spinner>
-                        <span class="text-primary-content">
+                        <span class="text-primary-content font-extralight">
                             Precio: {{ $this->price === \App\Lib\Sort::DESC ? 'Mayor a Menor' : 'Menor a Mayor' }}
                         </span>
                     </x-button>

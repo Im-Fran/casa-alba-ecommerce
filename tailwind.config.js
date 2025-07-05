@@ -16,7 +16,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                pacifico: ['Pacifico', ...defaultTheme.fontFamily.sans],
             },
         },
     },
@@ -36,11 +36,11 @@ export default {
             casaalba: {
                 ...require("daisyui/src/theming/themes")["winter"],
                 "primary": "#BEEED5",
-                "primary-content": "#2B9D66",
+                "primary-content": "#131715",
                 "secondary": "#AFE9CD",
                 "secondary-content": "#2B9D66",
-                "accent": "#2B9D66",
-                "accent-content": "#F3FCF7",
+                "accent": "#BEEED5",
+                "accent-content": "#131715",
                 "neutral": "#FCFCFC",
                 "neutral-content": "#333333",
                 "base-100": "#FAFAFA",

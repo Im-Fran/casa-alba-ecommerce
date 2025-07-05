@@ -17,14 +17,14 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 
     <!-- Styles / Scripts -->
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
 </head>
-<body class="font-sans subpixel-antialiased h-screen">
+<body class="font-pacifico subpixel-antialiased h-screen">
 <noscript class="flex items-center justify-center bg-red-300 text-red-900 w-full h-10">Por favor activa el JavaScript, ya que es necesario para acceder a la tienda!</noscript>
 <main class="min-h-screen md:p-0">
     @if(isset($slot))

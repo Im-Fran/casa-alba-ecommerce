@@ -7,7 +7,7 @@
         <div class="bg-primary transition-all duration-[.75s]" x-bind:class="{'px-2 py-5 rounded-none': mobileNavOpen, 'mx-2 mt-5 rounded-[1rem]': !mobileNavOpen}">
             <div class="flex items-center justify-between p-2">
                 <a href="{{ route('home') }}">
-                    <img src="{{ asset('images/casaalba.webp') }}" alt="CasaAlba" class="rounded-full h-10 md:h-12"/>
+                    <img src="{{ asset('images/casaalba-t.png') }}" alt="CasaAlba" class="rounded-full h-10 md:h-12"/>
                 </a>
 
                 <ul class="hidden md:flex items-center space-x-4 text-primary-content">
