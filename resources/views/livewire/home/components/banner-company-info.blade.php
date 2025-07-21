@@ -21,7 +21,7 @@
                 class="flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full transition-colors duration-300 shadow-lg hover:shadow-xl"
             >
                 <img
-                    src="{{ asset('images/logos/whatsapp-icon-white.svg') }}"
+                    src="{{ asset('images/logos/whatsapp/whatsapp-icon-white.svg') }}"
                     alt="WhatsApp Glyph Icon"
                     class="w-5 h-5"
                 />

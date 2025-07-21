@@ -44,7 +44,7 @@ class="relative w-full overflow-hidden">
     </div>
 
     <!-- Carousel controls -->
-    <div class="absolute left-0 right-0 bottom-4 flex justify-center gap-2 z-10">
+    <div class="absolute left-0 right-0 bottom-4 flex justify-center gap-2 z-[1]">
         <button type="button"
                 class="w-3 h-3 rounded-full border-2 border-primary transition-colors"
                 :class="{ 'bg-primary': active === 0, 'bg-white': active !== 0 }"
@@ -59,13 +59,13 @@ class="relative w-full overflow-hidden">
 
     <!-- Next/Prev buttons -->
     <button @click="prev()"
-            class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/40 text-white p-2 rounded-full transition-colors z-10">
+            class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/40 text-white p-2 rounded-full transition-colors z-[1]">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
         </svg>
     </button>
     <button @click="next()"
-            class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/40 text-white p-2 rounded-full transition-colors z-10">
+            class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/40 text-white p-2 rounded-full transition-colors z-[1]">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
