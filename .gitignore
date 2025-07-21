@@ -11,6 +11,7 @@
 /storage/*.key
 /storage/pail
 /storage/media-library
+/storage/certificates
 /vendor
 .env
 .env.backup

@@ -15,7 +15,9 @@ export default ({ mode }) => {
     return defineConfig({
         plugins: [
             process.env.VITE_SSL === 'true' && basicSsl({
-                domains: [host]
+                name: host,
+                domains: [host],
+                certDir: './storage/certificates',
             }),
             laravel({
                 input: ['resources/css/app.css', 'resources/js/app.js'],
@@ -26,7 +28,10 @@ export default ({ mode }) => {
             }),
         ],
         server: {
-            https: process.env.VITE_SSL === 'true',
+            https: process.env.VITE_SSL === 'true' ? {
+                key: './storage/certificates/casaalba.test-key.pem',
+                cert: './storage/certificates/casaalba.test.pem',
+            } : false,
             host,
             hmr: {
                 host,

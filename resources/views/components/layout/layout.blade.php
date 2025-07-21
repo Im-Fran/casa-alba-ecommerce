@@ -25,8 +25,8 @@
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
 </head>
 <body class="font-pacifico subpixel-antialiased h-screen">
-<noscript class="flex items-center justify-center bg-red-300 text-red-900 w-full h-10">Por favor activa el JavaScript, ya que es necesario para acceder a la tienda!</noscript>
-<main class="min-h-screen md:p-0">
+<noscript class="flex items-center justify-center w-full h-10">Por favor activa el JavaScript, ya que es necesario para acceder a la tienda!</noscript>
+<main class="min-h-screen md:p-0 bg-gradient-to-r from-primary/10 to-secondary/10">
     @if(isset($slot))
         {{ $slot }}
     @endif
