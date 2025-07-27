@@ -15,13 +15,8 @@ export default {
 	],
     theme: {
         extend: {
-            colors: {
-                primary: '#2B9D66',
-                secondary: '#AFE9CD',
-                'secondary-opaque': '#496E5D'
-            },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                pacifico: ['Pacifico', ...defaultTheme.fontFamily.sans],
             },
         },
     },
@@ -32,17 +27,34 @@ export default {
     ],
 
     plugins: [
-		require("daisyui")
+		require("@tailwindcss/typography"),
+		require("daisyui"),
 	],
 
     daisyui: {
         themes: [{
             casaalba: {
-                ...require("daisyui/src/theming/themes")["pastel"],
-                primary: '#2B9D66',
-                'primary-content': '#FAFAFA',
-                secondary: '#AFE9CD',
-                'secondary-content': '#2B9D66',
+                ...require("daisyui/src/theming/themes")["winter"],
+                "primary": "#BEEED5",
+                "primary-content": "#131715",
+                "secondary": "#AFE9CD",
+                "secondary-content": "#2B9D66",
+                "accent": "#BEEED5",
+                "accent-content": "#131715",
+                "neutral": "#FCFCFC",
+                "neutral-content": "#333333",
+                "base-100": "#FAFAFA",
+                "base-200": "#F0F0F0",
+                "base-300": "#E6E6E6",
+                "base-content": "#404040",
+                "info": "#025FFF",
+                "info-content": "#DAE7FF",
+                "success": "#05c367",
+                "success-content": "#f3fcf7",
+                "warning": "#F58105",
+                "warning-content": "#FEF4E8",
+                "error": "#BC3633",
+                "error-content": "#FCF3F3",
             }
         }],
 

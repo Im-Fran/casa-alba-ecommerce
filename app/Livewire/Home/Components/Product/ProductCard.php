@@ -12,6 +12,7 @@ class ProductCard extends Component {
     public bool $peek = false;
 
     public Product $product;
+
     public ProductVariant $defaultVariant;
 
     public function mount(Product $product): void {

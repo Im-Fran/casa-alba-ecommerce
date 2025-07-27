@@ -13,34 +13,31 @@
                     <span class="text-md text-neutral-400 font-semibold">{{ $this->selectedVariant->stock > 0 ? ("{$this->selectedVariant->stock} en") : 'Sin' }} Stock</span>
                 </div>
 
-                @php($price = $this->selectedVariant->prices()->first()->price)
-                <h3 class="text-xl text-primary font-semibold">{{ Blink::once("price-{$price->id}", fn () => $price->unitFormatted('es-cl')) }}</h3>
+                <h3 class="text-xl text-primary-content font-semibold">{{ $this->selectedVariant->prices()->first()->price->unitFormatted('es-cl') }}</h3>
 
                 <span class="mt-2.5 text-sm text-neutral-500">{{ $this->product->attr('short_description') }}</span>
                 <div class="text-sm md:text-md text-neutral-900 mt-2.5">{!! $this->product->attr('description') !!}</div>
 
-                @if($this->productOptions->isNotEmpty())
-                    <div class="mt-2.5">
-                        @foreach($this->productOptions as $option)
-                            <div class="flex flex-col mt-2.5" wire:key="product_option_{{ $option['option']->id }}">
-                                <span class="text-lg font-medium">{{ $option['option']->translate('name') }}</span>
+                <div class="mt-2.5" wire:show="hasProductOptions">
+                    @foreach($this->productOptions as $option)
+                        <div class="flex flex-col mt-2.5" wire:key="product_option_{{ $option['option']->id }}">
+                            <span class="text-lg font-medium">{{ $option['option']->translate('name') }}</span>
 
-                                <div class="flex flex-wrap gap-2.5 mt-0.5"
-                                    x-data="{ selectedOption: $wire.entangle('options').live, selectedValues: [] }"
-                                    x-init="selectedValues = Object.values(selectedOption);
+                            <div class="flex flex-wrap gap-2.5 mt-0.5"
+                                 x-data="{ selectedOption: $wire.entangle('options').live, selectedValues: [] }"
+                                 x-init="selectedValues = Object.values(selectedOption);
                                     $watch('selectedOption', value =>
                                         selectedValues = Object.values(selectedOption)
                                     )">
-                                    @foreach($option['values'] as $value)
-                                        <x-button wire:key="product_option_{{ $option['option']->id }}_value_{{ $value->id }}" class="btn btn-primary btn-outline btn-sm rounded-lg {{ $options->values()->contains($value->id) ? 'btn-active' : '' }}" x-on:click.stop="async () => { disableAddToCart = true; await $wire.$set('options.{{ $option['option']->id }}', {{ $value->id }}); disableAddToCart = false; }" spinner>
-                                            {{ $value->translate('name') }}
-                                        </x-button>
-                                    @endforeach
-                                </div>
+                                @foreach($option['values'] as $value)
+                                    <x-button wire:key="product_option_{{ $option['option']->id }}_value_{{ $value->id }}" class="btn btn-primary btn-outline btn-sm rounded-lg {{ $options->values()->contains($value->id) ? 'btn-active' : '' }}" x-on:click.stop="async () => { disableAddToCart = true; await $wire.$set('options.{{ $option['option']->id }}', {{ $value->id }}); disableAddToCart = false; }" spinner>
+                                        {{ $value->translate('name') }}
+                                    </x-button>
+                                @endforeach
                             </div>
-                        @endforeach
-                    </div>
-                @endif
+                        </div>
+                    @endforeach
+                </div>
             </div>
 
             <div class="mt-5 md:mt-0" x-show="!disableAddToCart">

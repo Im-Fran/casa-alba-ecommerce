@@ -10,7 +10,6 @@ use Lunar\Models\Product;
 use Lunar\Models\ProductVariant;
 
 class VariantSelector extends Component {
-
     public Product $product;
 
     public ?ProductVariant $selectedVariant;
@@ -18,7 +17,7 @@ class VariantSelector extends Component {
     #[Reactive]
     public Collection $options;
 
-    public function render(): View{
+    public function render(): View {
         return view('livewire.home.components.product.product-card-modal.variant-selector');
     }
 }

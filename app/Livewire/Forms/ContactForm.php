@@ -6,7 +6,6 @@ use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class ContactForm extends Form {
-
     #[Validate(['required', 'string', 'min:3', 'max:255'])]
     public string $name = '';
 

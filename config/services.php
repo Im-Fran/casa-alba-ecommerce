@@ -35,4 +35,23 @@ return [
         ],
     ],
 
+    'turnstile' => [
+        'key' => env('TURNSTILE_SITE_KEY'),
+        'secret' => env('TURNSTILE_SECRET_KEY'),
+    ],
+
+    'ventipay' => [
+        'commerce_id' => env('VENTIPAY_COMMERCE_ID'),
+        'public_key' => env('VENTIPAY_PUBLIC_KEY'),
+        'private_key' => env('VENTIPAY_PRIVATE_KEY'),
+        'webhook_secret' => env('VENTIPAY_WEBHOOK_SECRET'),
+    ],
+
+    'mercadopago' => [
+        'user_id' => env('MERCADOPAGO_USER_ID'),
+        'app_number' => env('MERCADOPAGO_APP_NUMBER'),
+        'public_key' => env('MERCADOPAGO_PUBLIC_KEY'),
+        'access_token' => env('MERCADOPAGO_ACCESS_TOKEN'),
+    ]
+
 ];

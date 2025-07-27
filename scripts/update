@@ -10,7 +10,7 @@ for arg in "${args[@]}"; do
     elif [ "$arg" == "--force-update" ]; then
         flags+=("force_update")
     elif [ "$arg" == "--help" ]; then
-        echo "Usage: update [--no-interaction]"
+        echo "Usage: update [--no-interaction] [--force-update]"
         exit 0
     else
         echo "Invalid argument: $arg"
@@ -41,9 +41,12 @@ if [[ " ${flags[@]} " =~ "no_interaction" ]]; then
 
     echo "Clearing cache..."
     php artisan optimize:clear
+    php artisan icons:clear
 
     echo "Caching configuration..."
     php artisan optimize
+    php artisan icons:cache
+    php artisan filament:upgrade
 
     echo "Building assets..."
     bun install && bun run build
@@ -75,7 +78,10 @@ read -p "Do you want to update cache? [y/n] " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     php artisan optimize:clear
+    php artisan icons:clear
     php artisan optimize
+    php artisan icons:cache
+    php artisan filament:upgrade
 fi
 
 read -p "Do you want to build assets? [y/n] " -n 1 -r
